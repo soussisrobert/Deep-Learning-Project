@@ -2,7 +2,11 @@
 
 Research implementation for UAV single-object tracking. Source-resolution-aware fusion remains a **hypothesis**, not an established contribution. **Wave 4** establishes bounded authentic temporal positives, simultaneous known-distinct negatives, actual Windows/CUDA input-path correctness and a separately gated corrected-B2 reliability-pilot proposal—not real-data SGD, a learned baseline, full benchmark reproduction or R1. See [Wave 4 A–G delivery and gates](<reports/wave4_progress.md>) and [compact evidence](<experiments/wave4_validation.json>); all prior [Wave 3](<reports/wave3_progress.md>) and [Wave 2](<reports/wave2_progress.md>) findings remain frozen.
 
-## Wave 4 decision
+## Wave 5 preparation — execution blocked
+
+[Wave5 preparation audit](<reports/wave5_progress.md>) preserves the frozen Wave4 contract and verifies439existing+18new tests (**457PASS**). No real-data SGD, pilot output or human grant exists. Independent audits identify mandatory cumulative-deadline, one-use authorization/GPU-lease, immediate-stop/invariant and durable-telemetry gaps in the old launcher. The exact hash-bound draft is **unapproved and not eligible for execution approval**; a reviewed additive safeguard and a newly frozen exact human grant are prerequisites. R1 remains on hold.
+
+## Wave 4 decision (historical recommendation retained)
 
 - Real1024candidate preflight: **973 genuine cross-frame positives,50 safe negatives,1 explicit crop-co-presence rejection,0 replacements**. All1024records/1023accepted archives independently replayed; source/target algebra independently audited.
 - Separate fixed128attempt DEV control:64positive+64negative; negative draws contain38unique pairs and26repeats, not128independent examples. No frozen15sequence evaluation retuning or reruns.
