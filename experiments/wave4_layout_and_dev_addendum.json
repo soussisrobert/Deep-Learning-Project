@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "pre_repair_execution_addendum_NOT_real_SGD_authorization",
+  "reason": "Actual direct production arrays, unlike resident synthetic tensors or NPZ-loaded copies, produced channels-last-strided Torch NCHW images and exposed an upstream grouped-correlation view failure during REAL-FORWARD-001. Correctness requires a shared production NCHW-contiguity bridge and new regression checks.",
+  "preserve": ["REAL-FORWARD-001 failure and exact source", "original8syntheticCUDA updates", "first4sharedproductionCUDA updates", "unchanged Wave2/3 artifacts", "unchanged temporal FROZEN002 policies and candidate/array values"],
+  "repair_scope": "NEW Wave4 CPU FP32 NCHW transport normalization shared by intended pilot controller and forward-only profiler; no upstream/old140files/Bfrozen20files/architecture changes",
+  "synthetic_cuda_budget": {
+    "previous_completed_updates": 12,
+    "additional_hard_cap": 4,
+    "new_cumulative_hard_cap": 16,
+    "purpose": "Random-only noncontiguous-input production-path regression and atomic-boundary replay; all weights random; no source pretrained weight or authentic image enters optimization",
+    "grant_rule": "CPU regression first, explicit exclusive lead token, immutable NEW run IDs, no blind retry"
+  },
+  "real_forward_budget": {
+    "previous_attempted_pairs": 4,
+    "successful_representative_train_attempts_planned": 32,
+    "separate_fixed_development_attempts": 128,
+    "new_cumulative_hard_cap_pairs": 208,
+    "purpose": "Exercise actual complete fixed64positive+64negative development forward/loss path as well as the original32attempt train feasibility sample; class selection/policies/seeds unchanged; no loss-based selection or hyperparameter retuning",
+    "optimizer_steps": 0,
+    "backward_calls": 0,
+    "model_policy": "Strict source backbone/random grader only in disposable forward models; development uses eval-mode initial BN state; any train-mode BN updates discarded; no adapted model persisted"
+  },
+  "readiness_rule": "No GO until actual contiguous real forward/loss and same intended shared production-controller synthetic CUDA replay pass. Baseline B0/B1 evaluation stays frozen; no R1. A GO only recommends a separately human-authorized future pilot."
+}
