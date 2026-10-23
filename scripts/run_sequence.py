@@ -48,6 +48,7 @@ def main():
     parser.add_argument('--config', type=Path, default=ROOT / 'configs/B0.json')
     parser.add_argument('--checkpoint', type=Path)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--experiment-id', help='Globally unique run label; defaults to the new output directory name')
     args = parser.parse_args()
     import cv2
     import numpy as np
@@ -74,7 +75,7 @@ def main():
     from pysot.core.config import cfg
     tracker = make_tracker(model, config['identity'])
     manifest = {
-        'schema_version': 1, 'kind': 'inference_run', 'experiment_id': output.name,
+        'schema_version': 1, 'kind': 'inference_run', 'experiment_id': args.experiment_id or output.name,
         'baseline': config['identity'], 'status': 'running', 'source': source_identity(ROOT),
         'environment': runtime_identity(), 'configuration': config,
         'config_sha256': sha256(args.config), 'upstream_config_sha256': sha256(ROOT / config['upstream_config']),

@@ -34,12 +34,14 @@ def main():
     for baseline in ('B0', 'B1-score'):
         run = output / baseline
         subprocess.run([sys.executable, str(ROOT / 'scripts/run_sequence.py'), '--sequence', str(sequence),
-                        '--config', str(ROOT / f'configs/{baseline}.json'), '--output', str(run)], cwd=ROOT, check=True)
+                        '--config', str(ROOT / f'configs/{baseline}.json'), '--output', str(run),
+                        '--experiment-id', f'{output.name}--{baseline}'], cwd=ROOT, check=True)
         record = json.loads((run / 'manifest.json').read_text(encoding='utf-8'))
         jsonschema.Draft202012Validator(schema).validate(record)
         predictions = np.loadtxt(run / 'synthetic.csv', delimiter=',')
         assert predictions.shape == (3, 4) and np.isfinite(predictions).all()
         assert record['status'] == 'completed' and record['baseline'] == baseline
+        assert record['experiment_id'] == f'{output.name}--{baseline}'
     print('PASS: B0 and B1-score complete synthetic GPU pipelines, 3 frames each, schema validated. NOT a benchmark.')
 
 
