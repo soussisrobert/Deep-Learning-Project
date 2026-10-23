@@ -1,8 +1,17 @@
 # HiFT: trustworthy reproduction before improvement
 
-Research implementation for UAV single-object tracking. The source-resolution-aware fusion idea remains a **hypothesis**, not an established contribution. Wave 2 now includes a real three-sequence UAV123@10fps pilot and bounded synthetic training feasibility—not full benchmark reproduction or a trained B2 model. See [Wave 2 results and gates](reports/wave2_progress.md).
+Research implementation for UAV single-object tracking. Source-resolution-aware fusion remains a **hypothesis**, not an established contribution. **Wave 3** adds a canonical real-input preflight, synthetic lifecycle/resume verification and twelve additional frozen B0/B1 sequences—not real-data training or full benchmark reproduction. See [Wave 3 delivery and gates](<reports/wave3_progress.md>), [compact evidence](<experiments/wave3_validation.json>) and unchanged [Wave 2 results](<reports/wave2_progress.md>).
 
-## Current scope
+## Wave 3 decision
+
+- 1024 authentic training candidates: **973 accepted positives;51 quarantined negatives;0 replacements**. Zero accepted negatives and still-image-only data make the real training recipe unsafe.
+- Twelve additional complete sequences,2672frames each: AUC **B0 0.519714 / B1 0.475797**. All adverse outcomes retained; no B1 promotion.
+- Restricted synthetic CPU lifecycle replay is bit-exact; no production-worker/CUDA resume or physical-batch-equivalence claim.
+- G1 bounded PASS; G2 PARTIAL; G3 PASS; G4 PARTIAL; G5 PARTIAL/not ready. H1 supported only as a limiting condition; H2 plausible but unconfirmed; H3 insufficient evidence.
+- **Next: continue data/recipe correctness.** No real SGD, B2 pilot, R1 architecture or baseline retuning authorized. [Proposed recipe](<configs/B2-wave3-proposed.json>) remains launch-disabled.
+- Integrated suite: **362 passed**. Raw data/models/run artifacts remain local ignored assets; committed compact evidence is not their backup.
+
+## Established scope (Wave 2 evidence retained)
 
 - Immutable official upstream submodule, commit `992aa7c1605360d607af84cb804b93cd8ee81caf`.
 - Deterministic tensor, negative-target, score, crop geometry and evaluator correctness tests.
@@ -34,7 +43,7 @@ python -m pip install -e '.[test]'
 python -m pytest
 ```
 
-Optional torch/OpenCV-dependent tests explicitly skip if missing. Original B0 model hardcodes CUDA and has not been silently replaced by a CPU baseline. The separate, explicitly corrected B2 feasibility graph also has CPU tests.
+OpenCV/Pillow are included in the data/test extras; torch-dependent tests skip if torch is missing. For all362 tests use the pinned base environment plus torch. Original B0 hardcodes CUDA and has not been silently replaced by a CPU baseline. The separate corrected B2 graph/lifecycle has CPU tests; these do not train on real data.
 
 ## Checkpoint and GPU smoke (not a benchmark)
 
