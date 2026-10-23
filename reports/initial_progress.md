@@ -4,6 +4,8 @@
 
 **M0 complete after local setup, pinned source, environment inspection, registry, and passing basic tests. M1 is partial, not closed. M2–M4 are not complete.** No lengthy training, remote compute, real benchmark evaluation, or R1 training was launched. Three independent workers delivered source, literature and evaluation audits; the lead reviewed critical source/index/metric mathematics and integrated all tests.
 
+Final code verification: commit `9c9586635a9201094c9f155d5729398bf241d992`, **108 passed / 0 failed / 0 skipped in 5.01s**, clean source during both final GPU tracker runs. The [committed validation record](../experiments/initial_validation.json) preserves original failure and successful manifests, hashes, configurations, software/hardware and exact source identities. GPU-forward smoke `INIT-GPU-B0-003` used clean commit `aa05ff769535f51ba063d54d8261cc570389da0c`; final unique-ID full-pipeline runs use the final code commit above. Subsequent commits only archive results/documentation.
+
 ## A. Repository status
 
 - Initialized a real git repository and immutable official HiFT submodule at **992aa7c1605360d607af84cb804b93cd8ee81caf**, URL https://github.com/vision4robotics/HiFT . The submodule is unchanged; corrections are explicit unapplied patches and isolated opt-in modules.
