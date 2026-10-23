@@ -1,0 +1,9 @@
+{
+  "identity": "B2",
+  "status": "blocked_pending_validated_training_port_and_assets",
+  "parent": "B1-score",
+  "planned_corrections": ["sequence_image_layout", "negative_pair_targets"],
+  "checkpoint": null,
+  "training_recipe": "not_yet_frozen",
+  "launch_allowed": false
+}

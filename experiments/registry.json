@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project": "HiFT source-resolution research",
+  "upstream_commit": "992aa7c1605360d607af84cb804b93cd8ee81caf",
+  "entries": [
+    {"id": "INIT-CPU-001", "kind": "mathematical_correctness", "baseline": "not_a_tracking_experiment", "status": "planned", "report": "reports/initial_progress.md"},
+    {"id": "INIT-GPU-B0-001", "kind": "synthetic_execution_smoke", "baseline": "B0", "status": "planned", "config": "configs/B0.json", "results": null},
+    {"id": "B0-REPRO-001", "kind": "benchmark", "baseline": "B0", "status": "blocked_dataset", "config": "configs/B0.json", "results": null},
+    {"id": "B1-SCORE-001", "kind": "matched_inference_ablation", "baseline": "B1-score", "status": "blocked_dataset", "config": "configs/B1-score.json", "results": null},
+    {"id": "B2-CONTROLS-001", "kind": "controlled_retraining", "baseline": "B2", "status": "not_ready", "config": "configs/B2.json", "results": null},
+    {"id": "R1-A-001", "kind": "hypothesis_diagnostic", "baseline": "B2", "status": "gated", "config": "configs/R1.json", "results": null}
+  ]
+}

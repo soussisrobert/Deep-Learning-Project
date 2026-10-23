@@ -1,0 +1,9 @@
+# Tested target: Windows x86_64, Python 3.13.0. CUDA torch is installed separately.
+numpy==2.4.4
+PyYAML==6.0.3
+opencv-python==4.13.0.92
+yacs==0.1.8
+pytest==8.4.2
+jsonschema==4.26.0
+tqdm==4.67.3
+colorama==0.4.6
