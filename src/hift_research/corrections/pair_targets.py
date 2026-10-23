@@ -1,4 +1,9 @@
-"""Explicit B2 negative-pair policy, not an official-checkpoint inference fix."""
+"""Low-level Wave1 target construction, not an identity-verified sampler.
+
+New B2 data paths must use positive_targets.robust_pair_targets with explicit
+object identities. This compatibility primitive cannot infer identities from a
+bbox and does not certify that a requested negative is semantically valid.
+"""
 import numpy as np
 
 

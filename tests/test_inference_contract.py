@@ -48,6 +48,22 @@ def test_runner_never_guesses_coordinate_origin(tmp_path, origin):
         read_sequence(path)
 
 
+def test_native_passthrough_metadata_cannot_smuggle_evaluation_gt(tmp_path):
+    frame = tmp_path / 'one.jpg'
+    frame.write_bytes(b'fixture')
+    sequence = {'name': 'Native', 'dataset': 'UAV123@10fps', 'frames': ['one.jpg'],
+                'initial_bbox': [1.5, 1.5, 9, 8], 'coordinate_origin': 0,
+                'annotation_coordinate_origin': None,
+                'annotation_to_tracker_transform': 'upstream_numeric_passthrough_plus_half_pixel_no_origin_shift'}
+    path = tmp_path / 'native.json'
+    path.write_text(json.dumps(sequence))
+    assert read_sequence(path)[0]['initial_bbox'] == [1.5, 1.5, 9, 8]
+    sequence['annotation_to_tracker_transform'] = {'GT': [[1, 1, 9, 8]]}
+    path.write_text(json.dumps(sequence))
+    with pytest.raises(ValueError, match='declared literal'):
+        read_sequence(path)
+
+
 def test_score_adapter_changes_only_bce_head():
     torch = pytest.importorskip('torch')
     from hift_research.inference import ScoreProbabilityAdapter
