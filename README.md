@@ -1,6 +1,6 @@
 # HiFT: trustworthy reproduction before improvement
 
-Research implementation for UAV single-object tracking. The source-resolution-aware fusion idea is a **hypothesis**, not an established contribution. No real tracking benchmark or training result has been produced during initialization.
+Research implementation for UAV single-object tracking. The source-resolution-aware fusion idea remains a **hypothesis**, not an established contribution. Wave 2 now includes a real three-sequence UAV123@10fps pilot and bounded synthetic training feasibility—not full benchmark reproduction or a trained B2 model. See [Wave 2 results and gates](reports/wave2_progress.md).
 
 ## Current scope
 
@@ -9,7 +9,10 @@ Research implementation for UAV single-object tracking. The source-resolution-aw
 - Original CUDA inference runner and separately selectable **B1-score** sigmoid interpretation correction.
 - Explicit B2 training correction patches, not applied to the official source or released checkpoint.
 - Dataset import/hashing, immutable run provenance, sequence-level evaluator, and primary-source literature audit.
-- B2/R1 training intentionally disabled pending validation. Missing benchmark data does not imply M2 success.
+- Authoritative, bounded HTTP-range acquisition of three complete UAV123@10fps sequences (265 original decoded frames), with raw annotations and hashes preserved.
+- Matched B0/B1-score pilot: success AUC **0.552222 / 0.551336**; precision@20px **0.693694 / 0.693694**. No aggregate improvement claim.
+- Actual corrected B2 graph profiled at batches 1/2/4 with forward/backward/SGD; no OOM. Synthetic feasibility is not real training throughput or convergence.
+- M1 and full M2 remain partial. Full B2/R1 training remains disabled; no R1 architecture was implemented.
 
 See [initial progress](reports/initial_progress.md), [source audit](reports/source_audit.md), [inference/geometry audit](reports/inference_geometry_audit.md), [evaluation audit](reports/evaluation_audit.md), and [literature review](reports/literature_review.md).
 
@@ -31,7 +34,7 @@ python -m pip install -e '.[test]'
 python -m pytest
 ```
 
-Optional torch/OpenCV-dependent tests explicitly skip if missing. Original baseline model hardcodes CUDA; a CPU model port has not been silently substituted.
+Optional torch/OpenCV-dependent tests explicitly skip if missing. Original B0 model hardcodes CUDA and has not been silently replaced by a CPU baseline. The separate, explicitly corrected B2 feasibility graph also has CPU tests.
 
 ## Checkpoint and GPU smoke (not a benchmark)
 
@@ -53,6 +56,8 @@ Import actual benchmark frames/annotations using [dataset instructions](docs/dat
 .venv/Scripts/python.exe scripts/evaluate.py --help
 ```
 
+For the acquired pilot and its unresolved annotation-origin semantics, [Wave 2 data instructions](docs/wave2_data.md) and the explicit [native-numeric exporter](scripts/prepare_native_inputs.py) preserve literal upstream initialization/evaluation instead of silently subtracting one. [Matched driver](scripts/run_matched_subset.py), [CPU evidence audit](scripts/audit_wave2.py), and [bounded training profiler](scripts/profile_training.py) keep the experiment identities separate.
+
 Only initial GT is permitted in inference manifests. Saved predictions include initialization; do not replace the first row with exact GT. CLI refuses existing run directories and invalid predictions, records source/config/checkpoint/frame hashes, synchronized inference and I/O-inclusive latency, and peak allocated/reserved GPU memory. Use the same checkpoint/config/sequences for the B0/B1 pair. See evaluator help for manifest and prediction paths.
 
 ## Baselines and scientific gates
@@ -61,7 +66,7 @@ Only initial GT is permitted in inference manifests. Saved predictions include i
 |---|---|---|
 | B0 | Released behavior + official weights | Original GPU execution; benchmark assets required |
 | B1-score | B0 + sigmoid on BCE head before mixing | Inference-only ablation; no claimed gain |
-| B2 | Validated training corrections + matched retraining | Patches/tests only; no training launcher |
+| B2 | Validated training corrections + matched retraining | Isolated synthetic feasibility only; real-data recipe/retraining pending |
 | R1 | Source-resolution-aware fusion on frozen B2 | Hypothesis/diagnosis only |
 
 [Methodology](docs/methodology.md) defines matched controls, leakage safeguards, experiment records, and go/no-go gates. [Registry](experiments/registry.json) tracks status. Prior work already covers generic hierarchical fusion, template updates, crop adaptation and distillation; these are not standalone novelty claims.

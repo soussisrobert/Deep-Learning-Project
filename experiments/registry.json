@@ -10,9 +10,13 @@
     {"id": "INIT-GPU-B0-003", "kind": "synthetic_execution_smoke", "baseline": "B0", "status": "passed", "results": "artifacts/runs/INIT-GPU-B0-003/manifest.json"},
     {"id": "INIT-PIPELINE-002", "kind": "synthetic_tracker_pipeline_not_benchmark", "baseline": ["B0", "B1-score"], "status": "passed", "results": "artifacts/runs/INIT-PIPELINE-002", "limitation": "Child experiment_id labels are directory-local; disambiguate using parent run ID and full manifest path."},
     {"id": "INIT-PIPELINE-003", "kind": "synthetic_tracker_pipeline_not_benchmark", "baseline": ["B0", "B1-score"], "status": "passed", "frames_each": 3, "results": "experiments/initial_validation.json", "tested_code_commit": "9c9586635a9201094c9f155d5729398bf241d992", "schema_validation": "Draft202012_passed"},
-    {"id": "B0-REPRO-001", "kind": "benchmark", "baseline": "B0", "status": "blocked_dataset", "config": "configs/B0.json", "results": null},
-    {"id": "B1-SCORE-001", "kind": "matched_inference_ablation", "baseline": "B1-score", "status": "blocked_dataset", "config": "configs/B1-score.json", "results": null},
-    {"id": "B2-CONTROLS-001", "kind": "controlled_retraining", "baseline": "B2", "status": "not_ready", "config": "configs/B2.json", "results": null},
-    {"id": "R1-A-001", "kind": "hypothesis_diagnostic", "baseline": "B2", "status": "gated", "config": "configs/R1.json", "results": null}
+    {"id": "B0-REPRO-001", "kind": "benchmark", "baseline": "B0", "status": "pilot_only_full_benchmark_pending", "config": "configs/B0.json", "results": "experiments/wave2_validation.json"},
+    {"id": "B1-SCORE-001", "kind": "matched_inference_ablation", "baseline": "B1-score", "status": "pilot_complete_no_aggregate_gain", "config": "configs/B1-score.json", "results": "experiments/wave2_validation.json"},
+    {"id": "B2-CONTROLS-001", "kind": "controlled_retraining", "baseline": "B2", "status": "synthetic_feasible_real_recipe_pending", "config": "configs/B2.json", "results": null},
+    {"id": "R1-A-001", "kind": "hypothesis_diagnostic", "baseline": "B2", "status": "gated", "config": "configs/R1.json", "results": null},
+    {"id": "WAVE2-REAL-001", "kind": "authentic_partial_matched_pilot", "baseline": ["B0", "B1-score"], "status": "completed", "sequences": 3, "frames_each": 265, "results": "experiments/wave2_validation.json"},
+    {"id": "WAVE2-CUDA-PROFILE-B", "kind": "random_synthetic_training_feasibility", "baseline": "B2", "status": "passed_batches_1_2_4", "results": "artifacts/profiles/wave2-cuda-20261023-b/manifest.json"},
+    {"id": "WAVE2-FORMULA-CPU-B", "kind": "historical_formula_not_runtime_parity", "baseline": "not_a_tracking_experiment", "status": "passed_168_comparisons", "results": "artifacts/compatibility/wave2-formula-cpu-20261023b/manifest.json"},
+    {"id": "WAVE2-SUPPORT-001", "kind": "retrospective_geometric_support_not_R1", "baseline": ["B0", "B1-score"], "status": "partial_mechanistic_evidence_insufficient", "results": "artifacts/audits/WAVE2-EVIDENCE-001/evidence.json"}
   ]
 }
