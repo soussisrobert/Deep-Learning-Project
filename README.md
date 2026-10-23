@@ -2,7 +2,11 @@
 
 Research implementation for UAV single-object tracking. Source-resolution-aware fusion remains a **hypothesis**, not an established contribution. **Wave 4** establishes bounded authentic temporal positives, simultaneous known-distinct negatives, actual Windows/CUDA input-path correctness and a separately gated corrected-B2 reliability-pilot proposal—not real-data SGD, a learned baseline, full benchmark reproduction or R1. See [Wave 4 A–G delivery and gates](<reports/wave4_progress.md>) and [compact evidence](<experiments/wave4_validation.json>); all prior [Wave 3](<reports/wave3_progress.md>) and [Wave 2](<reports/wave2_progress.md>) findings remain frozen.
 
-## Wave 5 preparation — execution blocked
+## Wave 6 guarded execution — not approval ready
+
+[Wave6 executable safeguards](<reports/wave6_progress.md>) add native Windows process-tree/inclusive-deadline supervision, exact one-use human acknowledgment and GPU lease, immediate runtime/input guards, and durable checkpoint/telemetry around the byte-unchanged scientific controller. [Compact evidence](<experiments/wave6_validation.json>) distinguishes CPU/math replay and native control tests from authentic training. **G5 remains blocked** by ambiguous WDDM C+G ownership; resource availability is checked, not assumed. No real SGD, GPU experiment, real grant or new approval-ready pilot proposal was issued. The new [guarded entry](<scripts/run_b2_guarded.py>) is the only supported future Wave6 production route; the mechanically retained legacy CLI is not an approved bypass. Establish actual prerequisites, freeze a fresh exact unapproved proposal, then wait for human approval.
+
+## Wave 5 preparation — historical execution block
 
 [Wave5 preparation audit](<reports/wave5_progress.md>) preserves the frozen Wave4 contract and verifies439existing+18new tests (**457PASS**). No real-data SGD, pilot output or human grant exists. Independent audits identify mandatory cumulative-deadline, one-use authorization/GPU-lease, immediate-stop/invariant and durable-telemetry gaps in the old launcher. The exact hash-bound draft is **unapproved and not eligible for execution approval**; a reviewed additive safeguard and a newly frozen exact human grant are prerequisites. R1 remains on hold.
 
