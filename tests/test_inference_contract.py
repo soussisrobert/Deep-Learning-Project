@@ -75,11 +75,11 @@ def test_restricted_checkpoint_numpy_metadata_and_prefix_safety(tmp_path):
     from hift_research.inference import read_checkpoint_state
     path = tmp_path / 'safe.pth'
     torch.save({'state_dict': {'module.weight': torch.ones(2)}, 'optimizer': {'lr': np.float64(.01)}}, path)
-    before = list(torch.serialization.get_safe_globals())
+    before = set(torch.serialization.get_safe_globals())
     state = read_checkpoint_state(path)
     assert list(state) == ['weight']
     torch.testing.assert_close(state['weight'], torch.ones(2))
-    assert torch.serialization.get_safe_globals() == before  # allowlist is context-local
+    assert set(torch.serialization.get_safe_globals()) == before  # API returns an unordered set as a list
     torch.save({'weight': torch.ones(2), 'module.weight': torch.zeros(2)}, path)
     with pytest.raises(ValueError, match='Duplicate'):
         read_checkpoint_state(path)
