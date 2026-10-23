@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "wave": 4,
+  "starting_delivery": "28e9e197c62a21450587465e4c32abdf97fb88d3",
+  "tested_implementation_head": "9de50b88e8e048a85370529ed02af04061d67ea0",
+  "ending_HEAD_policy": "Exact subsequent clean bookkeeping delivery HEAD is printed in final response and ignored DELIVERY-END receipt, not self-embedded in its own commit",
+  "upstream_commit": "992aa7c1605360d607af84cb804b93cd8ee81caf",
+  "recommendation": "GO_SEPARATELY_HUMAN_AUTHORIZED_BOUNDED_GRADER_ONLY_RELIABILITY_PILOT",
+  "real_SGD_authorized": false,
+  "real_optimizer_steps": 0,
+  "real_backward_calls": 0,
+  "real_pilot_started": false,
+  "R1_developed": false,
+  "frozen_B0_B1_rerun_or_retuned": false,
+  "gates": {
+    "W4-G1": "PASS_bounded_authentic_temporal",
+    "W4-G2": "PASS_bounded_simultaneous_known_distinct",
+    "W4-G3": "PASS_all_1024_plus128_audited",
+    "W4-G4": "PASS_serial_atomic_boundary_fallback",
+    "W4-G5": "PASS_recommendation_NOT_authorization"
+  },
+  "data": {
+    "original_frames": 160,
+    "full_GT_rows": 65877,
+    "train_videos": [
+      "MOT17-02",
+      "MOT17-09",
+      "MOT17-10"
+    ],
+    "development_videos": [
+      "MOT17-05"
+    ],
+    "identity_scope": "author trajectory fragment within canonical release/video, NOT global person",
+    "train_attempts": 1024,
+    "accepted_positive": 973,
+    "accepted_negative": 50,
+    "rejected": 1,
+    "replacements": 0,
+    "nonzero_gap_positives": 973,
+    "safe_negative_actual_exclusion_proved": 50,
+    "development_attempts": 128,
+    "development_positive": 64,
+    "development_negative": 64,
+    "development_unique_negative_pairs": 38,
+    "development_negative_repeated_draws": 26,
+    "unknown_alias_policy": "No crossvideo/image different-ID negative; known metadata family reservations +SHA/pHash are not universal person/re-edit/pretraining proof"
+  },
+  "execution": {
+    "synthetic_CUDA_total_effective_updates": 16,
+    "synthetic_sequence": [
+      8,
+      4,
+      4
+    ],
+    "latest_production_input_kind": "random-only noncontiguous HWC-to-CHW NumPy arrays canonicalized by same production NCHW bridge",
+    "real_successful_train_forward_pairs": 32,
+    "real_complete_development_forward_pairs": 128,
+    "real_failed_prior_forward_attempts": 4,
+    "real_initial_dev_loss": 3.4531175792217255,
+    "real_parameters_unchanged": true,
+    "real_no_parameter_gradients": true,
+    "no_adapted_checkpoint_saved": true,
+    "safe_resume": "num_workers0/no-prefetch; atomic committed effective-window boundary only; tainted in-flight state discarded and entire indexed window replayed"
+  },
+  "pilot": {
+    "max_updates": 100,
+    "max_attempt_slots": 1600,
+    "max_wall_seconds": 900,
+    "physical_attempt_slots": 4,
+    "effective_attempt_slots": 16,
+    "source_epoch": 0,
+    "grader_lr": 0.0025,
+    "trainable_scope": "entire corrected grader fusion/transformer/prediction heads; frozen backbone and backboneBN",
+    "future_explicit_human_grant_required": true,
+    "no_future_grant_created": true,
+    "central_projected_seconds": 192.0175570739957,
+    "engineering_range_seconds": [
+      144.01316780549678,
+      573.1434572707628
+    ],
+    "primary_checkpoint": "fixed last update100; bestDEVsecondary earliesttie cannotrescue",
+    "signal": "fixedlast DEVloss<=.95initial, distinct from reliability/nondivergence; nottrackingaccuracy",
+    "reference70epoch_fullrecipe_ready": false
+  },
+  "tests": {
+    "tests": 439,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 439
+  },
+  "references": {
+    "start_preservation": {
+      "path": "artifacts/wave4-integration/START-001.json",
+      "sha256": "c0c63e9230188f18b9b94a3d76cf9e43e5def5b65f716e04ce1248abe4ba6609"
+    },
+    "source_selection": {
+      "path": "artifacts/wave4-source/SELECTION-001.json",
+      "sha256": "7a0e43c653d129be13aa7389417895c7b391949472d1387ee8ecbca056ca3971"
+    },
+    "source_manifest": {
+      "path": "artifacts/wave4-source/SOURCE-001/temporal_manifest.json",
+      "sha256": "2660a96d72ed1645b822120d81835f7a66f93b65da9a4648f6a16fcc04bdba54"
+    },
+    "source_independent_audit": {
+      "path": "artifacts/wave4-source/SOURCE-001/independent_audit.json",
+      "sha256": "80819a3141c3d4e125d3b8a9bdc8c34534299c1aedb78a0234f9437a740abc92"
+    },
+    "eligibility_preregistration": {
+      "path": "artifacts/wave4-preflight/ELIGIBILITY-PREREG-001.json",
+      "sha256": "c084a0093f16a731285204d7f0e8ba702b669c7530234057db29ccb6aaab959c"
+    },
+    "frozen_contract": {
+      "path": "artifacts/wave4-preflight/FROZEN-002/freeze_receipt.json",
+      "sha256": "c20f138b087f3988d8fd228f677bd5faa3ae70ec30b717e2b01422211c9cf6f6"
+    },
+    "train_policy": {
+      "path": "artifacts/wave4-preflight/FROZEN-002/train_policy.json",
+      "sha256": "c0d811b945f385084daa8ed27042e2bc0178a4859ffab34868fda8304d33afa9"
+    },
+    "development_policy": {
+      "path": "artifacts/wave4-preflight/FROZEN-002/development_policy.json",
+      "sha256": "15bf57bc1b7107cf5d6ca51ed72a54c520e13fda7080a2014c833bb2afcd6a36"
+    },
+    "train_summary": {
+      "path": "artifacts/wave4-preflight/PREFLIGHT-002/train/summary.json",
+      "sha256": "c23a0da66c2196114f0efcbba8f6084a479ae5bbbb1c772ce7c716c6bae0da1f"
+    },
+    "train_ledger": {
+      "path": "artifacts/wave4-preflight/PREFLIGHT-002/train/candidate_ledger.jsonl",
+      "sha256": "bfa185342524cc8b2cf44f7551f92c93e77c1a8f9ff946d14cc6d32077ecfaa3"
+    },
+    "development_summary": {
+      "path": "artifacts/wave4-preflight/PREFLIGHT-002/development/summary.json",
+      "sha256": "1173defddfd3600d2e417b79a2c4cde8232d9434326fcce884ba6946cf4739cc"
+    },
+    "development_ledger": {
+      "path": "artifacts/wave4-preflight/PREFLIGHT-002/development/candidate_ledger.jsonl",
+      "sha256": "eae252a734198935c62a80fdbd8239d05169c710a7182d6188de2d8d21c1efeb"
+    },
+    "all_train_replay": {
+      "path": "artifacts/wave4-preflight/VERIFICATION-002/train_verification.json",
+      "sha256": "49f718ba145eb6648994e6b8c4846fa1a9ae846d3fc4b6a9f9a574563ec9e87d"
+    },
+    "all_development_replay": {
+      "path": "artifacts/wave4-preflight/VERIFICATION-002/development_verification.json",
+      "sha256": "aaf010962f46257e086b736dd0723eac590c9ce2b1c0849aca9d263750a51782"
+    },
+    "pair_distributions": {
+      "path": "artifacts/wave4-preflight/VERIFICATION-002/distributions_supplement.json",
+      "sha256": "e45263b308391fd8998d979afb5bf55dbac315f6bf314cb7ada9deb4089500b0"
+    },
+    "serialization_failure": {
+      "path": "artifacts/wave4-preflight/PREFLIGHT-001/failure_receipt.json",
+      "sha256": "f5ce86658e6728ed93880e55179064627caa9ae1c5218fba8b60e069b598a716"
+    },
+    "failed_source_snapshot": {
+      "path": "artifacts/wave4-preflight/FAILED-001-SOURCE/snapshot_receipt.json",
+      "sha256": "e5128182f088aef514f609c669ce5b84521de58bb87bb4325e9713d655dc5f82"
+    },
+    "serialization_value_parity": {
+      "path": "artifacts/wave4-preflight/FORENSIC-001/comparison.json",
+      "sha256": "f95806fd5200f65ad99752a6b21c3c65c598fe011eea7772b4828ba2ce318238"
+    },
+    "independent_GT_grid_algebra": {
+      "path": "artifacts/wave4-integration/PAIR-ALGEBRA-001.json",
+      "sha256": "9672dae834fce8642d39021e32e081468e1ee43df26874ba7a979234b4cdf017"
+    },
+    "actual_loader": {
+      "path": "artifacts/wave4-integration/REAL-LOADER-002/manifest.json",
+      "sha256": "7bddac7b12c4462023996e8bbd5b54ee2bae5f14fe593f1e034bec55a4b8d630"
+    },
+    "actual_loader_failed001": {
+      "path": "artifacts/wave4-integration/REAL-LOADER-001/failure.json",
+      "sha256": "295e3bbf909e0a4331c4d481aa933f9196e5aaddbc0c6e549d4b871a794682f4"
+    },
+    "device_epoch0_epoch10_synthetic": {
+      "path": "artifacts/wave4-lifecycle/cuda-001/verification.json",
+      "sha256": "d7684e4dc3bbc2110eda1a222afe1d7ec18a2b7945364e359c377c0a7245a716"
+    },
+    "shared_controller_synthetic_prior": {
+      "path": "artifacts/wave4-lifecycle/production-cuda-001/verification.json",
+      "sha256": "9c5b4a1ae9f02a08509684a93daa8f0ff206a4034419d3681aaf6b792836f0b3"
+    },
+    "actual_forward_failed001": {
+      "path": "artifacts/wave4-feasibility/REAL-FORWARD-001/failure.json",
+      "sha256": "3c2b686b2c8ee1b413276e5a5023e3cd63bdbb12140b3d505ed2252b3329d33e"
+    },
+    "latest_noncontiguous_production_CUDA": {
+      "path": "artifacts/wave4-lifecycle/production-layout-cuda-001/verification.json",
+      "sha256": "95a1fc9dfc0c7ff4888faf1ce284f3b815ef3b1fecd1580d3872b5854cee0462"
+    },
+    "latest_final_config_binding": {
+      "path": "artifacts/wave4-lifecycle/final-config-binding-001.json",
+      "sha256": "4ec7d774cd77fb02d3c47f0e3a6a44537beeae770a95863838d28053ebaaf9b0"
+    },
+    "actual_real_forward_only": {
+      "path": "artifacts/wave4-feasibility/REAL-FORWARD-002/manifest.json",
+      "sha256": "7b2b87bdec4094fe040a133dbc7f47417057e0c6beb6275334fde42586e9ad0e"
+    },
+    "budget": {
+      "path": "artifacts/wave4-feasibility/BUDGET-001.json",
+      "sha256": "d65ac54c50a7b1f6a6e8081ef20e925710312e628626ae919bd8c8a7bcb3e15e"
+    },
+    "initial_plan": {
+      "path": "experiments/wave4_feasibility_plan.json",
+      "sha256": "54c9cdebc59f5bb4dd8584d8d90ead73ecc34c6668c983bc4637cda68d947e10"
+    },
+    "layout_dev_prereg_addendum": {
+      "path": "experiments/wave4_layout_and_dev_addendum.json",
+      "sha256": "eb7fb952727a6583b3727620fede9d2585d90de542598836ff4b74f3d16d5ce6"
+    },
+    "reference_config": {
+      "path": "configs/B2-Reference-W4.json",
+      "sha256": "95b6f0c5f9caec3d1754970c5947d5a07232fb02882e54018fbf48b04be044af"
+    },
+    "pilot_config": {
+      "path": "configs/B2-Pilot-W4.json",
+      "sha256": "420de51fc52136043cb05d30a1a203f6abc862de6a80aef60dec0f9b7a5bae6e"
+    },
+    "integrated_tests": {
+      "path": "artifacts/wave4-integration/FINAL-TEST-001.xml",
+      "sha256": "79394643b7c441d78a87caddd457b8b04ea5bbe25670aed6506e086050c5c8ca"
+    }
+  },
+  "limitations": [
+    "No real SGD or learned corrected-B2 checkpoint or convergence evidence",
+    "No full70epoch/original4dataset/physical220batch or original2021runtime reproduction",
+    "No exact asynchronous worker resume; manual recovery needs cumulative failedwork/time budget review",
+    "DEV is a repeated weighted control, not128independent examples; one heldout known collection only",
+    "Torch allocator is not total VRAM; short synthetic proof is not a long-run leak test",
+    "Local ignored raw assets/arrays/models/run snapshots must be separately preserved and transferred"
+  ]
+}

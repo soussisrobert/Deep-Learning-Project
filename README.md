@@ -1,8 +1,18 @@
 # HiFT: trustworthy reproduction before improvement
 
-Research implementation for UAV single-object tracking. Source-resolution-aware fusion remains a **hypothesis**, not an established contribution. **Wave 3** adds a canonical real-input preflight, synthetic lifecycle/resume verification and twelve additional frozen B0/B1 sequences—not real-data training or full benchmark reproduction. See [Wave 3 delivery and gates](<reports/wave3_progress.md>), [compact evidence](<experiments/wave3_validation.json>) and unchanged [Wave 2 results](<reports/wave2_progress.md>).
+Research implementation for UAV single-object tracking. Source-resolution-aware fusion remains a **hypothesis**, not an established contribution. **Wave 4** establishes bounded authentic temporal positives, simultaneous known-distinct negatives, actual Windows/CUDA input-path correctness and a separately gated corrected-B2 reliability-pilot proposal—not real-data SGD, a learned baseline, full benchmark reproduction or R1. See [Wave 4 A–G delivery and gates](<reports/wave4_progress.md>) and [compact evidence](<experiments/wave4_validation.json>); all prior [Wave 3](<reports/wave3_progress.md>) and [Wave 2](<reports/wave2_progress.md>) findings remain frozen.
 
-## Wave 3 decision
+## Wave 4 decision
+
+- Real1024candidate preflight: **973 genuine cross-frame positives,50 safe negatives,1 explicit crop-co-presence rejection,0 replacements**. All1024records/1023accepted archives independently replayed; source/target algebra independently audited.
+- Separate fixed128attempt DEV control:64positive+64negative; negative draws contain38unique pairs and26repeats, not128independent examples. No frozen15sequence evaluation retuning or reruns.
+- Actual Windows serial/spawn2 loading, image faults and consumed-cursor recovery pass. An authentic noncontiguous-input CUDA failure was preserved and repaired with the same pixel-preserving NCHW bridge used by the proposed pilot; bounded random-only synthetic CUDA replay passes. No asynchronous-prefetch or physical-batch-equivalence claim.
+- Actual32TRAIN+128DEV forward/loss checks pass with unchanged parameters and **zero real backward/SGD**. All439 integrated tests pass;140priorfiles and26priorartifact references remain unchanged.
+- **GO recommendation only** for a future separately human-authorized **100update/1600attempt-slot/900second** grader-only reliability pilot. [Frozen pilot](<configs/B2-Pilot-W4.json>) and [70epoch reference](<configs/B2-Reference-W4.json>) are distinct; the full reference remains unvalidated. No authorization file exists and the launcher still refuses real SGD without a new exact human grant.
+- Measured full-input central budget3.20minutes, engineering range2.40–9.55minutes, hard15minutes; not convergence or tracking accuracy. Commands, signal/stop criteria and resume limitations are in the [handoff report](<reports/wave4_progress.md>).
+- Raw data/models/arrays/run snapshots remain local ignored assets; a clean Git commit is not their backup. Hashes bind actual working bytes, including text EOL; preserve the recorded byte-identical source/config snapshots when transferring rather than silently accepting checkout newline conversions.
+
+## Historical Wave 3 decision
 
 - 1024 authentic training candidates: **973 accepted positives;51 quarantined negatives;0 replacements**. Zero accepted negatives and still-image-only data make the real training recipe unsafe.
 - Twelve additional complete sequences,2672frames each: AUC **B0 0.519714 / B1 0.475797**. All adverse outcomes retained; no B1 promotion.
@@ -43,7 +53,7 @@ python -m pip install -e '.[test]'
 python -m pytest
 ```
 
-OpenCV/Pillow are included in the data/test extras; torch-dependent tests skip if torch is missing. For all362 tests use the pinned base environment plus torch. Original B0 hardcodes CUDA and has not been silently replaced by a CPU baseline. The separate corrected B2 graph/lifecycle has CPU tests; these do not train on real data.
+OpenCV/Pillow are included in the data/test extras; torch-dependent tests skip if torch is missing. For all439 tests use the pinned base environment plus torch and the preserved local authentic assets for optional real-data regression cases. Original B0 hardcodes CUDA and has not been silently replaced by a CPU baseline. The separate corrected B2 graph/lifecycle has CPU tests; these do not train on real data.
 
 ## Checkpoint and GPU smoke (not a benchmark)
 
@@ -75,7 +85,7 @@ Only initial GT is permitted in inference manifests. Saved predictions include i
 |---|---|---|
 | B0 | Released behavior + official weights | Original GPU execution; benchmark assets required |
 | B1-score | B0 + sigmoid on BCE head before mixing | Inference-only ablation; no claimed gain |
-| B2 | Validated training corrections + matched retraining | Isolated synthetic feasibility only; real-data recipe/retraining pending |
+| B2 | Validated training corrections + matched retraining | Bounded reliability-pilot recommendation; separate human SGD grant required; full retraining pending |
 | R1 | Source-resolution-aware fusion on frozen B2 | Hypothesis/diagnosis only |
 
 [Methodology](docs/methodology.md) defines matched controls, leakage safeguards, experiment records, and go/no-go gates. [Registry](experiments/registry.json) tracks status. Prior work already covers generic hierarchical fusion, template updates, crop adaptation and distillation; these are not standalone novelty claims.
