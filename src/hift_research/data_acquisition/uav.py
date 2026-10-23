@@ -148,8 +148,13 @@ def _load_inventory_cache(reader, inventory):
 
 def acquire_uav_pilot(output_root, provenance_dir, *, sequences=PILOT_SEQUENCES,
                       inventory=None, budget_bytes=480 * 1024 * 1024,
-                      annotation_coordinate_origin=None):
-    """Acquire explicitly fixed complete official 10fps segments, never full ZIP."""
+                      annotation_coordinate_origin=None,
+                      selection_id="WAVE2-UAV10-PILOT-001", selection_rule=None):
+    """Acquire explicitly fixed complete official 10fps segments, never full ZIP.
+
+    Optional selection metadata generalizes the existing adapter without changing
+    Wave2 defaults, bytes, annotations, validation, or evaluation behavior.
+    """
     source = SOURCES["UAV123@10fps"]
     output_root, provenance_dir = Path(output_root).resolve(), Path(provenance_dir).resolve()
     if output_root.exists() or provenance_dir.exists():
@@ -159,7 +164,8 @@ def acquire_uav_pilot(output_root, provenance_dir, *, sequences=PILOT_SEQUENCES,
     provenance_dir.mkdir(parents=True)
     write_json_exclusive(provenance_dir / "selection.json", {
         "created_utc": datetime.now(timezone.utc).isoformat(), "sequences": list(sequences),
-        "selected_before_tracking": True, "selection_rule": "fixed official short complete sequences across UAV/human sport/building categories; no model outputs used",
+        "selected_before_tracking": True, "selection_id": selection_id,
+        "selection_rule": selection_rule or "fixed official short complete sequences across UAV/human sport/building categories; no model outputs used",
         "dataset": "UAV123@10fps", "network_budget_bytes": budget_bytes})
     reader = HTTPRangeReader(source["url"], source["size"], budget_bytes=budget_bytes,
                              cache_dir=provenance_dir / "ranges")
@@ -217,7 +223,7 @@ def acquire_uav_pilot(output_root, provenance_dir, *, sequences=PILOT_SEQUENCES,
                                   invalid_policy="count_as_failure", hash_frames=True)
         manifest["annotation_coordinate_origin"] = annotation_coordinate_origin
         manifest["selected_segment_membership_verified_against_original_config"] = True
-        manifest["acquisition_selection_id"] = "WAVE2-UAV10-PILOT-001"
+        manifest["acquisition_selection_id"] = selection_id
         write_json_exclusive(provenance_dir / "dataset_manifest.json", manifest)
         report = {"schema_version": 1, "kind": "authoritative_partial_dataset_acquisition",
                   "created_utc": datetime.now(timezone.utc).isoformat(), "dataset": "UAV123@10fps",
@@ -231,7 +237,8 @@ def acquire_uav_pilot(output_root, provenance_dir, *, sequences=PILOT_SEQUENCES,
                   "original_readme_sha256": sha256_file(output_root / "original" / prefix / "ReadMe.txt"),
                   "annotation_coordinate_origin": annotation_coordinate_origin,
                   "inference_ground_truth_boundary": "prepared dataset/validation manifest is EVALUATION ONLY; inference requires separate frames+initialization input",
-                  "limitations": ["3 complete official sequences, not full123 benchmark", "source archive may be replaced by publisher; archived selected bytes and hashes preserved", "UAV variants are overlapping not independent evidence"]}
+                  "selection_id": selection_id,
+                  "limitations": [f"{len(sequences)} complete official sequences, not full123 benchmark", "source archive may be replaced by publisher; archived selected bytes and hashes preserved", "UAV variants are overlapping not independent evidence"]}
         write_json_exclusive(provenance_dir / "acquisition.json", report)
         return report
     finally:
