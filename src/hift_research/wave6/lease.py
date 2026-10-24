@@ -114,32 +114,68 @@ def _mib(text):
     return int(float(text.split()[0]) * 1024**2)
 
 
+def _inventory_node(parent, path):
+    nodes = parent.findall(path)
+    if len(nodes) != 1:
+        raise LeaseError("native inventory field missing/duplicated:" + path)
+    return nodes[0]
+
+
+def _inventory_container(node):
+    if (node.text or "").strip() or any((child.tail or "").strip() for child in node):
+        raise LeaseError("native inventory container contains unknown text:" + node.tag)
+    return node
+
+
+def _inventory_text(parent, path):
+    node = _inventory_node(parent, path)
+    if list(node) or (node.tail or "").strip():
+        raise LeaseError("native inventory scalar malformed:" + path)
+    return node.text or ""
+
+
 def parse_physical_inventory(xml_text, gpu_uuid, resources, host):
     _uuid(gpu_uuid)
     if resources != DEFAULT_RESOURCES:
         raise LeaseError("unreviewed physical resource policy")
     try:
-        root = ET.fromstring(xml_text)
-        matches = [gpu for gpu in root.findall("gpu") if gpu.findtext("uuid") == gpu_uuid]
+        for field in ("available_host_bytes", "process_rss_bytes", "process_peak_rss_bytes"):
+            value = host[field]
+            if type(value) is not int or not 0 <= value <= 2**64 - 1:
+                raise LeaseError("native host counter unavailable/malformed:" + field)
+        if "total_host_bytes" in host:
+            total_host = host["total_host_bytes"]
+            if type(total_host) is not int or not 0 < total_host <= 2**64 - 1 or host["available_host_bytes"] > total_host:
+                raise LeaseError("inconsistent native host memory")
+        root = _inventory_container(ET.fromstring(xml_text))
+        matches = [gpu for gpu in root.findall("gpu") if _inventory_text(gpu, "uuid") == gpu_uuid]
         if len(matches) != 1:
             raise LeaseError("exact physical UUID absent/ambiguous")
-        gpu = matches[0]
-        total = _mib(gpu.findtext("fb_memory_usage/total"))
-        used = _mib(gpu.findtext("fb_memory_usage/used"))
-        free = _mib(gpu.findtext("fb_memory_usage/free"))
-        if total <= 0 or min(used, free) < 0 or used > total or free > total:
+        gpu = _inventory_container(matches[0])
+        memory_group = _inventory_container(_inventory_node(gpu, "fb_memory_usage"))
+        total = _mib(_inventory_text(memory_group, "total"))
+        used = _mib(_inventory_text(memory_group, "used"))
+        free = _mib(_inventory_text(memory_group, "free"))
+        if total <= 0 or min(used, free) < 0 or used > total or free > total or used + free > total:
             raise LeaseError("inconsistent physical VRAM")
         reasons, processes = [], []
-        group = gpu.find("processes")
-        if group is None:
-            raise LeaseError("GPU process inventory missing/uncertain")
+        group = _inventory_container(_inventory_node(gpu, "processes"))
+        if group is None or (group.text or "").strip():
+            raise LeaseError("GPU process inventory missing/unsupported/uncertain")
+        if any(child.tag != "process_info" or (child.tail or "").strip() for child in group):
+            raise LeaseError("GPU process inventory contains unknown data")
+        seen_pids = set()
         for process in group.findall("process_info"):
-            kind = (process.findtext("type") or "").strip()
-            pid_text = process.findtext("pid") or ""
+            _inventory_container(process)
+            kind = _inventory_text(process, "type").strip()
+            pid_text = _inventory_text(process, "pid")
             try:
                 pid = int(pid_text)
             except ValueError as exc:
                 raise LeaseError("GPU process PID unavailable") from exc
+            if not 0 < pid <= 0xffffffff or pid in seen_pids:
+                raise LeaseError("GPU process identity invalid/duplicated")
+            seen_pids.add(pid)
             row = {"pid": pid, "type": kind, "process_name": process.findtext("process_name"),
                    "used_memory": process.findtext("used_memory")}
             processes.append(row)
@@ -156,8 +192,10 @@ def parse_physical_inventory(xml_text, gpu_uuid, resources, host):
                 "gpu_name": gpu.findtext("product_name"), "driver_model": gpu.findtext("driver_model/current_dm"),
                 "VRAM_total_bytes": total, "VRAM_used_bytes": used, "VRAM_free_bytes": free,
                 "processes": processes, "host": host,
+                "ownership_assessment": "UNPROVEN_CONTEXT_CLASSIFICATION" if any(p["type"] != "G" for p in processes) else "NO_COMPUTE_DECLARED_IN_INVENTORY",
+                "active_competing_workload_proven": False,
                 "interpretation": "instantaneous_readonly_inventory_not_GPU_compute_or_training_authority"}
-    except (ET.ParseError, KeyError, ValueError, TypeError) as exc:
+    except (ET.ParseError, KeyError, ValueError, TypeError, OverflowError) as exc:
         raise LeaseError("physical inventory malformed/uncertain") from exc
 
 
@@ -209,6 +247,20 @@ def probe_physical_availability(gpu_uuid, resources=None, *, snapshot_path=None)
                 stream.write(result.stdout)
             report.update(snapshot_path=str(path.resolve()), snapshot_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
         report.update(parse_physical_inventory(result.stdout, gpu_uuid, resources, host_memory()))
+        if report["driver_model"] == "WDDM" and report["ownership_assessment"] == "UNPROVEN_CONTEXT_CLASSIFICATION":
+            from dataclasses import asdict
+            from .gpu_attribution import probe
+            # Diagnose the native limitation, never reinterpret opaque contexts as graphics.
+            # In production these native calls remain under the external parent deadline.
+            report["windows_attribution_capability"] = asdict(probe(gpu_uuid))
+            from .gpu_activity import ActivityError, SEMANTICS, sample_activity
+            try:
+                report["native_activity_observation"] = sample_activity(gpu_uuid)
+            except (ActivityError, OSError, ValueError, AttributeError) as exc:
+                report["native_activity_observation"] = {
+                    "status": "unavailable", "error": type(exc).__name__ + ":" + str(exc),
+                    "calls": list(getattr(exc, "calls", ())), "semantics": SEMANTICS,
+                    "can_authorize_compute": False, "classifies_compute_vs_graphics": False, "empty_proves_idle": False}
     except (OSError, subprocess.SubprocessError, LeaseError) as exc:
         report["reasons"] = ["physical_availability_uncertain:" + str(exc)]
     return report

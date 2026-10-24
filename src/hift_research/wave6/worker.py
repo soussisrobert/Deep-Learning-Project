@@ -22,8 +22,7 @@ def file_sha(path):
 
 
 def verify_dispatch(dispatch_path):
-    from .authorization import verify_authorization,verify_bound_files,assert_claim
-    from .lease import verify_parent_lease
+    from .authorization import verify_authorization,verify_bound_files
     dispatch_path=Path(dispatch_path).resolve();dispatch=json.loads(dispatch_path.read_text(encoding='utf-8'))
     capability=os.environ.get('HIFT_W6_CAPABILITY','')
     if not capability or not hmac.compare_digest(hashlib.sha256(capability.encode()).hexdigest(),dispatch['capability_sha256']):
@@ -49,11 +48,9 @@ def verify_dispatch(dispatch_path):
     if (profile.get('bytecode_cache_policy')!='verified_project_source_loader_no_bytecode' or not sys.dont_write_bytecode
             or getattr(importlib.machinery.SourceFileLoader.get_code,'_hift_wave6_source_map_sha256',None)!=fingerprint):
         raise PermissionError('reviewed exact-byte project source loader absent')
-    assert_claim(grant,expected_parent_pid=os.getppid())
-    if not grant.synthetic_only:
-        verify_parent_lease(dispatch['lease_path'],gpu_uuid=grant.gpu_uuid,authorization_digest=grant.authorization_digest,
-            expected_parent_pid=os.getppid(),token=dispatch['lease_token'])
-    elif not dispatch.get('synthetic_only'):raise PermissionError('synthetic scope mismatch')
+    if type(dispatch.get('synthetic_only')) is not bool or dispatch['synthetic_only'] is not grant.synthetic_only:
+        raise PermissionError('dispatch mode differs from the exact authorization')
+    _assert_live_authority(grant,dispatch)
     return dispatch,grant
 
 
@@ -64,10 +61,21 @@ def execute(dispatch_path):
     return execute_authentic(dispatch,grant)
 
 
+def _assert_live_authority(grant,dispatch):
+    """One-use authority and actual parent lease must survive every safe boundary."""
+    from .authorization import assert_claim
+    from .lease import verify_parent_lease
+    assert_claim(grant,expected_parent_pid=os.getppid())
+    if not grant.synthetic_only:
+        verify_parent_lease(dispatch['lease_path'],gpu_uuid=grant.gpu_uuid,authorization_digest=grant.authorization_digest,
+            expected_parent_pid=os.getppid(),token=dispatch['lease_token'])
+
+
 def _source_check(grant,dispatch):
     from .authorization import reverify_sources
     if time.perf_counter()>=dispatch['soft_deadline_monotonic'] or datetime.now(timezone.utc)>=grant.expires_utc:
         raise TimeoutError('inclusive pilot deadline/expiry reached; stop before next optimizer commit')
+    _assert_live_authority(grant,dispatch)
     reverify_sources(grant)
     # Runtime input assets, not historical preflight arrays, are checked at every safe boundary.
     root=Path(grant.proposal['cwd']).resolve()
