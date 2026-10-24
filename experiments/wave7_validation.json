@@ -1,0 +1,64 @@
+{
+  "DEV_losses": null,
+  "approval_received": false,
+  "authentic_backward_calls": 0,
+  "authentic_optimizer_steps": 0,
+  "bindings_verified": 8,
+  "config_sha256": "420de51fc52136043cb05d30a1a203f6abc862de6a80aef60dec0f9b7a5bae6e",
+  "data_files_verified": 1332,
+  "effective_updates": null,
+  "exactly_one_next_experiment": "the same frozen100update/1600attempt/900second correctedB2 pilot only after both exact approvals",
+  "executing_source_commit": "48a315e8921a81d5f2e44d5d380340ed78651cb0",
+  "expires_utc": "2026-10-25T10:43:42.219084+00:00",
+  "full_audit": {
+    "path": "F:\\Code\\HiFT\\artifacts\\wave7-verification\\FROZEN-AUDIT-001.json",
+    "sha256": "3a899eeb17faea03e9191a7c3e2b548d2e3a2185566f5961001c15ea44024392"
+  },
+  "full_regression": {
+    "counts": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 880
+    },
+    "junit_seconds": 303.231,
+    "receipt": {
+      "path": "F:\\Code\\HiFT\\artifacts\\wave7-verification\\REGRESSION-001.json",
+      "sha256": "e237ae09501b0eac2276f42fcbf9ca5493a2937c84df0cdd41ea8c822cc9eff4"
+    }
+  },
+  "historical_evidence_files_verified": 2532,
+  "implementation_sha256": "acdd58a80b17e62a0b2e8cada6300f4625f33534e7fcef080e169cb4511e70ad",
+  "initialization_files_verified": 3,
+  "known_process_observation": {
+    "path": "F:\\Code\\HiFT\\artifacts\\wave7-verification\\KNOWN-PROCESSES-001.json",
+    "sha256": "d1b32415e7015aac0e2ff45de31c599898244e30eaf61faeaac913ea9e81a5eb"
+  },
+  "pilot_executed": false,
+  "policy_sha256": "8fb121701a563014b1f7fa8811c8e7fa86fc69feb616242c807743e98dd293f0",
+  "proposal": {
+    "path": "F:\\Code\\HiFT\\artifacts\\wave7-preparation\\PROPOSAL-001\\UNAPPROVED-PROPOSAL.json",
+    "sha256": "45d04e2d6738cdd4a40f6e74c0a1db5c159652d8977a14c246ac4e506982e7a5"
+  },
+  "proposal_digest": "fdbee79cfadbb0626e91b3da4728f631eab4a30c8f7e0478eabe94691c5f23eb",
+  "resource_snapshot": {
+    "GPU_free_bytes": 7422869504,
+    "captured_utc": "2026-10-24T10:44:06.691005+00:00",
+    "host_available_bytes": 20915077120,
+    "opaque_external_clients": 40
+  },
+  "review": {
+    "path": "F:\\Code\\HiFT\\reports\\wave7_independent_review.md",
+    "sha256": "4b8cf519cc14dc692cd7fb4edac5d1982fc20f7aa7ed8349c33c6445e6298026"
+  },
+  "schema": "hift-wave7-frozen-proposal-audit-v1",
+  "source_files_verified": 244,
+  "status": "POLICY_B_ENGINEERING_READY_HUMAN_APPROVAL_REQUIRED",
+  "training_attempts": null,
+  "training_gradient_trace": null,
+  "training_resource_measurements": null,
+  "training_runtime_seconds": null,
+  "upstream": "992aa7c1605360d607af84cb804b93cd8ee81caf",
+  "wave4_critical_files_verified": 29,
+  "wave5_sources_verified": 187
+}
