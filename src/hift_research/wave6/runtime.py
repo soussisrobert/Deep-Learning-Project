@@ -104,12 +104,13 @@ def loss_components(heads, targets, denominators):
 class RuntimeGuard:
     def __init__(self,model,optimizer,*,source_check=None,resource_probe=None,max_reserved_fraction=.8,
                  max_grad_norm=10.,expected_device=None,max_host_rss_bytes=None,min_available_host_bytes=None,deadline_monotonic=None,
-                 synthetic=False,expected_identity=None,seed=None):
+                 synthetic=False,expected_identity=None,seed=None,min_device_free_bytes=None,expected_gpu_uuid=None):
         self.model,self.optimizer = model,optimizer
         self.source_check,self.resource_probe = source_check,resource_probe
         self.max_reserved_fraction,self.max_grad_norm = max_reserved_fraction,max_grad_norm
         self.max_host_rss_bytes,self.deadline_monotonic = max_host_rss_bytes,deadline_monotonic
         self.min_available_host_bytes = min_available_host_bytes
+        self.min_device_free_bytes,self.expected_gpu_uuid = min_device_free_bytes,expected_gpu_uuid
         self._resource_uuid = None
         self._trainability = {n:p.requires_grad for n,p in model.named_parameters()}
         if any(p.requires_grad for p in model.backbone.parameters()) or not any(p.requires_grad for p in model.grader.parameters()):
@@ -198,6 +199,11 @@ class RuntimeGuard:
                 raise GuardViolation("host memory limit/missing RSS")
             if self.min_available_host_bytes is not None and ("available_host_bytes" not in resources or resources["available_host_bytes"]<self.min_available_host_bytes):
                 raise GuardViolation("available host memory limit/missing probe")
+            if self.min_device_free_bytes is not None or self.expected_gpu_uuid is not None:
+                from .monitor import validate_resources
+                validate_resources(resources,min_available_host_bytes=self.min_available_host_bytes,
+                    max_host_rss_bytes=self.max_host_rss_bytes,max_reserved_fraction=self.max_reserved_fraction,
+                    min_device_free_bytes=self.min_device_free_bytes,expected_gpu_uuid=self.expected_gpu_uuid,require_cuda=True)
             if "device" in resources and torch.device(resources["device"])!=self.expected_device:
                 raise GuardViolation("resource device identity mismatch")
             if "device_uuid" in resources:

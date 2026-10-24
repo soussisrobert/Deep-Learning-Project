@@ -58,7 +58,20 @@ def execute(dispatch_path):
     dispatch,grant=verify_dispatch(dispatch_path)  # deliberately before torch/project ML imports
     if grant.synthetic_only:
         return execute_synthetic(dispatch,grant)
-    return execute_authentic(dispatch,grant)
+    from .policy import COOPERATIVE_GUARDED_GPU,validate_policy_binding
+    if validate_policy_binding(grant.proposal)!=COOPERATIVE_GUARDED_GPU:
+        return execute_authentic(dispatch,grant)
+    from .monitor import WorkerResourceHeartbeat
+    spec=grant.proposal['operational_policy']['specification']
+    heartbeat_path=Path(dispatch['runtime_heartbeat_path']).resolve()
+    if heartbeat_path.parent!=Path(grant.output_path).resolve() or heartbeat_path.exists():
+        raise PermissionError('fresh bound-output runtime heartbeat required')
+    monitor=WorkerResourceHeartbeat(heartbeat_path,grant.gpu_uuid,lambda:_assert_live_authority(grant,dispatch),
+        lambda:resource_probe('cuda:0'),interval_seconds=spec['worker_heartbeat_interval_seconds'])
+    try:
+        monitor.start()  # explicit pre-CUDA unknown marker BEFORE importing Torch
+        return execute_authentic(dispatch,grant,resource_monitor=monitor)
+    finally:monitor.close()
 
 
 def _assert_live_authority(grant,dispatch):
@@ -67,8 +80,11 @@ def _assert_live_authority(grant,dispatch):
     from .lease import verify_parent_lease
     assert_claim(grant,expected_parent_pid=os.getppid())
     if not grant.synthetic_only:
+        from .policy import COOPERATIVE_GUARDED_GPU
+        policy=grant.proposal.get('operational_policy')
+        options={'policy':policy,'expires_utc':grant.proposal['expires_utc']} if policy and policy.get('name')==COOPERATIVE_GUARDED_GPU else {}
         verify_parent_lease(dispatch['lease_path'],gpu_uuid=grant.gpu_uuid,authorization_digest=grant.authorization_digest,
-            expected_parent_pid=os.getppid(),token=dispatch['lease_token'])
+            expected_parent_pid=os.getppid(),token=dispatch['lease_token'],**options)
 
 
 def _source_check(grant,dispatch):
@@ -113,7 +129,7 @@ def resource_probe(device):
     if not psapi.GetProcessMemoryInfo(kernel.GetCurrentProcess(),ctypes.byref(counters),counters.cb):raise OSError('RSS probe failed')
     if not kernel.GlobalMemoryStatusEx(ctypes.byref(memory)):raise OSError('available RAM probe failed')
     result={'host_rss_bytes':int(max(counters.WorkingSetSize,counters.PeakWorkingSetSize)),'available_host_bytes':int(memory.ullAvailPhys),
-        'allocated_bytes':0,'reserved_bytes':0,'total_bytes':1}
+        'total_host_bytes':int(memory.ullTotalPhys),'allocated_bytes':0,'reserved_bytes':0,'total_bytes':1}
     if torch.device(device).type=='cuda':
         free,total=torch.cuda.mem_get_info(device)
         result.update(allocated_bytes=torch.cuda.memory_allocated(device),reserved_bytes=torch.cuda.memory_reserved(device),
@@ -121,7 +137,7 @@ def resource_probe(device):
     return result
 
 
-def execute_authentic(dispatch,grant):
+def execute_authentic(dispatch,grant,*,resource_monitor=None):
     import contextlib
     from unittest.mock import patch
     import torch
@@ -144,6 +160,7 @@ def execute_authentic(dispatch,grant):
         dataset=validate_temporal_binding(config)
         dev=TemporalCandidateDataset(root/config['data']['manifest'],root/config['data']['development_policy'],split='development',seed=20261024,length=128)
         device=seed_device(config['seed'],'cuda:0',gpu_token=dispatch['lease_token'])
+        if resource_monitor is not None:resource_monitor.activate()
         if cuda_uuid(device).lower()!=grant.gpu_uuid.lower():raise PermissionError('CUDA physical UUID mismatch before model/optimizer construction')
         model=B2TrainingGraph();initialization=load_legacy_backbone_strict(model.backbone,root/config['source_backbone_path']);apply_epoch_modes(model,0)
         value=hashlib.sha256()
@@ -163,12 +180,19 @@ def execute_authentic(dispatch,grant):
                 raise PermissionError('invalid internal verified-worker legacy bridge')
             _source_check(grant,dispatch)
             return config,{'exclusive_gpu_token':dispatch['lease_token']}
+        def boundary_check():
+            if resource_monitor is not None:resource_monitor.check()
+            return _source_check(grant,dispatch)
+        resource_options={}
+        if resource_monitor is not None:
+            resource_options={'min_device_free_bytes':grant.proposal['operational_policy']['specification']['minimum_runtime_gpu_free_bytes'],
+                'expected_gpu_uuid':grant.gpu_uuid}
         with patch.object(legacy,'future_authorization',scoped_bridge):
             controller=GuardedController(model,dataset,config_identity={'config_sha256':file_sha(config_path),'guarded_proposal':grant.proposal_sha256},
                 data_identity=identity,device=device,gpu_token=dispatch['lease_token'],synthetic=False,physical=4,attempts_per_window=16,
                 max_updates=100,max_attempts=1600,config_path=config_path,authorization_file=grant.approval_path,ack_real_sgd=True,
-                journal=journal,source_check=lambda:_source_check(grant,dispatch),resource_probe=lambda:resource_probe(device),
-                development_identity={**dataset_identity(dev)})
+                journal=journal,source_check=boundary_check,resource_probe=lambda:resource_probe(device),
+                development_identity={**dataset_identity(dev)},**resource_options)
         results=[];checkpoints=[];above=0
         def evaluate_checkpoint():
             nonlocal above
@@ -210,6 +234,12 @@ def execute_synthetic(dispatch,grant):
     def fault(stage,controller):
         if stage==fault_stage:
             if options.get('fault_kind')=='hang':time.sleep(3600)
+            if options.get('fault_kind')=='nonfinite_gradient':
+                # Explicit CPU/random-data counterfactual only; authentic branch
+                # never reads fault_kind or permits injected gradient mutation.
+                gradient=next(p.grad for p in controller.model.parameters() if p.grad is not None)
+                gradient.view(-1)[0]=float('nan')
+                return
             raise RuntimeError('synthetic fault:'+stage)
     dataset=SyntheticCandidateDataset(length=grant.proposal['limits']['max_training_attempts'],rejected=tuple(options.get('rejected',[])))
     identity={'kind':'synthetic',**dataset_identity(dataset)}
@@ -217,9 +247,14 @@ def execute_synthetic(dispatch,grant):
     # branch. Authentic execution above ALWAYS uses the native probe, never this key.
     fixture_probe=options.get('synthetic_resource_probe')
     probe=(lambda:dict(fixture_probe)) if fixture_probe is not None else (lambda:resource_probe('cpu'))
+    from .policy import COOPERATIVE_GUARDED_GPU,validate_policy_binding
+    resource_options={}
+    if validate_policy_binding(grant.proposal)==COOPERATIVE_GUARDED_GPU:
+        resource_options={'min_device_free_bytes':grant.proposal['operational_policy']['specification']['minimum_runtime_gpu_free_bytes'],
+            'expected_gpu_uuid':grant.gpu_uuid}
     controller=GuardedController(B2TrainingGraph(),dataset,config_identity={'kind':'synthetic_guard_test'},data_identity=identity,
         synthetic=True,max_updates=grant.proposal['limits']['max_effective_updates'],max_attempts=len(dataset),
-        journal=journal,source_check=lambda:_source_check(grant,dispatch),resource_probe=probe,fault=fault)
+        journal=journal,source_check=lambda:_source_check(grant,dispatch),resource_probe=probe,fault=fault,**resource_options)
     journal.emit('worker_start',synthetic=True,experiment_id=grant.experiment_id,authorization_digest=grant.authorization_digest,
         resource_probe_kind='explicit_synthetic_counterfactual' if fixture_probe is not None else 'native_windows')
     controller.save_boundary(output/'update-0000.pt')

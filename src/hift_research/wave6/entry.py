@@ -6,7 +6,8 @@ from pathlib import Path
 import secrets
 import sys
 import time
-from .authorization import read_acknowledgment,verify_bound_files,reverify_sources,claim_authorization,file_digest
+from .authorization import read_acknowledgment,verify_bound_files,reverify_sources,claim_authorization,file_digest,assert_claim
+from .policy import validate_policy_binding,COOPERATIVE_GUARDED_GPU,COOPERATIVE_SPEC
 from .lease import acquire_lease,probe_physical_availability
 from .ledger import reserve_attempt
 from .supervisor import supervise,parent_budget_guard
@@ -61,6 +62,9 @@ def run_guarded(proposal_path,authorization_path,output,*,actual_argv,starting_m
     grant=read_acknowledgment(proposal_path,authorization_path,actual_argv=actual_argv,actual_cwd=str(Path.cwd().resolve()),
         actual_output=str(Path(output).resolve()),gpu_uuid=proposal['device']['gpu_uuid'],allow_synthetic=allow_synthetic)
     if bool(allow_synthetic)!=grant.synthetic_only:raise PermissionError('synthetic-test command is CPU/random fixtures only, never authentic execution')
+    cooperative=validate_policy_binding(grant.proposal)==COOPERATIVE_GUARDED_GPU
+    policy=grant.proposal.get('operational_policy')
+    policy_kwargs={'policy':policy} if policy is not None else {}
     directory=Path(grant.proposal['claim_directory']).resolve()
     ledger_path=(directory/(grant.experiment_id+'.time.jsonl')).resolve()
     if ledger_path.parent!=directory:raise PermissionError('experiment ID cannot escape exact claim directory')
@@ -77,10 +81,11 @@ def run_guarded(proposal_path,authorization_path,output,*,actual_argv,starting_m
             ledger.record('verified_inputs',proposal_sha256=grant.proposal_sha256)
             claim_authorization(grant);claimed=True;output.mkdir(parents=True,exist_ok=False)
             if not grant.synthetic_only:
-                availability=probe_physical_availability(grant.gpu_uuid,grant.proposal['resources'])
+                availability=probe_physical_availability(grant.gpu_uuid,grant.proposal['resources'],**policy_kwargs)
                 ledger.record('physical_availability',availability=availability)
                 if not availability.get('eligible'):raise PermissionError('physical GPU/host availability not established:'+str(availability))
-                lease=acquire_lease(grant.gpu_uuid,grant.authorization_digest,resources=grant.proposal['resources']);lease.assert_owned()
+                lease=acquire_lease(grant.gpu_uuid,grant.authorization_digest,resources=grant.proposal['resources'],
+                    **policy_kwargs,**({'expires_utc':grant.proposal['expires_utc']} if cooperative else {}));lease.assert_owned()
             reverify_sources(grant);capability=secrets.token_hex(32)
             dispatch={'proposal_path':str(grant.proposal_path),'approval_path':str(grant.approval_path),
                 'parent_argv':list(actual_argv),'parent_pid':os.getpid(),'synthetic_only':grant.synthetic_only,
@@ -88,14 +93,24 @@ def run_guarded(proposal_path,authorization_path,output,*,actual_argv,starting_m
                 'capability_sha256':hashlib.sha256(capability.encode()).hexdigest(),'worker_launch':profile,
                 'starting_monotonic':origin,'soft_deadline_monotonic':ledger.deadline-margin,
                 'lease_path':str(lease.path) if lease else None,'lease_token':lease.token if lease else None}
+            if cooperative:
+                dispatch['runtime_heartbeat_path']=str(output/'runtime-resource-heartbeat.json')
             dispatch_path=output/'dispatch.json';_exclusive(dispatch_path,dispatch)
+            monitor_kwargs={}
+            if cooperative and not grant.synthetic_only:
+                from .monitor import ParentResourceMonitor
+                def live_authority():
+                    lease.assert_live();assert_claim(grant,expected_parent_pid=os.getpid())
+                monitor_kwargs['resource_monitor_factory']=lambda job:ParentResourceMonitor(job,gpu_uuid=grant.gpu_uuid,
+                    heartbeat_path=dispatch['runtime_heartbeat_path'],journal_path=output/'resource-telemetry.jsonl',
+                    authority_check=live_authority,limits=COOPERATIVE_SPEC)
             env=dict(os.environ);env['HIFT_W6_CAPABILITY']=capability
             for key in ('PYTHONPATH','PYTHONDONTWRITEBYTECODE','CUBLAS_WORKSPACE_CONFIG','CUDA_VISIBLE_DEVICES','PYTHONOPTIMIZE','PYTHONHOME'):env[key]=profile[key]
             env['__PYVENV_LAUNCHER__']=profile['venv_launcher']
             result=supervise(profile['argv'],cwd=grant.proposal['cwd'],output=output,experiment_id=grant.experiment_id,
                 authorization_id=grant.authorization_digest,max_seconds=grant.proposal['limits']['max_wall_seconds'],
                 expiry_utc=grant.proposal['expires_utc'],starting_monotonic=origin,ledger=ledger,cleanup_margin_seconds=margin,
-                telemetry_path=output/'telemetry.jsonl',env=env,physical_executable=profile['application'],expected_prefix=profile['python_prefix'])
+                telemetry_path=output/'telemetry.jsonl',env=env,physical_executable=profile['application'],expected_prefix=profile['python_prefix'],**monitor_kwargs)
             validate_worker_receipt(result,grant)
             return result
         except BaseException as exc:
@@ -111,7 +126,18 @@ def run_guarded(proposal_path,authorization_path,output,*,actual_argv,starting_m
                     # eventually closes with this process, but a new launch must fail stale/uncertain.
                     if result is None or not result.get('process_tree_empty_verified'):
                         cleanup_error='lease retained: process tree emptiness unproved; manual reconciliation required'
-                    else:lease.release();released=True
+                    else:
+                        if cooperative:
+                            final_availability=probe_physical_availability(grant.gpu_uuid,grant.proposal['resources'],**policy_kwargs)
+                            ledger.record('cooperative_release_observation',availability=final_availability)
+                            result['release_resource_observation']=final_availability
+                            final_reasons=final_availability.get('reasons',[])
+                            allowed_launch_only={'available_GPU_memory_below4GiB','physical_GPU_headroom_below20percent'}
+                            if (set(final_reasons)-allowed_launch_only
+                                    or final_availability.get('VRAM_free_bytes',-1)<COOPERATIVE_SPEC['minimum_runtime_gpu_free_bytes']):
+                                result['status']='FAIL_RELEASE_RESOURCE_OBSERVATION'
+                                result['reason']='untrusted_or_insufficient_final_resource_measurement'
+                        lease.release();released=True
             except BaseException as exc:cleanup_error=type(exc).__name__+':'+str(exc)
             finally:
                 status=result['status'] if result is not None else 'ENTRY_FAILED'

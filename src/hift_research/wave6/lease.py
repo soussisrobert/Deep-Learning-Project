@@ -134,7 +134,12 @@ def _inventory_text(parent, path):
     return node.text or ""
 
 
-def parse_physical_inventory(xml_text, gpu_uuid, resources, host):
+def parse_physical_inventory(xml_text, gpu_uuid, resources, host, *, policy=None):
+    from .policy import validate_policy_binding, COOPERATIVE_GUARDED_GPU, COOPERATIVE_SPEC
+    try:
+        cooperative = validate_policy_binding({"operational_policy": policy}) == COOPERATIVE_GUARDED_GPU
+    except (ValueError, OSError) as exc:
+        raise LeaseError("unreviewed operational GPU policy") from exc
     _uuid(gpu_uuid)
     if resources != DEFAULT_RESOURCES:
         raise LeaseError("unreviewed physical resource policy")
@@ -180,10 +185,12 @@ def parse_physical_inventory(xml_text, gpu_uuid, resources, host):
                    "used_memory": process.findtext("used_memory")}
             processes.append(row)
             # NO executable-name exception: C+G may genuinely be compute.
-            if kind != "G":
+            if kind != "G" and not cooperative:
                 reasons.append(f"unresolved_or_compute_GPU_process:{pid}:{kind or 'UNKNOWN'}")
         if used > total * resources["max_cuda_reserved_fraction"] or free < total * (1 - resources["max_cuda_reserved_fraction"]):
             reasons.append("physical_GPU_headroom_below20percent")
+        if cooperative and free < COOPERATIVE_SPEC["minimum_launch_gpu_free_bytes"]:
+            reasons.append("available_GPU_memory_below4GiB")
         if host["available_host_bytes"] < resources["minimum_available_host_bytes"]:
             reasons.append("available_host_memory_below4GiB")
         if max(host["process_rss_bytes"], host["process_peak_rss_bytes"]) > resources["host_process_peak_rss_bytes"]:
@@ -194,6 +201,9 @@ def parse_physical_inventory(xml_text, gpu_uuid, resources, host):
                 "processes": processes, "host": host,
                 "ownership_assessment": "UNPROVEN_CONTEXT_CLASSIFICATION" if any(p["type"] != "G" for p in processes) else "NO_COMPUTE_DECLARED_IN_INVENTORY",
                 "active_competing_workload_proven": False,
+                "operational_policy": "COOPERATIVE_GUARDED_GPU" if cooperative else "STRICT_PHYSICAL_EXCLUSIVITY",
+                "hardware_wide_exclusivity_proven": False,
+                "external_context_interpretation": "opaque_external_clients_permitted_not_classified" if cooperative else "strict_classification_required",
                 "interpretation": "instantaneous_readonly_inventory_not_GPU_compute_or_training_authority"}
     except (ET.ParseError, KeyError, ValueError, TypeError, OverflowError) as exc:
         raise LeaseError("physical inventory malformed/uncertain") from exc
@@ -230,14 +240,14 @@ def native_smi_identity():
             "resolver": "Windows_GetSystemDirectoryW"}
 
 
-def probe_physical_availability(gpu_uuid, resources=None, *, snapshot_path=None):
+def probe_physical_availability(gpu_uuid, resources=None, *, snapshot_path=None, policy=None):
     resources = DEFAULT_RESOURCES if resources is None else resources
     report = {"eligible": False, "gpu_uuid": gpu_uuid, "captured_utc": datetime.now(timezone.utc).isoformat()}
     try:
         producer = native_smi_identity()
         report["producer"] = producer
         report["query_command"] = list(producer["argv"])
-        result = subprocess.run(producer["argv"], capture_output=True, text=True, timeout=15, check=True)
+        result = subprocess.run(producer["argv"], capture_output=True, text=True, timeout=2 if policy is not None else 15, check=True)
         if _file_sha256(producer["path"]) != producer["sha256"]:
             raise LeaseError("native SMI producer bytes changed during query")
         if snapshot_path is not None:
@@ -246,8 +256,9 @@ def probe_physical_availability(gpu_uuid, resources=None, *, snapshot_path=None)
             with path.open("x", encoding="utf-8", newline="\n") as stream:
                 stream.write(result.stdout)
             report.update(snapshot_path=str(path.resolve()), snapshot_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
-        report.update(parse_physical_inventory(result.stdout, gpu_uuid, resources, host_memory()))
-        if report["driver_model"] == "WDDM" and report["ownership_assessment"] == "UNPROVEN_CONTEXT_CLASSIFICATION":
+        report.update(parse_physical_inventory(result.stdout, gpu_uuid, resources, host_memory(), policy=policy))
+        if (report["operational_policy"] == "STRICT_PHYSICAL_EXCLUSIVITY" and report["driver_model"] == "WDDM"
+                and report["ownership_assessment"] == "UNPROVEN_CONTEXT_CLASSIFICATION"):
             from dataclasses import asdict
             from .gpu_attribution import probe
             # Diagnose the native limitation, never reinterpret opaque contexts as graphics.
@@ -312,6 +323,51 @@ def _mutex(gpu_uuid, *, inspect_only=False):
     return handle
 
 
+def _assert_lease_not_expired(metadata):
+    if metadata.get("expires_utc") is not None:
+        try:
+            expiry = datetime.fromisoformat(metadata["expires_utc"].replace("Z", "+00:00"))
+            if expiry.tzinfo is None or expiry.utcoffset().total_seconds() != 0 or datetime.now(timezone.utc) >= expiry:
+                raise LeaseError("lease expired or uncertain expiry")
+        except (TypeError, ValueError, AttributeError) as exc:
+            raise LeaseError("malformed lease expiry") from exc
+
+
+def probe_lease_availability(gpu_uuid):
+    """Transient readiness only: actual shared mutex + durable production tombstone.
+
+    This is not a lease/grant and cannot reserve the GPU after the call returns.
+    All supported participating HiFT guarded invocations share this mutex.
+    """
+    _uuid(gpu_uuid)
+    path = default_lease_directory() / (hashlib.sha256(gpu_uuid.lower().encode()).hexdigest() + ".lease.json")
+    report = {"eligible": False, "gpu_uuid": gpu_uuid, "lease_path": str(path),
+              "captured_utc": datetime.now(timezone.utc).isoformat(),
+              "scope": "participating_guarded_HiFT_processes_not_arbitrary_external_programs",
+              "authority_granted": False, "ownership_retained": False}
+    handle = None
+    try:
+        handle = _mutex(gpu_uuid)
+        if path.exists():
+            raise LeaseBusy("production active/stale/partial lease artifact; never stolen")
+        report["owner_probe"] = process_identity()
+        report["eligible"] = True
+        report["reasons"] = []
+    except (LeaseError, OSError) as exc:
+        report["reasons"] = [type(exc).__name__ + ":" + str(exc)]
+    finally:
+        if handle is not None:
+            kernel = _kernel()
+            kernel.ReleaseMutex.argtypes = [wintypes.HANDLE];kernel.ReleaseMutex.restype = wintypes.BOOL
+            kernel.CloseHandle.argtypes = [wintypes.HANDLE];kernel.CloseHandle.restype = wintypes.BOOL
+            released = kernel.ReleaseMutex(handle)
+            closed = kernel.CloseHandle(handle)
+            if not released or not closed:
+                report["eligible"] = False
+                report["reasons"] = ["transient mutex release/close uncertain"]
+    return report
+
+
 class GPULease:
     def __init__(self, path, metadata, handle):
         self.path, self.metadata, self.token, self._handle = Path(path), metadata, metadata["token"], handle
@@ -320,7 +376,9 @@ class GPULease:
         self._release_uncertain = False
         self._thread_id = threading.get_ident()
 
-    def assert_owned(self):
+    def assert_owned(self, *, allow_expired=False):
+        if not allow_expired:
+            _assert_lease_not_expired(self.metadata)
         if (self._released or self._kernel_released or self._release_uncertain
                 or self._thread_id != threading.get_ident() or self.metadata["owner"] != process_identity(os.getpid())):
             raise LeaseError("lease no longer owned by current PID/creation identity")
@@ -328,12 +386,21 @@ class GPULease:
             raise LeaseError("lease ownership artifact changed; no automatic cleanup")
         return self.metadata
 
+    def assert_live(self):
+        """Read-only cross-thread identity check; never acquires/releases the mutex."""
+        _assert_lease_not_expired(self.metadata)
+        if (self._released or self._kernel_released or self._release_uncertain
+                or self.metadata["owner"] != process_identity(os.getpid())
+                or json.loads(self.path.read_text(encoding="utf-8")) != self.metadata):
+            raise LeaseError("live parent lease identity/artifact mismatch")
+        return self.metadata
+
     def release(self):
         if self._released:
             return
         if self._release_uncertain:
             raise LeaseError("lease release uncertain; ownership artifact retained, no automatic retry")
-        self.assert_owned()
+        self.assert_owned(allow_expired=True)
         # The supervisor must already have proved its Job descendants empty.
         # Keep the durable artifact blocking contenders until checked kernel
         # release succeeds. Any failure leaves it as a fail-closed tombstone.
@@ -365,8 +432,17 @@ class GPULease:
 
 
 def acquire_lease(gpu_uuid, authorization_digest, *, resources=None, lease_directory=None,
-                  synthetic_namespace=None, check_availability=True):
+                  synthetic_namespace=None, check_availability=True, policy=None, expires_utc=None):
     _uuid(gpu_uuid)
+    from .policy import validate_policy_binding, COOPERATIVE_GUARDED_GPU
+    try:
+        policy_name = validate_policy_binding({"operational_policy": policy})
+        if policy_name == COOPERATIVE_GUARDED_GPU and expires_utc is None:
+            raise LeaseError("cooperative lease requires exact authorization expiry")
+        if expires_utc is not None:
+            _assert_lease_not_expired({"expires_utc": expires_utc})
+    except (ValueError, OSError) as exc:
+        raise LeaseError("invalid lease operational policy/expiry") from exc
     if not re.fullmatch(r"[0-9a-f]{64}", authorization_digest):
         raise LeaseError("full authorization digest required")
     resources = DEFAULT_RESOURCES if resources is None else resources
@@ -396,8 +472,12 @@ def acquire_lease(gpu_uuid, authorization_digest, *, resources=None, lease_direc
                     "token": uuid.uuid4().hex, "created_utc": datetime.now(timezone.utc).isoformat(),
                     "mutex_name": _mutex_name(gpu_uuid), "synthetic_only": test,
                     "infrastructure_only": not check_availability, "availability": None}
+        if policy is not None:
+            metadata["operational_policy"] = policy
+        if expires_utc is not None:
+            metadata["expires_utc"] = expires_utc
         if check_availability:
-            metadata["availability"] = probe_physical_availability(gpu_uuid, resources)
+            metadata["availability"] = probe_physical_availability(gpu_uuid, resources, **({"policy": policy} if policy is not None else {}))
             if metadata["availability"]["eligible"] is not True:
                 raise LeaseError("physical GPU/host unavailable or ambiguous: " + ";".join(metadata["availability"]["reasons"]))
         with os.fdopen(descriptor, "w", encoding="utf-8", newline="\n") as stream:
@@ -423,13 +503,18 @@ def acquire_lease(gpu_uuid, authorization_digest, *, resources=None, lease_direc
         raise
 
 
-def verify_parent_lease(path, *, gpu_uuid, authorization_digest, expected_parent_pid=None, token=None, synthetic_only=False):
+def verify_parent_lease(path, *, gpu_uuid, authorization_digest, expected_parent_pid=None, token=None, synthetic_only=False,
+                        policy=None, expires_utc=None):
     if not isinstance(token, str) or not re.fullmatch(r"[0-9a-f]{32}", token):
         raise LeaseError("exact parent lease nonce required; artifact alone is not dispatch capability")
     try:
         metadata = json.loads(Path(path).read_text(encoding="utf-8"))
     except (OSError, ValueError) as exc:
         raise LeaseError("parent lease artifact unreadable/uncertain") from exc
+    _assert_lease_not_expired(metadata)
+    if policy is not None or expires_utc is not None:
+        if metadata.get("operational_policy") != policy or metadata.get("expires_utc") != expires_utc:
+            raise LeaseError("parent lease policy/expiry binding mismatch")
     parent = os.getppid()
     if expected_parent_pid is not None and int(expected_parent_pid) != parent:
         raise LeaseError("lease must belong to actual direct os.getppid, not an arbitrary ancestor")

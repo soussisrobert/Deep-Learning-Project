@@ -124,9 +124,36 @@ def synthetic_namespace(path):
     return root
 
 
+def expected_policy_decision(proposal, proposal_sha256):
+    from .policy import COOPERATIVE_GUARDED_GPU
+    policy = proposal.get("operational_policy", {})
+    if policy.get("name") != COOPERATIVE_GUARDED_GPU:
+        raise AuthorizationError("cooperative decision requires explicit Policy B binding")
+    prefix = "SYNTHETIC TEST ONLY: " if proposal.get("synthetic_only") is True else ""
+    return (prefix + "I accept COOPERATIVE_GUARDED_GPU for this specific experiment, acknowledging that unrelated applications may use the GPU "
+            "and that this is not hardware-wide exclusivity. proposal_sha256=" + _sha(proposal_sha256)
+            + " policy_sha256=" + _sha(policy["policy_sha256"]))
+
+
+def expected_training_decision(proposal, proposal_sha256):
+    prefix = "SYNTHETIC TEST ONLY NO REAL SGD: " if proposal.get("synthetic_only") is True else ""
+    limits = proposal["limits"]
+    return (prefix + "I authorize one authentic corrected-B2 grader-only pilot under the exact proposal digest "
+            + _sha(proposal_sha256) + ", limited to " + str(limits["max_effective_updates"]) + " effective updates, "
+            + format(limits["max_training_attempts"], ",") + " attempts and " + str(limits["max_wall_seconds"])
+            + " cumulative seconds. NO_RESUME_NO_RETRY_NO_SCOPE_EXPANSION")
+
+
 def expected_ack(proposal, proposal_sha256):
     """Return exact future ACK text; returning text does NOT assert it was received."""
+    from .policy import COOPERATIVE_GUARDED_GPU
+    if proposal.get("operational_policy", {}).get("name") == COOPERATIVE_GUARDED_GPU:
+        # These are the two literal user decisions, not a third hidden approval.
+        # The complete proposal SHA binds argv/scope/resources/assets/expiry.
+        return expected_policy_decision(proposal, proposal_sha256) + "\n" + expected_training_decision(proposal, proposal_sha256)
     prefix = "ACK SYNTHETIC TEST ONLY NO REAL SGD" if proposal.get("synthetic_only") is True else "ACK REAL SGD EXACTLY ONCE"
+    if proposal.get("operational_policy") is not None:
+        prefix += " | policy_sha256=" + _sha(proposal["operational_policy"]["policy_sha256"])
     return " | ".join((prefix, "experiment_id=" + proposal["experiment_id"], "proposal_sha256=" + _sha(proposal_sha256),
         "proposal_digest=" + canonical_digest(proposal), "command_sha256=" + canonical_digest(proposal["argv"]),
         "output_path=" + json.dumps(proposal["output_path"], ensure_ascii=False), "gpu_uuid=" + proposal["device"]["gpu_uuid"],
@@ -189,6 +216,11 @@ def read_acknowledgment(proposal_path, approval_path, *, actual_argv, actual_cwd
         for key in ("resume_allowed", "automatic_retry", "scope_expansion"):
             if p[key] is not False:
                 raise AuthorizationError("resume/retry/scope expansion forbidden")
+        from .policy import validate_policy_binding, COOPERATIVE_GUARDED_GPU
+        try:
+            policy_name = validate_policy_binding(p)
+        except (ValueError, OSError) as exc:
+            raise AuthorizationError("unreviewed operational policy: " + str(exc)) from exc
         if p["resources"] != RESOURCE_LIMITS:
             raise AuthorizationError("unreviewed resource limits")
         limits = p["limits"]
@@ -239,6 +271,11 @@ def read_acknowledgment(proposal_path, approval_path, *, actual_argv, actual_cwd
             raise AuthorizationError("one-use approval identity required")
         if ack["text"] != expected_ack(p, psha):
             raise AuthorizationError("exact human ACK text mismatch")
+        if policy_name == COOPERATIVE_GUARDED_GPU:
+            if (ack.get("operational_policy_decision") != expected_policy_decision(p, psha)
+                    or ack.get("training_authorization_decision") != expected_training_decision(p, psha)
+                    or a.get("policy_sha256") != p["operational_policy"]["policy_sha256"]):
+                raise AuthorizationError("two exact human decisions and cooperative policy hash required")
         claim_dir = _absolute(p["claim_directory"])
         if test:
             namespace = synthetic_namespace(p["synthetic_namespace"])

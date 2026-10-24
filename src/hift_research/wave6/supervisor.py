@@ -168,7 +168,8 @@ def parent_budget_guard(ledger,emergency_path=None):
 
 def supervise(argv,*,cwd,output,experiment_id,authorization_id=None,authorization_digest=None,max_seconds=None,
               expiry_utc=None,starting_monotonic=None,ledger=None,ledger_path=None,cleanup_margin_seconds=None,
-              telemetry_path=None,env=None,stop_file=None,poll_interval=.02,physical_executable=None,expected_prefix=None):
+              telemetry_path=None,env=None,stop_file=None,poll_interval=.02,physical_executable=None,expected_prefix=None,
+              resource_monitor_factory=None):
     """Contain one fresh child tree. Returned normal receipt includes last journal commit.
 
     Child logs are files, never pipes. Environment override VALUES (including
@@ -202,6 +203,7 @@ def supervise(argv,*,cwd,output,experiment_id,authorization_id=None,authorizatio
     telemetry_path=Path(telemetry_path).resolve() if telemetry_path is not None else output/"telemetry.jsonl"
     job=None;exit_code=None;peak_active=0;tree_empty=True;accounting=None;errors=[];status="FAIL_SUPERVISOR"
     reason=None;stop_requested=False;forced=False;launched=False;pid=None;trace=[]
+    resource_monitor=None;resource_receipt=None
     try:
         if ledger.remaining()<=ledger.cleanup_margin_seconds:
             status="STOP_DEADLINE_PREFLIGHT";reason="preflight_consumed_inclusive_time_budget"
@@ -212,6 +214,9 @@ def supervise(argv,*,cwd,output,experiment_id,authorization_id=None,authorizatio
             pid=job.pid;tree_empty=False
             if _ACTIVE_PARENT_GUARD is not None:_ACTIVE_PARENT_GUARD.register_job(job,telemetry_path)
             ledger.record("child_suspended_assigned",pid=pid,creation_trace=list(job.trace))
+            if resource_monitor_factory is not None:
+                resource_monitor=resource_monitor_factory(job)
+                resource_monitor.start();resource_monitor.check()
             if ledger.remaining()<=ledger.cleanup_margin_seconds:
                 status="STOP_DEADLINE_PREFLIGHT";reason="launch_overhead_consumed_budget_before_resume"
             else:
@@ -232,6 +237,7 @@ def supervise(argv,*,cwd,output,experiment_id,authorization_id=None,authorizatio
                             status="STOP_DEADLINE";reason="cooperative_stop_before_hard_deadline"
                         else:status="COMPLETED";reason="child_exit_zero_and_job_empty"
                         break
+                    if resource_monitor is not None:resource_monitor.check()
                     now=time.perf_counter();hard=ledger.effective_deadline();margin=ledger.cleanup_margin_seconds
                     if now>=hard-margin and not stop_requested:
                         atomic_json(stop_path,dict(schema="hift-wave6-external-stop-v1",reason="inclusive_deadline_shutdown_margin",
@@ -247,6 +253,13 @@ def supervise(argv,*,cwd,output,experiment_id,authorization_id=None,authorizatio
         if isinstance(exc,JobLaunchError):
             pid=exc.pid;trace=list(exc.trace);tree_empty=exc.tree_empty_verified
     finally:
+        if resource_monitor is not None:
+            try:
+                resource_receipt=resource_monitor.close()
+                if resource_receipt.get("failure"):
+                    status="STOP_RESOURCE_POLICY";reason=resource_receipt["failure"]
+            except Exception as exc:
+                status="FAIL_RESOURCE_MONITOR";reason=type(exc).__name__+":"+str(exc);errors.append(reason)
         if job is not None:
             try:
                 accounting=job.accounting()
@@ -277,6 +290,7 @@ def supervise(argv,*,cwd,output,experiment_id,authorization_id=None,authorizatio
                  expected_venv_launcher=child_env.get("__PYVENV_LAUNCHER__"),expected_prefix=str(expected_prefix) if expected_prefix else None,
                  job_closed=bool(job is None or job.closed),peak_active_processes=peak_active,final_job_accounting=accounting,
                  creation_trace=trace,cooperative_stop_requested=stop_requested,forced_tree_termination=forced,errors=errors,
+                 resource_monitor=resource_receipt,
                  timing=timing,remaining_seconds=timing["remaining_seconds"],telemetry=telemetry,
                  last_committed=telemetry["last_committed"],
                  last_committed_update=telemetry["last_committed"].get("update",0) if telemetry["last_committed"] else 0,

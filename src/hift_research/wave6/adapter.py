@@ -20,14 +20,17 @@ from .runtime import RuntimeGuard, loss_components, gradient_norms
 
 
 class GuardedController(engine.SerialPilotController):
-    def __init__(self,*args,journal,source_check=None,resource_probe=None,fault=None,development_identity=None,**kwargs):
+    def __init__(self,*args,journal,source_check=None,resource_probe=None,fault=None,development_identity=None,
+                 min_device_free_bytes=None,expected_gpu_uuid=None,**kwargs):
+        self._cooperative=min_device_free_bytes is not None
         self._training_identity=dict(kwargs.get('data_identity',{}));self._development_identity=development_identity
         super().__init__(*args,**kwargs)
         self.journal=journal;self.fault=fault;self.tainted=False
         self.guard=RuntimeGuard(self.model,self.optimizer,source_check=source_check,resource_probe=resource_probe,
                                 expected_device=str(self.device),synthetic=self.synthetic,
                                 max_host_rss_bytes=8*1024**3,min_available_host_bytes=4*1024**3,
-                                expected_identity=self._training_identity,seed=None if self.synthetic else 20261023)
+                                expected_identity=self._training_identity,seed=None if self.synthetic else 20261023,
+                                min_device_free_bytes=min_device_free_bytes,expected_gpu_uuid=expected_gpu_uuid)
         self.last_published_update=0;self.last_published_cursor=0;self.last_checkpoint=None
         self._micro=0;self._phase='train';self._optimizer_started=False
         self.journal.emit('controller_initialized',synthetic=self.synthetic,update=0,cursor=0,initial_snapshot=self.guard.initial_snapshot,
@@ -37,6 +40,7 @@ class GuardedController(engine.SerialPilotController):
         if self.fault is not None:self.fault(stage,self)
 
     def timed(self,function):
+        if self._cooperative:self.guard.check('before_operation')
         name=getattr(function,'__name__','')
         is_step=getattr(function,'__self__',None) is self.optimizer and name=='step'
         if name=='backward':
@@ -57,7 +61,9 @@ class GuardedController(engine.SerialPilotController):
             self.inject('post_step');check=self.guard.check('post_step')
             self.journal.emit('optimizer_step_validated',next_update=self.update+1,checks=check)
             return result
-        return super().timed(function)
+        result=super().timed(function)
+        if self._cooperative:self.guard.check('after_operation')
+        return result
 
     @contextlib.contextmanager
     def bindings(self,phase='train',dataset=None):
@@ -120,13 +126,22 @@ class GuardedController(engine.SerialPilotController):
 
     def save_boundary(self,path):
         if self.tainted:raise RuntimeError('tainted guarded controller cannot publish checkpoint')
-        self.guard.check('checkpoint')
-        self.journal.emit('checkpoint_begin',update=self.update,cursor=self.cursor,path=str(Path(path).resolve()))
         try:
+            self.guard.check('checkpoint')
+            self.journal.emit('checkpoint_begin',update=self.update,cursor=self.cursor,path=str(Path(path).resolve()))
             self.inject('checkpoint_begin')
-            receipt=super().save_boundary(path)
+            # Policy B keeps bytes unpublished until post-save safety validation.
+            # A killed/failed save retains only explicitly untrusted evidence.
+            target=Path(path).resolve()
+            staging=target.with_name(target.name+'.unvalidated') if self._cooperative else target
+            receipt=super().save_boundary(staging)
             self.inject('checkpoint_saved')
             self.guard.check('checkpoint_published')
+            if self._cooperative:
+                import os
+                os.link(staging,target)  # no overwrite; publication follows guard
+                staging.unlink()  # exact resolved staging selected immediately above
+                receipt={**receipt,'path':str(target)}
             self.journal.emit('checkpoint',update=self.update,cursor=self.cursor,**receipt)
             self.last_checkpoint=receipt
             return receipt
