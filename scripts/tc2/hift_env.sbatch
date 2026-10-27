@@ -13,17 +13,20 @@
 #SBATCH --time=01:30:00
 #SBATCH --output=/home/msai/ning011/hift/logs/%x_%j.out
 #SBATCH --error=/home/msai/ning011/hift/logs/%x_%j.out
-set -euo pipefail
+set -eo pipefail   # no -u: the cluster's conda activate.d scripts reference unset variables
 B=$HOME/hift
 date --iso-8601=seconds; hostname; nvidia-smi --query-gpu=name,driver_version --format=csv,noheader
 if [ -f "$B/env/.ready" ]; then echo "env already ready"; exit 0; fi
 [ -e "$B/env" ] && { echo "partial env at $B/env exists; refusing to overwrite (inspect by hand)"; exit 3; }
 export CONDA_PKGS_DIRS=$B/.condapkgs PIP_CACHE_DIR=$B/.pipcache
+set +e   # cluster conda hooks may return non-zero internally; checked explicitly below
 module purge
 module load anaconda/25.5.1 || module load miniconda3/25.5.1
 eval "$(conda shell.bash hook)"
+set -e
 conda create -y -p "$B/env" -c conda-forge --override-channels python=3.13 pip
-conda activate "$B/env"
+set +e; conda activate "$B/env"; set -e
+[ "${CONDA_PREFIX:-}" = "$B/env" ] || { echo "env activation failed"; exit 4; }
 python -m pip install --no-input torch==2.10.0 --index-url https://download.pytorch.org/whl/cu126
 python -m pip install --no-input numpy==2.4.4 opencv-python-headless==4.13.0.92 pillow==12.1.1 PyYAML==6.0.3 yacs==0.1.8 pytest==8.4.2
 python - <<'EOF'

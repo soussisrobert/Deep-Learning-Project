@@ -15,14 +15,17 @@
 #SBATCH --time=04:00:00
 #SBATCH --output=/home/msai/ning011/hift/logs/%x_%j.out
 #SBATCH --error=/home/msai/ning011/hift/logs/%x_%j.out
-set -euo pipefail
+set -eo pipefail   # no -u: the cluster's conda activate.d scripts reference unset variables
 B=$HOME/hift; R=${REPO:?REPO=path of the unpacked code}
 date --iso-8601=seconds; hostname
 [ -f "$B/env/.ready" ] || { echo "env not ready"; exit 9; }
+set +e   # cluster conda hooks may return non-zero internally; checked explicitly below
 module purge
 module load anaconda/25.5.1 || module load miniconda3/25.5.1
 eval "$(conda shell.bash hook)"
 conda activate "$B/env"
+set -e
+[ "${CONDA_PREFIX:-}" = "$B/env" ] || { echo "env activation failed"; exit 4; }
 export PYTHONPATH=$R/src:$R/scripts PYTHONUNBUFFERED=1
 D=$B/data; L=$B/ledgers; mkdir -p "$D" "$L"
 get() {  # ledger repo root files... [-- include tokens...]

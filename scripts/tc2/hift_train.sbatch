@@ -11,7 +11,7 @@
 #SBATCH --time=05:50:00
 #SBATCH --output=/home/msai/ning011/hift/logs/%x_%j.out
 #SBATCH --error=/home/msai/ning011/hift/logs/%x_%j.out
-set -uo pipefail
+set -o pipefail   # no -u: the cluster's conda activate.d scripts reference unset variables
 B=$HOME/hift; R=${REPO:?REPO}; RUN_ID=${RUN_ID:?RUN_ID}; TRAIN_ARGS=${TRAIN_ARGS:?TRAIN_ARGS}
 date --iso-8601=seconds; hostname; nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader
 [ -f "$B/env/.ready" ] || { echo "env not ready"; exit 9; }
@@ -21,6 +21,7 @@ module purge
 module load anaconda/25.5.1 || module load miniconda3/25.5.1
 eval "$(conda shell.bash hook)"
 conda activate "$B/env"
+[ "${CONDA_PREFIX:-}" = "$B/env" ] || { echo "env activation failed"; exit 4; }
 export PYTHONPATH=$R/src PYTHONUNBUFFERED=1 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 cd "$R"
 echo "=== $RUN_ID (git $(cat GIT_COMMIT)) args: $TRAIN_ARGS"
