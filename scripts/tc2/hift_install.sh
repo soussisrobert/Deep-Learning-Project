@@ -5,6 +5,8 @@
 # Shared account: at most 2 submitted jobs; the first refused submission stops the loop. Never scancel.
 #   bash hift_install.sh env-data     # env job, then data job (afterok dependency)
 #   bash hift_install.sh step1        # B0-FT original-layout and corrected-layout runs
+#   bash hift_install.sh submit NAME  # one job from the table below (used by the local orchestrator)
+#   bash hift_install.sh unpack       # verify + unpack an uploaded archive only
 set -uo pipefail
 cd "$HOME" || exit 1
 [ "$(pwd)" = "/home/msai/ning011" ] || { echo "unexpected home $(pwd)"; exit 1; }
@@ -40,6 +42,23 @@ case $STAGE in
     COMMON="--backbone alexnet --init official --epochs 10 --steps-per-epoch 1000"
     submit hift_b0ft_orig hift_train.sbatch --export=ALL,REPO="$R",RUN_ID=TC2-B0FT-ORIG-001,TRAIN_ARGS="$COMMON --layout original" || exit 0
     submit hift_b0ft_corr hift_train.sbatch --export=ALL,REPO="$R",RUN_ID=TC2-B0FT-CORR-001,TRAIN_ARGS="$COMMON --layout corrected" ;;
+  unpack) ;;
+  submit)
+    NAME=${2:?job name}
+    [ -f "$B/env/.ready" ] && [ -f "$B/data/.ready" ] || { echo "NOT SUBMITTED $NAME: env/data not ready"; exit 0; }
+    FT="--backbone alexnet --init official --epochs 10 --steps-per-epoch 1000"
+    S3="--init scratch-head --epochs 20 --steps-per-epoch 1000"
+    case $NAME in  # job name | run id | training args (step 1 = B0 fine-tune; step 3 = scale augmentation test)
+      hift_b0ft_orig) RUN=TC2-B0FT-ORIG-001; ARGS="$FT --layout original" ;;
+      hift_b0ft_corr) RUN=TC2-B0FT-CORR-001; ARGS="$FT --layout corrected" ;;
+      hift_s3_alex18) RUN=TC2-S3-ALEX-SC18-001; ARGS="$S3 --backbone alexnet --search-scale-aug 0.18" ;;
+      hift_s3_alex40) RUN=TC2-S3-ALEX-SC40-001; ARGS="$S3 --backbone alexnet --search-scale-aug 0.40" ;;
+      hift_s3_res18)  RUN=TC2-S3-RES18-SC18-001; ARGS="$S3 --backbone resnet18 --search-scale-aug 0.18 --resnet-weights $B/pretrained/resnet18-f37072fd.pth" ;;
+      hift_s3_res40)  RUN=TC2-S3-RES18-SC40-001; ARGS="$S3 --backbone resnet18 --search-scale-aug 0.40 --resnet-weights $B/pretrained/resnet18-f37072fd.pth" ;;
+      *) echo "NOT SUBMITTED $NAME: unknown job"; exit 1 ;;
+    esac
+    case $NAME in hift_s3_res*) (cd "$B/pretrained" 2>/dev/null && sha256sum -c resnet18.sha256 >/dev/null) || { echo "NOT SUBMITTED $NAME: resnet weights missing/unverified"; exit 1; } ;; esac
+    submit "$NAME" hift_train.sbatch --export=ALL,REPO="$R",RUN_ID=$RUN,TRAIN_ARGS="$ARGS" ;;
   *) echo "unknown stage $STAGE"; exit 1 ;;
 esac
 squeue -u "$USER" -o "%.10i %.20j %.8T %.10M %R"
