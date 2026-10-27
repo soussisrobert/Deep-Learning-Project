@@ -17,6 +17,8 @@ from typing import Any
 
 PROPOSAL_SCHEMA = "hift-wave6-exact-proposal-v1"
 ACK_SCHEMA = "hift-wave6-exact-human-ack-v1"
+OWNER_SCHEMA = "hift-local-owner-authorization-v1"
+OWNER_ORIGINAL_SHA256 = "45d04e2d6738cdd4a40f6e74c0a1db5c159652d8977a14c246ac4e506982e7a5"
 CONFIG_SHA256 = "420de51fc52136043cb05d30a1a203f6abc862de6a80aef60dec0f9b7a5bae6e"
 REAL_LIMITS = {"max_effective_updates": 100, "max_training_attempts": 1600, "max_windows": 100, "max_wall_seconds": 900}
 RESOURCE_LIMITS = {"host_process_peak_rss_bytes": 8 * 1024**3, "minimum_available_host_bytes": 4 * 1024**3, "max_cuda_reserved_fraction": .8}
@@ -161,6 +163,51 @@ def expected_ack(proposal, proposal_sha256):
         "resources_sha256=" + canonical_digest(proposal["resources"]), "max_invocations=1", "NO_RESUME_NO_RETRY_NO_SCOPE_EXPANSION"))
 
 
+def validate_local_owner(p, a, current):
+    """Trusted local transport attestation, NOT a signature or a literal legacy ACK.
+
+    This narrow administrative rebind covers only the owner's already frozen pilot.
+    Runtime authority, one-use accounting, science and resource checks are shared.
+    """
+    from .policy import COOPERATIVE_GUARDED_GPU
+    if p["synthetic_only"] or p.get("operational_policy", {}).get("name") != COOPERATIVE_GUARDED_GPU:
+        raise AuthorizationError("local owner path requires the real frozen Policy B pilot")
+    original_ref = p["bindings"]["owner_original_proposal"]
+    instruction_ref = p["bindings"]["owner_instruction"]
+    for ref in (original_ref, instruction_ref):
+        if file_digest(_absolute(ref["path"])) != _sha(ref["sha256"]):
+            raise AuthorizationError("local owner authority binding changed")
+    if original_ref["sha256"] != OWNER_ORIGINAL_SHA256:
+        raise AuthorizationError("local owner authority requires the original frozen proposal")
+    old, instruction = _read(original_ref["path"]), _read(instruction_ref["path"])
+    if (instruction.get("schema") != "hift-local-owner-instruction-v1"
+            or instruction.get("role") != "user"
+            or instruction.get("authority_kind") != "trusted_local_owner_transport_attestation_not_signature"
+            or instruction.get("original_proposal_sha256") != OWNER_ORIGINAL_SHA256
+            or a.get("owner_instruction_sha256") != instruction_ref["sha256"]
+            or a.get("policy_sha256") != p["operational_policy"]["policy_sha256"]
+            or any(not isinstance(instruction.get(k), str) or not instruction[k].strip()
+                   for k in ("session_id", "message_id", "text"))):
+        raise AuthorizationError("concrete local owner instruction and exact policy binding required")
+    if not _time(old["created_utc"]) <= _time(instruction["received_utc"]) <= _time(p["created_utc"]) <= current < _time(p["expires_utc"]):
+        raise AuthorizationError("local owner instruction/rebind expired or future")
+    if p.get("gpu_coordination") is not None:
+        from .direct_cuda import validate_continuation
+        validate_continuation(p, old, instruction)
+        return instruction
+    administrative = {"created_utc", "expires_utc", "argv", "approval_path", "bindings",
+                      "source_files_sha256", "operational_policy", "approval_rule"}
+    if ({k: v for k, v in p.items() if k not in administrative}
+            != {k: v for k, v in old.items() if k not in administrative}):
+        raise AuthorizationError("local owner rebind changed frozen pilot scope")
+    allowed_sources = {"src/hift_research/wave6/authorization.py", "tests/test_local_owner_authorization.py"}
+    before, after = old["source_files_sha256"], p["source_files_sha256"]
+    changed = {k for k in set(before) | set(after) if before.get(k) != after.get(k)}
+    if not changed <= allowed_sources:
+        raise AuthorizationError("local owner rebind changed non-administrative executable source")
+    return instruction
+
+
 @dataclass(frozen=True)
 class VerifiedAuthorization:
     proposal_path: Path
@@ -188,7 +235,8 @@ def read_acknowledgment(proposal_path, approval_path, *, actual_argv, actual_cwd
     pp, ap = _absolute(str(proposal_path)), _absolute(str(approval_path))
     p, a = _read(pp), _read(ap)
     try:
-        if p["schema"] != PROPOSAL_SCHEMA or a["schema"] != ACK_SCHEMA:
+        local_owner = a["schema"] == OWNER_SCHEMA
+        if p["schema"] != PROPOSAL_SCHEMA or a["schema"] not in (ACK_SCHEMA, OWNER_SCHEMA):
             raise AuthorizationError("legacy/self-approved authorization envelopes are forbidden")
         if type(p["synthetic_only"]) is not bool:
             raise AuthorizationError("explicit synthetic_only boolean required")
@@ -226,8 +274,14 @@ def read_acknowledgment(proposal_path, approval_path, *, actual_argv, actual_cwd
         limits = p["limits"]
         if set(limits) != set(REAL_LIMITS) or any(type(v) is not int or v <= 0 for v in limits.values()):
             raise AuthorizationError("full positive exact limit fields required")
-        if not test and limits != REAL_LIMITS:
+        direct = p.get("gpu_coordination") is not None
+        if direct and (not local_owner or test or p["gpu_coordination"] != "none"):
+            raise AuthorizationError("direct CUDA mode requires explicit real local-owner authority")
+        if not test and not direct and limits != REAL_LIMITS:
             raise AuthorizationError("production limits must be exactly100/1600/100/900")
+        if direct and (any(limits[k] != cap for k, cap in REAL_LIMITS.items() if k != "max_wall_seconds")
+                       or limits["max_wall_seconds"] >= 900):
+            raise AuthorizationError("direct continuation must preserve science caps and debit prior time")
         if test and any(limits[k] > cap for k, cap in {"max_effective_updates": 2, "max_training_attempts": 32, "max_windows": 2, "max_wall_seconds": 30}.items()):
             raise AuthorizationError("synthetic CPU test bounds exceeded")
         if p["device"]["name"] != ("cpu" if test else "cuda:0") or not GPU.fullmatch(p["device"]["gpu_uuid"]):
@@ -257,21 +311,24 @@ def read_acknowledgment(proposal_path, approval_path, *, actual_argv, actual_cwd
         if current.tzinfo is None:
             raise AuthorizationError("aware verification clock required")
         created, expiry = _time(p["created_utc"]), _time(p["expires_utc"])
-        ack = a["human_ack"]
-        if ack["role"] != ("synthetic_test_user" if test else "user"):
-            raise AuthorizationError("human user ACK transport role required; not a self-approval boolean")
-        if any(not isinstance(ack[k], str) or not ack[k].strip() for k in ("session_id", "message_id")):
-            raise AuthorizationError("concrete human message/session reference required")
-        if not created <= _time(ack["received_utc"]) <= current < expiry:
-            raise AuthorizationError("ACK/proposal expired, future, or predates proposal")
+        if local_owner:
+            validate_local_owner(p, a, current)
+        else:
+            ack = a["human_ack"]
+            if ack["role"] != ("synthetic_test_user" if test else "user"):
+                raise AuthorizationError("human user ACK transport role required; not a self-approval boolean")
+            if any(not isinstance(ack[k], str) or not ack[k].strip() for k in ("session_id", "message_id")):
+                raise AuthorizationError("concrete human message/session reference required")
+            if not created <= _time(ack["received_utc"]) <= current < expiry:
+                raise AuthorizationError("ACK/proposal expired, future, or predates proposal")
         psha, pdigest, asha = file_digest(pp), canonical_digest(p), file_digest(ap)
         if a["proposal_sha256"] != psha or a["proposal_digest"] != pdigest or a["expires_utc"] != p["expires_utc"]:
             raise AuthorizationError("human ACK bound to a different complete proposal")
         if not isinstance(a["approval_id"], str) or not a["approval_id"] or type(a["max_invocations"]) is not int or a["max_invocations"] != 1:
             raise AuthorizationError("one-use approval identity required")
-        if ack["text"] != expected_ack(p, psha):
+        if not local_owner and ack["text"] != expected_ack(p, psha):
             raise AuthorizationError("exact human ACK text mismatch")
-        if policy_name == COOPERATIVE_GUARDED_GPU:
+        if not local_owner and policy_name == COOPERATIVE_GUARDED_GPU:
             if (ack.get("operational_policy_decision") != expected_policy_decision(p, psha)
                     or ack.get("training_authorization_decision") != expected_training_decision(p, psha)
                     or a.get("policy_sha256") != p["operational_policy"]["policy_sha256"]):

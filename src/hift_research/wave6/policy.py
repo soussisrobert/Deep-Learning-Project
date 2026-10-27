@@ -36,13 +36,24 @@ def _digest(value):
                                     ensure_ascii=False, allow_nan=False).encode()).hexdigest()
 
 
-def policy_binding(name=STRICT_PHYSICAL_EXCLUSIVITY, root=None):
+def policy_binding(name=STRICT_PHYSICAL_EXCLUSIVITY, root=None, *, coordination=None):
     if name not in (STRICT_PHYSICAL_EXCLUSIVITY, COOPERATIVE_GUARDED_GPU):
         raise ValueError("unknown operational GPU policy")
+    if coordination not in (None, 'none') or (coordination == 'none' and name != COOPERATIVE_GUARDED_GPU):
+        raise ValueError("unknown or incompatible GPU coordination mode")
     root = Path(root) if root is not None else Path(__file__).resolve().parents[3]
-    files = {path: hashlib.sha256((root / path).read_bytes()).hexdigest() for path in IMPLEMENTATION_FILES}
-    binding = {"name": name, "version": "hift-gpu-policy-" + ("cooperative-v1" if name == COOPERATIVE_GUARDED_GPU else "strict-v1"),
-               "specification": dict(COOPERATIVE_SPEC if name == COOPERATIVE_GUARDED_GPU else STRICT_SPEC),
+    paths = IMPLEMENTATION_FILES + (('src/hift_research/wave6/direct_cuda.py',) if coordination == 'none' else ())
+    files = {path: hashlib.sha256((root / path).read_bytes()).hexdigest() for path in paths}
+    specification = dict(COOPERATIVE_SPEC if name == COOPERATIVE_GUARDED_GPU else STRICT_SPEC)
+    version = 'cooperative-v1' if name == COOPERATIVE_GUARDED_GPU else 'strict-v1'
+    if coordination == 'none':
+        version = 'cooperative-direct-cuda-v1'
+        specification.pop('identity_and_lease_validation')
+        specification.update(gpu_coordination='none',
+            identity_validation='one_use_claim_and_parent_capability_every_resource_sample_and_safe_boundary',
+            external_process_observation='native_SMI_at_launch_and_final_observation;raw_PID_type_name_memory;no_kind_inference')
+    binding = {"name": name, "version": "hift-gpu-policy-" + version,
+               "specification": specification,
                "implementation_files_sha256": files, "implementation_sha256": _digest(files)}
     return {**binding, "policy_sha256": _digest(binding)}
 
@@ -54,7 +65,7 @@ def validate_policy_binding(proposal):
     if not isinstance(binding, dict) or binding.get("name") not in (STRICT_PHYSICAL_EXCLUSIVITY, COOPERATIVE_GUARDED_GPU):
         raise ValueError("invalid operational policy binding")
     # Resolve against this executing checkout, not an attacker-selected cwd.
-    expected = policy_binding(binding["name"])
+    expected = policy_binding(binding["name"], coordination=proposal.get('gpu_coordination'))
     if _digest(binding) != _digest(expected):
         raise ValueError("operational policy specification/version/implementation/hash mismatch")
     return binding["name"]

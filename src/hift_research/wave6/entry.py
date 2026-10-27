@@ -63,7 +63,12 @@ def run_guarded(proposal_path,authorization_path,output,*,actual_argv,starting_m
         actual_output=str(Path(output).resolve()),gpu_uuid=proposal['device']['gpu_uuid'],allow_synthetic=allow_synthetic)
     if bool(allow_synthetic)!=grant.synthetic_only:raise PermissionError('synthetic-test command is CPU/random fixtures only, never authentic execution')
     cooperative=validate_policy_binding(grant.proposal)==COOPERATIVE_GUARDED_GPU
+    from .direct_cuda import enabled
+    direct=enabled(grant)
     policy=grant.proposal.get('operational_policy')
+    if direct:
+        from .direct_cuda import resource_inventory_policy
+        policy=resource_inventory_policy(grant)  # read-only numeric inventory, never coordination
     policy_kwargs={'policy':policy} if policy is not None else {}
     directory=Path(grant.proposal['claim_directory']).resolve()
     ledger_path=(directory/(grant.experiment_id+'.time.jsonl')).resolve()
@@ -84,8 +89,12 @@ def run_guarded(proposal_path,authorization_path,output,*,actual_argv,starting_m
                 availability=probe_physical_availability(grant.gpu_uuid,grant.proposal['resources'],**policy_kwargs)
                 ledger.record('physical_availability',availability=availability)
                 if not availability.get('eligible'):raise PermissionError('physical GPU/host availability not established:'+str(availability))
-                lease=acquire_lease(grant.gpu_uuid,grant.authorization_digest,resources=grant.proposal['resources'],
-                    **policy_kwargs,**({'expires_utc':grant.proposal['expires_utc']} if cooperative else {}));lease.assert_owned()
+                if not direct:
+                    lease=acquire_lease(grant.gpu_uuid,grant.authorization_digest,resources=grant.proposal['resources'],
+                        **policy_kwargs,**({'expires_utc':grant.proposal['expires_utc']} if cooperative else {}));lease.assert_owned()
+                else:
+                    ledger.record('direct_cuda_no_coordination',coordination='none',lease_acquired=False,
+                        predecessor_wall_seconds_charged=grant.proposal['continuation']['prior_wall_seconds_charged'])
             reverify_sources(grant);capability=secrets.token_hex(32)
             dispatch={'proposal_path':str(grant.proposal_path),'approval_path':str(grant.approval_path),
                 'parent_argv':list(actual_argv),'parent_pid':os.getpid(),'synthetic_only':grant.synthetic_only,
@@ -93,6 +102,8 @@ def run_guarded(proposal_path,authorization_path,output,*,actual_argv,starting_m
                 'capability_sha256':hashlib.sha256(capability.encode()).hexdigest(),'worker_launch':profile,
                 'starting_monotonic':origin,'soft_deadline_monotonic':ledger.deadline-margin,
                 'lease_path':str(lease.path) if lease else None,'lease_token':lease.token if lease else None}
+            if direct:
+                dispatch['gpu_coordination']='none'
             if cooperative:
                 dispatch['runtime_heartbeat_path']=str(output/'runtime-resource-heartbeat.json')
             dispatch_path=output/'dispatch.json';_exclusive(dispatch_path,dispatch)
@@ -100,7 +111,8 @@ def run_guarded(proposal_path,authorization_path,output,*,actual_argv,starting_m
             if cooperative and not grant.synthetic_only:
                 from .monitor import ParentResourceMonitor
                 def live_authority():
-                    lease.assert_live();assert_claim(grant,expected_parent_pid=os.getpid())
+                    if not direct:lease.assert_live()
+                    assert_claim(grant,expected_parent_pid=os.getpid())
                 monitor_kwargs['resource_monitor_factory']=lambda job:ParentResourceMonitor(job,gpu_uuid=grant.gpu_uuid,
                     heartbeat_path=dispatch['runtime_heartbeat_path'],journal_path=output/'resource-telemetry.jsonl',
                     authority_check=live_authority,limits=COOPERATIVE_SPEC)
@@ -121,37 +133,37 @@ def run_guarded(proposal_path,authorization_path,output,*,actual_argv,starting_m
             raise
         finally:
             try:
-                if lease is not None:
-                    # On uncertain containment retain the persistent lease artifact. Kernel ownership
-                    # eventually closes with this process, but a new launch must fail stale/uncertain.
-                    if result is None or not result.get('process_tree_empty_verified'):
-                        cleanup_error='lease retained: process tree emptiness unproved; manual reconciliation required'
-                    else:
-                        if cooperative:
-                            final_availability=probe_physical_availability(grant.gpu_uuid,grant.proposal['resources'],**policy_kwargs)
-                            ledger.record('cooperative_release_observation',availability=final_availability)
-                            result['release_resource_observation']=final_availability
-                            final_reasons=final_availability.get('reasons',[])
-                            allowed_launch_only={'available_GPU_memory_below4GiB','physical_GPU_headroom_below20percent'}
-                            if (set(final_reasons)-allowed_launch_only
-                                    or final_availability.get('VRAM_free_bytes',-1)<COOPERATIVE_SPEC['minimum_runtime_gpu_free_bytes']):
-                                result['status']='FAIL_RELEASE_RESOURCE_OBSERVATION'
-                                result['reason']='untrusted_or_insufficient_final_resource_measurement'
-                        lease.release();released=True
+                if (lease is not None or direct) and result is not None and result.get('process_tree_empty_verified'):
+                    if cooperative:
+                        final_availability=probe_physical_availability(grant.gpu_uuid,grant.proposal['resources'],**policy_kwargs)
+                        ledger.record('final_resource_observation' if direct else 'cooperative_release_observation',availability=final_availability)
+                        result['final_resource_observation' if direct else 'release_resource_observation']=final_availability
+                        final_reasons=final_availability.get('reasons',[])
+                        allowed_launch_only={'available_GPU_memory_below4GiB','physical_GPU_headroom_below20percent'}
+                        if (set(final_reasons)-allowed_launch_only
+                                or final_availability.get('VRAM_free_bytes',-1)<COOPERATIVE_SPEC['minimum_runtime_gpu_free_bytes']):
+                            result['status']='FAIL_RELEASE_RESOURCE_OBSERVATION'
+                            result['reason']='untrusted_or_insufficient_final_resource_measurement'
+                    if lease is not None:lease.release();released=True
+                elif lease is not None:
+                    # Retain the legacy lease if containment is uncertain. Direct
+                    # CUDA owns no lease or mutex to retain/release.
+                    cleanup_error='lease retained: process tree emptiness unproved; manual reconciliation required'
             except BaseException as exc:cleanup_error=type(exc).__name__+':'+str(exc)
             finally:
                 status=result['status'] if result is not None else 'ENTRY_FAILED'
                 if cleanup_error:status='FAIL_LEASE_CLEANUP'
                 receipt_path=None
                 if result is not None:
-                    result['lease_released']=released;result['lease_cleanup_error']=cleanup_error
+                    result['lease_released']=None if direct else released;result['lease_cleanup_error']=cleanup_error
+                    if direct:result['gpu_coordination']='none'
                     result['ledger_pending_entry_finalization']=True;result['final_ledger_path']=str(ledger.path)
                     receipt_path=output/'guarded_entry_receipt.json'
                     try:_exclusive(receipt_path,result)
                     except BaseException as exc:
                         status='FAIL_FINAL_RECEIPT';cleanup_error=type(exc).__name__+':'+str(exc)
                 # Authoritative final ledger is AFTER receipt publication AND lease cleanup.
-                final=ledger.finish(status,worker_receipt=result,lease_released=released,lease_cleanup_error=cleanup_error,
+                final=ledger.finish(status,worker_receipt=result,lease_released=None if direct else released,lease_cleanup_error=cleanup_error,
                     synthetic_only=grant.synthetic_only,claim_consumed=claimed,entry_receipt_path=str(receipt_path) if receipt_path else None)
                 if result is not None:
                     result['ledger_finalization']=final;result['ledger_pending_entry_finalization']=False

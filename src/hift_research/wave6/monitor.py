@@ -32,8 +32,13 @@ def _number(row, key):
 def validate_resources(resources, *, min_available_host_bytes=4*1024**3,
                        max_host_rss_bytes=8*1024**3, max_reserved_fraction=.8,
                        min_device_free_bytes=None, expected_gpu_uuid=None,
-                       require_cuda=False):
-    """Detached numeric checks shared by the parent and safe-boundary guard."""
+                       require_cuda=False, require_nvml=False):
+    """Validate one measurement domain, never equate CUDA and NVML totals.
+
+    The native collector calls nvmlDeviceGetMemoryInfo with nvmlMemory_t v1:
+    used includes driver-reserved memory and free + used == total. No v2
+    reserved-field formula is applied to this three-counter ABI.
+    """
     if not isinstance(resources, dict):
         raise ResourceViolation('resource probe must return mapping')
     if min_available_host_bytes is not None and _number(resources, 'available_host_bytes') < min_available_host_bytes:
@@ -63,6 +68,14 @@ def validate_resources(resources, *, min_available_host_bytes=4*1024**3,
         total = _number(resources, 'total_bytes'); used = _number(resources, 'device_used_bytes')
         if used > total or used + _number(resources, 'device_free_bytes') > total:
             raise ResourceViolation('inconsistent physical GPU free/used memory')
+    if require_nvml:
+        if resources.get('memory_api', 'nvmlDeviceGetMemoryInfo_v1') != 'nvmlDeviceGetMemoryInfo_v1':
+            raise ResourceViolation('unsupported NVML memory accounting version')
+        total = _number(resources, 'total_bytes')
+        free = _number(resources, 'device_free_bytes')
+        used = _number(resources, 'device_used_bytes')
+        if total <= 0 or free > total or used > total or free + used != total:
+            raise ResourceViolation('inconsistent NVML v1 total/free/used memory')
     if expected_gpu_uuid is not None:
         actual = resources.get('device_uuid')
         if not isinstance(actual, str) or actual.lower() != expected_gpu_uuid.lower():
@@ -127,7 +140,8 @@ def native_gpu_resources(gpu_uuid):
         memory = Memory()
         call('nvmlDeviceGetMemoryInfo', [C.c_void_p, C.POINTER(Memory)], handle, C.byref(memory))
         return {'device_uuid': uuid.value.decode('ascii'), 'total_bytes': int(memory.total),
-                'device_free_bytes': int(memory.free), 'device_used_bytes': int(memory.used)}
+                'device_free_bytes': int(memory.free), 'device_used_bytes': int(memory.used),
+                'memory_api': 'nvmlDeviceGetMemoryInfo_v1'}
     finally:
         call('nvmlShutdown', [])
 
@@ -274,7 +288,8 @@ class ParentResourceMonitor:
         self.journal = DurableJournal(journal_path)
         self._closed = threading.Event(); self._ready = threading.Event(); self._lock = threading.Lock()
         self._started = None; self._last_sample = None; self._last_heartbeat = None; self._query_started = None
-        self._cuda_seen = False; self.failure = None; self.terminated = False; self.samples = 0
+        self._cuda_seen = False; self._cuda_resources = None
+        self.failure = None; self.terminated = False; self.samples = 0
 
     def _emit_failure(self):
         try:
@@ -298,6 +313,7 @@ class ParentResourceMonitor:
             threading.Thread(target=self._emit_failure, name='wave7-resource-evidence', daemon=True).start()
 
     def _heartbeat(self, now, native):
+        self._cuda_resources = None
         try:
             payload = _read_heartbeat_bytes(self.heartbeat_path)
         except FileNotFoundError:
@@ -325,8 +341,10 @@ class ParentResourceMonitor:
             raise ResourceViolation('worker CUDA heartbeat startup deadline/phase regression')
         resources = row.get('resources')
         validate_resources(resources, **self.limits, require_cuda=True)
-        if resources['total_bytes'] != native['total_bytes']:
-            raise ResourceViolation('worker/native physical GPU total mismatch')
+        # cudaMemGetInfo reports CUDA-visible device allocation accounting;
+        # NVML v1 reports physical-device accounting. UUID and thresholds are checked
+        # independently. Their totals are diagnostic, NOT an equality invariant.
+        self._cuda_resources = dict(resources)
         return stamp
 
     def _sample(self):
@@ -339,7 +357,7 @@ class ParentResourceMonitor:
         sample_limits = dict(self.limits)
         if self.samples == 0:
             sample_limits['min_device_free_bytes'] = self.minimum_launch_gpu_free_bytes
-        validate_resources(native, **sample_limits)
+        validate_resources(native, **sample_limits, require_nvml=True)
         inventory = self.inventory_probe() if self.inventory_probe is not None else None
         now = time.perf_counter()
         heartbeat = self._heartbeat(now, native)
@@ -353,7 +371,12 @@ class ParentResourceMonitor:
                 self._last_heartbeat = heartbeat; self._cuda_seen = True
             self.samples += 1
         self._ready.set()
-        self.journal.emit('resource_sample', resources=native, worker_heartbeat_monotonic=heartbeat,
+        self.journal.emit('resource_sample', resources=native, native_resources=native,
+                          cuda_resources=self._cuda_resources,
+                          total_difference_bytes=(None if self._cuda_resources is None else
+                                                  native['total_bytes'] - self._cuda_resources['total_bytes']),
+                          memory_contract='independent-nvml-v1-cuda-v1',
+                          worker_heartbeat_monotonic=heartbeat,
                           inventory_observation=inventory, context_absence_proven=False)
 
     def _run(self):

@@ -1,7 +1,7 @@
-"""Private supervised worker; validates parent capability, exact grant and lease first.
+"""Private supervised worker validates parent capability and exact one-use grant.
 
-Only the guarded entrypoint supplies the inherited capability. Direct invocation
-without a real parent/claim/lease is rejected before importing torch/model code.
+Legacy paths retain lease checks. Explicit owner direct-CUDA mode has no GPU
+coordination, but still needs the live parent/claim/capability before Torch.
 Synthetic test envelopes cannot select this authentic-data execution branch.
 """
 import hashlib
@@ -75,10 +75,19 @@ def execute(dispatch_path):
 
 
 def _assert_live_authority(grant,dispatch):
-    """One-use authority and actual parent lease must survive every safe boundary."""
+    """One-use authority survives each boundary; direct CUDA requires no lease."""
     from .authorization import assert_claim
-    from .lease import verify_parent_lease
+    from .direct_cuda import enabled
     assert_claim(grant,expected_parent_pid=os.getppid())
+    if enabled(grant):
+        capability=os.environ.get('HIFT_W6_CAPABILITY','')
+        if (not capability or dispatch.get('gpu_coordination')!='none'
+                or dispatch.get('parent_pid')!=os.getppid()
+                or dispatch.get('lease_path') is not None or dispatch.get('lease_token') is not None
+                or not hmac.compare_digest(hashlib.sha256(capability.encode()).hexdigest(),dispatch.get('capability_sha256',''))):
+            raise PermissionError('live direct CUDA parent capability required; no lease or coordination')
+        return
+    from .lease import verify_parent_lease
     if not grant.synthetic_only:
         from .policy import COOPERATIVE_GUARDED_GPU
         policy=grant.proposal.get('operational_policy')
@@ -133,7 +142,8 @@ def resource_probe(device):
     if torch.device(device).type=='cuda':
         free,total=torch.cuda.mem_get_info(device)
         result.update(allocated_bytes=torch.cuda.memory_allocated(device),reserved_bytes=torch.cuda.memory_reserved(device),
-            total_bytes=total,device_free_bytes=free,device=str(device),device_uuid=cuda_uuid(device))
+            total_bytes=total,device_free_bytes=free,device=str(device),device_uuid=cuda_uuid(device),
+            memory_api='cudaMemGetInfo',allocator_api='torch.cuda.memory_allocated/memory_reserved')
     return result
 
 
@@ -151,6 +161,9 @@ def execute_authentic(dispatch,grant,*,resource_monitor=None):
     from hift_research.temporal_contract.torch_adapter import TemporalCandidateDataset
     from .adapter import GuardedController,guarded_development
     from .telemetry import DurableJournal
+    from .direct_cuda import enabled
+    # Compatibility GPU token is execution permission, NOT an ownership lease.
+    cuda_token=os.environ.get('HIFT_W6_CAPABILITY') if enabled(grant) else dispatch['lease_token']
     output=Path(grant.output_path);journal=DurableJournal(output/'telemetry.jsonl')
     root=Path(grant.proposal['cwd']);config_path=Path(grant.proposal['bindings']['config']['path'])
     config=json.loads(config_path.read_text(encoding='utf-8'));controller=None
@@ -159,7 +172,7 @@ def execute_authentic(dispatch,grant,*,resource_monitor=None):
         _source_check(grant,dispatch)
         dataset=validate_temporal_binding(config)
         dev=TemporalCandidateDataset(root/config['data']['manifest'],root/config['data']['development_policy'],split='development',seed=20261024,length=128)
-        device=seed_device(config['seed'],'cuda:0',gpu_token=dispatch['lease_token'])
+        device=seed_device(config['seed'],'cuda:0',gpu_token=cuda_token)
         if resource_monitor is not None:resource_monitor.activate()
         if cuda_uuid(device).lower()!=grant.gpu_uuid.lower():raise PermissionError('CUDA physical UUID mismatch before model/optimizer construction')
         model=B2TrainingGraph();initialization=load_legacy_backbone_strict(model.backbone,root/config['source_backbone_path']);apply_epoch_modes(model,0)
@@ -179,7 +192,7 @@ def execute_authentic(dispatch,grant,*,resource_monitor=None):
             if Path(path).resolve()!=config_path.resolve() or Path(authorization_file).resolve()!=grant.approval_path.resolve() or not ack_real_sgd:
                 raise PermissionError('invalid internal verified-worker legacy bridge')
             _source_check(grant,dispatch)
-            return config,{'exclusive_gpu_token':dispatch['lease_token']}
+            return config,{'exclusive_gpu_token':cuda_token}  # legacy key; no exclusivity claim
         def boundary_check():
             if resource_monitor is not None:resource_monitor.check()
             return _source_check(grant,dispatch)
@@ -189,7 +202,7 @@ def execute_authentic(dispatch,grant,*,resource_monitor=None):
                 'expected_gpu_uuid':grant.gpu_uuid}
         with patch.object(legacy,'future_authorization',scoped_bridge):
             controller=GuardedController(model,dataset,config_identity={'config_sha256':file_sha(config_path),'guarded_proposal':grant.proposal_sha256},
-                data_identity=identity,device=device,gpu_token=dispatch['lease_token'],synthetic=False,physical=4,attempts_per_window=16,
+                data_identity=identity,device=device,gpu_token=cuda_token,synthetic=False,physical=4,attempts_per_window=16,
                 max_updates=100,max_attempts=1600,config_path=config_path,authorization_file=grant.approval_path,ack_real_sgd=True,
                 journal=journal,source_check=boundary_check,resource_probe=lambda:resource_probe(device),
                 development_identity={**dataset_identity(dev)},**resource_options)

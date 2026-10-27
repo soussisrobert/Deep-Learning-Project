@@ -101,7 +101,7 @@ def test_frozen_policy_launch_free_stronger_than_runtime(tmp_path):
 
 
 @pytest.mark.parametrize('fault', ['uuid', 'pid', 'stale', 'future', 'missing_reserved', 'boot_allocator_fabrication',
-                                  'phase', 'malformed_json', 'total_mismatch', 'rollback', 'missing_after_cuda'])
+                                  'phase', 'malformed_json', 'cuda_free_exceeds_total', 'rollback', 'missing_after_cuda'])
 def test_heartbeat_identity_staleness_and_phase_fail_closed(tmp_path, fault):
     _, resource_monitor = parent(tmp_path)
     resource_monitor._started = time.perf_counter()-1
@@ -115,7 +115,7 @@ def test_heartbeat_identity_staleness_and_phase_fail_closed(tmp_path, fault):
     elif fault == 'boot_allocator_fabrication': heartbeat(resource_monitor, phase='pre_cuda', resources={'reserved_bytes': 0})
     elif fault == 'phase': heartbeat(resource_monitor, phase='unknown')
     elif fault == 'malformed_json': resource_monitor.heartbeat_path.write_text('{bad', encoding='utf-8')
-    elif fault == 'total_mismatch': heartbeat(resource_monitor, resources={**CUDA, 'total_bytes': 17*GIB})
+    elif fault == 'cuda_free_exceeds_total': heartbeat(resource_monitor, resources={**CUDA, 'total_bytes': 9*GIB})
     elif fault == 'rollback':
         resource_monitor._last_heartbeat = time.perf_counter(); heartbeat(resource_monitor, stamp=time.perf_counter()-.1)
     elif fault == 'missing_after_cuda': resource_monitor._cuda_seen = True
