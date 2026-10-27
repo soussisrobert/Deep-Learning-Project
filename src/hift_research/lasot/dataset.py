@@ -48,7 +48,12 @@ def load_sequence(directory):
 
 class TrackPairDataset(Dataset):
     """Pairs over generic tracks (see tracks.py). Negatives always come from a different video."""
-    def __init__(self, tracks, *, length, seed, negative_probability=0.05, max_gap=100, source_weights=None):
+    def __init__(self, tracks, *, length, seed, negative_probability=0.05, max_gap=100, source_weights=None,
+                 search_scale=None):
+        # search_scale: optional override of SEARCH_AUG["scale"] (default 0.18, the source pysot value)
+        self.search_aug = dict(SEARCH_AUG, scale=search_scale) if search_scale is not None else dict(SEARCH_AUG)
+        if not 0 <= self.search_aug["scale"] < 1:
+            raise ValueError("search scale augmentation must be in [0, 1)")
         self.sequences = [t for t in tracks if len(t["valid"]) >= 2]
         # Optional: pick a source by weight, then a track uniformly within it (default: uniform over tracks).
         self._source_tracks = None
@@ -78,7 +83,7 @@ class TrackPairDataset(Dataset):
             self._anchor = CorrectedAnchorTarget(SimpleNamespace(TRAIN=SimpleNamespace(SEARCH_SIZE=287, OUTPUTFEATURE_SIZE=11, LABEL_RANGE=4)))
             order = ("shift", "scale", "blur", "flip", "color")  # positional, as in the temporal pipeline
             self._template_aug = self._ops.AuditedAugmentation(*(TEMPLATE_AUG[k] for k in order))
-            self._search_aug = self._ops.AuditedAugmentation(*(SEARCH_AUG[k] for k in order))
+            self._search_aug = self._ops.AuditedAugmentation(*(self.search_aug[k] for k in order))
 
     def __getstate__(self):
         state = self.__dict__.copy()

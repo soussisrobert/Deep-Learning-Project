@@ -160,6 +160,8 @@ def main():
     parser.add_argument("--train-parts", nargs="+", default=list(ALL_TRAIN_PARTS), choices=ALL_TRAIN_PARTS)
     parser.add_argument("--output-root", type=Path, default=ROOT/"artifacts"/"b2-domain")
     parser.add_argument("--resnet-weights", type=Path, default=RESNET_WEIGHTS)
+    parser.add_argument("--search-scale-aug", type=float, default=0.18,
+                        help="search-crop scale augmentation (source pysot 0.18); step 3 tests larger values")
     args = parser.parse_args()
     output = args.output_root/args.run_id
     output.mkdir(parents=True, exist_ok=False)
@@ -178,7 +180,8 @@ def main():
     val_tracks = domain_tracks("val", args.data_root)
     weights = {k: v for k, v in args.source_weights.items() if any(t["source"] == k for t in train_tracks)}
     total = args.epochs*args.steps_per_epoch*args.batch
-    dataset = TrackPairDataset(train_tracks, length=total, seed=args.data_seed, source_weights=weights)
+    dataset = TrackPairDataset(train_tracks, length=total, seed=args.data_seed, source_weights=weights,
+                               search_scale=args.search_scale_aug)
     dev_set = TrackPairDataset(val_tracks, length=512, seed=20261028, negative_probability=0.5)
     dev_batches = [collate_pairs([dev_set[i] for i in range(s, s+32)]) for s in range(0, 512, 32)]
     dev_batches = [b for b in dev_batches if b.get("template") is not None]
@@ -222,6 +225,7 @@ def main():
                    "data": {"data_root": str(args.data_root), "train_parts": args.train_parts,
                             "train_tracks_by_source_category": counts, "train_tracks": len(dataset.sequences),
                             "val_tracks": len(dev_set.sequences), "source_weights": weights, "pairs_total": total,
+                            "search_augmentation": dataset.search_aug,
                             "data_seed": args.data_seed, "acquisition_ledgers": {str(p): sha256(p) for p in ledgers},
                             "test_sets_excluded": "UAV123 (all), VisDrone-SOT test-dev, VisDrone-MOT test-dev never used in training"},
                    "schedule": {"epochs": args.epochs, "steps_per_epoch": args.steps_per_epoch, "batch": args.batch,

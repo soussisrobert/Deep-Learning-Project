@@ -43,6 +43,23 @@ def test_uavdt_out_of_view_and_occlusion_filtered(tmp_path):
     assert set(tracks[0]["valid"]) == {f-1 for f in range(1, 26) if codes[f % 4] != 2}  # medium/small occlusion kept
 
 
+def test_search_scale_override_is_explicit_and_default_unchanged(tmp_path):
+    import pytest
+    from hift_research.lasot.dataset import SEARCH_AUG
+    video_a, video_b = _video(tmp_path, "a"), _video(tmp_path, "b")
+    (tmp_path/"a.txt").write_text("\n".join(_visdrone_rows(1, 4, range(1, 31))))
+    (tmp_path/"b.txt").write_text("\n".join(_visdrone_rows(1, 6, range(1, 31))))
+    tracks = visdrone_mot_tracks(video_a, tmp_path/"a.txt") + visdrone_mot_tracks(video_b, tmp_path/"b.txt")
+    default = TrackPairDataset(tracks, length=8, seed=1)
+    strong = TrackPairDataset(tracks, length=8, seed=1, search_scale=0.4)
+    assert default.search_aug == SEARCH_AUG and SEARCH_AUG["scale"] == 0.18
+    assert strong.search_aug == dict(SEARCH_AUG, scale=0.4)
+    for index in range(8):  # same indices, same pair identities; only the search crop scale differs
+        assert default[index][0]["search"] == strong[index][0]["search"]
+    with pytest.raises(ValueError):
+        TrackPairDataset(tracks, length=8, seed=1, search_scale=1.2)
+
+
 def test_negatives_come_from_another_video(tmp_path):
     video_a, video_b = _video(tmp_path, "a"), _video(tmp_path, "b")
     rows = _visdrone_rows(1, 4, range(1, 31)) + _visdrone_rows(2, 5, range(1, 31))  # two tracks in video a
