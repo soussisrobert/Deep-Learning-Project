@@ -10,12 +10,14 @@ range mode). Contents are data only. Immutable ledger.
         --root data/visdrone --ledger artifacts/visdrone/MOT-ACQUISITION-001.json
 """
 import argparse
+import http.client
 import io
 import json
 import shutil
 import time
 import urllib.request
 import zipfile
+import zlib
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -40,7 +42,7 @@ class HTTPRangeFile(io.RawIOBase):
     def _fetch(self, start):
         end = min(start+BLOCK, self.size)-1
         request = urllib.request.Request(self.url, headers={"Range": f"bytes={start}-{end}"})
-        for attempt in range(5):
+        for attempt in range(8):
             try:
                 with urllib.request.urlopen(request, timeout=120) as response:
                     if response.status != 206:
@@ -51,10 +53,10 @@ class HTTPRangeFile(io.RawIOBase):
                 self.requests += 1
                 self.block_start, self.block = start, data
                 return
-            except OSError:
-                if attempt == 4:
+            except (OSError, http.client.HTTPException):  # IncompleteRead is not an OSError
+                if attempt == 7:
                     raise
-                time.sleep(2**attempt)
+                time.sleep(min(2**attempt, 60))
 
     def read(self, n=-1):
         if n is None or n < 0:
@@ -71,6 +73,21 @@ class HTTPRangeFile(io.RawIOBase):
     def readinto(self, buffer):
         data = self.read(len(buffer)); buffer[:len(data)] = data
         return len(data)
+
+
+def verified_existing(path, member):
+    """True when a file left by an interrupted run already matches the member's size and CRC-32."""
+    if not path.exists():
+        return False
+    if path.stat().st_size == member.file_size:
+        crc = 0
+        with path.open("rb") as stream:
+            while chunk := stream.read(BLOCK):
+                crc = zlib.crc32(chunk, crc)
+        if crc == member.CRC:
+            return True
+    path.unlink()  # truncated or corrupt partial file from the interrupted run
+    return False
 
 
 def lfs_info(repo, path):
@@ -98,7 +115,7 @@ def main():
     for name in args.files:
         info = lfs_info(args.repo, name)
         remote = HTTPRangeFile(f"https://huggingface.co/datasets/{args.repo}/resolve/main/{name}", info["size"])
-        start, count, written, skipped = time.time(), 0, 0, 0
+        start, count, written, skipped, resumed = time.time(), 0, 0, 0, 0
         with zipfile.ZipFile(io.BufferedReader(remote, buffer_size=BLOCK)) as zf:
             for member in zf.infolist():
                 if args.include and not any(token in member.filename for token in args.include):
@@ -109,13 +126,15 @@ def main():
                 if member.is_dir():
                     out.mkdir(parents=True, exist_ok=True); continue
                 out.parent.mkdir(parents=True, exist_ok=True)
+                if verified_existing(out, member):
+                    count += 1; written += member.file_size; resumed += 1; continue
                 with zf.open(member) as source, out.open("xb") as sink:  # CRC checked at end of read
                     shutil.copyfileobj(source, sink, BLOCK)
                 count += 1; written += member.file_size
                 if count % 20000 == 0:
                     print(name, count, "files", round(written/2**30, 1), "GiB", flush=True)
         ledger["archives"][name] = {"hub_size": info["size"], "hub_lfs_sha256": info.get("lfs", {}).get("oid"),
-                                    "extracted_files": count, "extracted_bytes": written, "skipped_members": skipped,
+                                    "extracted_files": count, "extracted_bytes": written, "skipped_members": skipped, "resumed_verified": resumed,
                                     "range_requests": remote.requests, "seconds": time.time()-start}
         print(name, "done", count, "files", round(written/2**30, 2), "GiB", flush=True)
     ledger["finished_utc"] = datetime.now(timezone.utc).isoformat()
