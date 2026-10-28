@@ -5,7 +5,8 @@
 # Shared account: at most 2 submitted jobs; the first refused submission stops the loop. Never scancel.
 #   bash hift_install.sh env-data     # env job, then data job (afterok dependency)
 #   bash hift_install.sh step1        # B0-FT original-layout and corrected-layout runs
-#   bash hift_install.sh submit NAME  # one job from the table below (used by the local orchestrator)
+#   bash hift_install.sh submit NAME [ATTEMPT]  # one job from the table below (used by the local orchestrator);
+#                                     ATTEMPT 2.. reruns a failed job under a NEW run id (-002, ...), never reusing a run dir
 #   bash hift_install.sh unpack       # verify + unpack an uploaded archive only
 set -uo pipefail
 cd "$HOME" || exit 1
@@ -57,6 +58,8 @@ case $STAGE in
       hift_s3_res40)  RUN=TC2-S3-RES18-SC40-001; ARGS="$S3 --backbone resnet18 --search-scale-aug 0.40 --resnet-weights $B/pretrained/resnet18-f37072fd.pth" ;;
       *) echo "NOT SUBMITTED $NAME: unknown job"; exit 1 ;;
     esac
+    ATTEMPT=${3:-1}; case $ATTEMPT in [1-9]) RUN=${RUN%-001}-00$ATTEMPT ;; *) echo "NOT SUBMITTED $NAME: bad attempt $ATTEMPT"; exit 1 ;; esac
+    [ -e "$B/runs/$RUN" ] && { echo "NOT SUBMITTED $NAME: run dir $RUN exists (never reused)"; exit 1; }
     case $NAME in hift_s3_res*) (cd "$B/pretrained" 2>/dev/null && sha256sum -c resnet18.sha256 >/dev/null) || { echo "NOT SUBMITTED $NAME: resnet weights missing/unverified"; exit 1; } ;; esac
     submit "$NAME" hift_train.sbatch --export=ALL,REPO="$R",RUN_ID=$RUN,TRAIN_ARGS="$ARGS" ;;
   *) echo "unknown stage $STAGE"; exit 1 ;;
