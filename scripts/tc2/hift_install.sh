@@ -45,7 +45,8 @@ case $STAGE in
     submit hift_b0ft_corr hift_train.sbatch --export=ALL,REPO="$R",RUN_ID=TC2-B0FT-CORR-001,TRAIN_ARGS="$COMMON --layout corrected" ;;
   unpack) ;;
   submit)
-    NAME=${2:?job name}
+    NAME=${2:?job name}; JOB=$NAME; SEEDK=""
+    case $NAME in *_s[2-9]) SEEDK=${NAME##*_s}; NAME=${NAME%_s[2-9]} ;; esac   # seed replicate k of a table job
     [ -f "$B/env/.ready" ] && [ -f "$B/data/.ready" ] || { echo "NOT SUBMITTED $NAME: env/data not ready"; exit 0; }
     FT="--backbone alexnet --init official --epochs 10 --steps-per-epoch 1000"
     S3="--init scratch-head --epochs 20 --steps-per-epoch 1000"
@@ -58,10 +59,11 @@ case $STAGE in
       hift_s3_res40)  RUN=TC2-S3-RES18-SC40-001; ARGS="$S3 --backbone resnet18 --search-scale-aug 0.40 --resnet-weights $B/pretrained/resnet18-f37072fd.pth" ;;
       *) echo "NOT SUBMITTED $NAME: unknown job"; exit 1 ;;
     esac
+    if [ -n "$SEEDK" ]; then RUN=${RUN%-001}-S$SEEDK-001; ARGS="$ARGS --seed $((20261100+SEEDK)) --data-seed $((20261027+SEEDK))"; fi
     ATTEMPT=${3:-1}; case $ATTEMPT in [1-9]) RUN=${RUN%-001}-00$ATTEMPT ;; *) echo "NOT SUBMITTED $NAME: bad attempt $ATTEMPT"; exit 1 ;; esac
-    [ -e "$B/runs/$RUN" ] && { echo "NOT SUBMITTED $NAME: run dir $RUN exists (never reused)"; exit 1; }
+    [ -e "$B/runs/$RUN" ] && { echo "NOT SUBMITTED $JOB: run dir $RUN exists (never reused)"; exit 1; }
     case $NAME in hift_s3_res*) (cd "$B/pretrained" 2>/dev/null && sha256sum -c resnet18.sha256 >/dev/null) || { echo "NOT SUBMITTED $NAME: resnet weights missing/unverified"; exit 1; } ;; esac
-    submit "$NAME" hift_train.sbatch --export=ALL,REPO="$R",RUN_ID=$RUN,TRAIN_ARGS="$ARGS" ;;
+    submit "$JOB" hift_train.sbatch --export=ALL,REPO="$R",RUN_ID=$RUN,TRAIN_ARGS="$ARGS" ;;
   *) echo "unknown stage $STAGE"; exit 1 ;;
 esac
 squeue -u "$USER" -o "%.10i %.20j %.8T %.10M %R"

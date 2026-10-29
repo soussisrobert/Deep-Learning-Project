@@ -155,6 +155,7 @@ def main():
     parser.add_argument("--workers", type=int, default=12)
     parser.add_argument("--l1-weight", type=float, default=1.0)
     parser.add_argument("--data-seed", type=int, default=20261027)
+    parser.add_argument("--seed", type=int, default=None, help="model/device seed (default: the frozen config seed); seed replicates")
     parser.add_argument("--source-weights", type=json.loads, default=DEFAULT_WEIGHTS)
     parser.add_argument("--data-root", type=Path, default=ROOT/"data")
     parser.add_argument("--train-parts", nargs="+", default=list(ALL_TRAIN_PARTS), choices=ALL_TRAIN_PARTS)
@@ -185,7 +186,8 @@ def main():
     dev_set = TrackPairDataset(val_tracks, length=512, seed=20261028, negative_probability=0.5)
     dev_batches = [collate_pairs([dev_set[i] for i in range(s, s+32)]) for s in range(0, 512, 32)]
     dev_batches = [b for b in dev_batches if b.get("template") is not None]
-    device = seed_device(config["seed"], "cuda:0", gpu_token="owner-domain-"+args.run_id)
+    seed = config["seed"] if args.seed is None else args.seed
+    device = seed_device(seed, "cuda:0", gpu_token="owner-domain-"+args.run_id)
     torch.use_deterministic_algorithms(False)
     if args.init == "official":
         if args.backbone != "alexnet":
@@ -234,7 +236,7 @@ def main():
                                         "third_party/HiFT/pretrained_models/alexnet-bn.pth" if args.backbone == "alexnet" else
                                         f"{args.resnet_weights.name} sha256 {sha256(args.resnet_weights)}"),
                    "initial_parameters_sha256": init, "git_revision": revision,
-                   "dirty_diff_sha256": diff_hash, "seed": config["seed"], "torch": torch.__version__,
+                   "dirty_diff_sha256": diff_hash, "seed": seed, "torch": torch.__version__,
                    "gpu": torch.cuda.get_device_name(0), "started_utc": datetime.now(timezone.utc).isoformat()}, stream, indent=2)
     journal.emit("start", train_tracks=len(dataset.sequences), val_tracks=len(dev_set.sequences), dev_batches=len(dev_batches))
 
