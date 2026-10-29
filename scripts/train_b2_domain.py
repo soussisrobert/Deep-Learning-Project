@@ -30,8 +30,9 @@ DEFAULT_WEIGHTS = {"LaSOT": 0.25, "VisDrone-SOT": 0.3, "VisDrone-MOT": 0.25, "UA
 ALL_TRAIN_PARTS = ("lasot", "visdrone-sot-1", "visdrone-sot-2", "visdrone-mot", "uavdt")
 
 
-def domain_tracks(split, data_root=None, parts=ALL_TRAIN_PARTS):
-    """Train parts are selectable (a missing selected part is an error, never silently skipped)."""
+def domain_tracks(split, data_root=None, parts=ALL_TRAIN_PARTS, uavdt_holdout=()):
+    """Train parts are selectable (a missing selected part is an error, never silently skipped).
+    uavdt_holdout: UAVDT video names excluded from training (validation subset V3, scripts/validate_domain.py)."""
     from hift_research.lasot.tracks import lasot_track, uavdt_tracks, visdrone_mot_tracks, visdrone_sot_track
     data = Path(data_root or ROOT/"data")
     tracks, sot_roots, mot_roots = [], [], []
@@ -50,7 +51,7 @@ def domain_tracks(split, data_root=None, parts=ALL_TRAIN_PARTS):
             uavdt = data/"uavdt"
             for seq in sorted((uavdt/"UAV-benchmark-M").iterdir()):
                 gt = uavdt/"UAV-benchmark-MOTD_v1.0/GT"/f"{seq.name}_gt_whole.txt"
-                if gt.is_file():
+                if gt.is_file() and seq.name not in set(uavdt_holdout):
                     tracks += uavdt_tracks(seq, gt)
     else:
         sot_roots = [data/"visdrone/SOT/VisDrone2019-SOT-val/VisDrone2019-SOT-val"]
@@ -115,10 +116,11 @@ class FinetuneSchedule:
         return {"epoch": self.epoch, "table": self.table, "backbone_ratio": self.ratio}
 
 
-def build_official_finetune(layout, epochs, start, end):
+def build_official_finetune(layout, epochs, start, end, backbone="trainable"):
     """B0-FT: released HiFT checkpoint (hash-pinned, strict keys) as initialization.
     layout='original' keeps the released (scrambling) encoder computation the weights were learned with;
-    'corrected' binds the B2 layout fix. Backbone layers3-5 trainable throughout (post-unfreeze source mode)."""
+    'corrected' binds the B2 layout fix. backbone='trainable': layers3-5 (+their BN) train from step 0 (post-unfreeze
+    source mode); 'frozen': whole backbone frozen with BN in eval mode (pre-unfreeze source mode)."""
     from hift_research import OFFICIAL_CHECKPOINT_SHA256
     from hift_research.inference import read_checkpoint_state
     from hift_research.provenance import sha256
@@ -132,8 +134,11 @@ def build_official_finetune(layout, epochs, start, end):
     if layout == "original":
         for layer in model.grader.transformer.encoder.layers:
             del layer.forward  # back to the upstream class method: the released computation
+    if backbone not in ("trainable", "frozen"):
+        raise ValueError("backbone must be trainable or frozen")
+    source_epoch = 10 if backbone == "trainable" else 0
     def modes(m, epoch):
-        return apply_epoch_modes(m, 10)
+        return apply_epoch_modes(m, source_epoch)
     modes(model, 0)
     optimizer = lifecycle_optimizer(model)
     return model, optimizer, FinetuneSchedule(optimizer, epochs, start, end), modes
@@ -148,6 +153,10 @@ def main():
     parser.add_argument("--layout", choices=["corrected", "original"], default="corrected",
                         help="encoder layout; 'original' only meaningful with --init official")
     parser.add_argument("--ft-lr", nargs=2, type=float, default=[1e-3, 1e-4], help="fine-tune grader LR start end")
+    parser.add_argument("--ft-backbone", choices=["trainable", "frozen"], default="trainable",
+                        help="fine-tune: backbone layers3-5 trainable from step 0 (default, as before) or frozen")
+    parser.add_argument("--uavdt-holdout-fraction", type=float, default=0.0,
+                        help="hold whole UAVDT videos out of training for validation V3 (default 0 = none, as before)")
     parser.add_argument("--owner-instruction", required=True)
     parser.add_argument("--epochs", type=int, default=20)
     parser.add_argument("--steps-per-epoch", type=int, default=1000)
@@ -177,7 +186,13 @@ def main():
     from hift_research.training.wave4_lifecycle import cpu_tree, device_tree, seed_device
 
     config = json.loads(CONFIG.read_text(encoding="utf-8"))
-    train_tracks = domain_tracks("train", args.data_root, args.train_parts)
+    from hift_research.evaluation.validation import uavdt_holdout
+    holdout = []
+    if args.uavdt_holdout_fraction and "uavdt" in args.train_parts:
+        gt_dir = args.data_root/"uavdt/UAV-benchmark-MOTD_v1.0/GT"
+        holdout = uavdt_holdout([p.name for p in (args.data_root/"uavdt/UAV-benchmark-M").iterdir()
+                                 if (gt_dir/f"{p.name}_gt_whole.txt").is_file()], args.uavdt_holdout_fraction)
+    train_tracks = domain_tracks("train", args.data_root, args.train_parts, uavdt_holdout=holdout)
     val_tracks = domain_tracks("val", args.data_root)
     weights = {k: v for k, v in args.source_weights.items() if any(t["source"] == k for t in train_tracks)}
     total = args.epochs*args.steps_per_epoch*args.batch
@@ -192,7 +207,7 @@ def main():
     if args.init == "official":
         if args.backbone != "alexnet":
             raise ValueError("the released checkpoint is AlexNet-HiFT")
-        model, optimizer, scheduler, modes = build_official_finetune(args.layout, args.epochs, *args.ft_lr)
+        model, optimizer, scheduler, modes = build_official_finetune(args.layout, args.epochs, *args.ft_lr, backbone=args.ft_backbone)
     else:
         if args.layout != "corrected":
             raise ValueError("scratch-head training always uses the corrected layout")
@@ -228,10 +243,15 @@ def main():
                             "train_tracks_by_source_category": counts, "train_tracks": len(dataset.sequences),
                             "val_tracks": len(dev_set.sequences), "source_weights": weights, "pairs_total": total,
                             "search_augmentation": dataset.search_aug,
-                            "data_seed": args.data_seed, "acquisition_ledgers": {str(p): sha256(p) for p in ledgers},
+                            "data_seed": args.data_seed, "uavdt_holdout_fraction": args.uavdt_holdout_fraction,
+                            "uavdt_holdout_videos": holdout, "acquisition_ledgers": {str(p): sha256(p) for p in ledgers},
                             "test_sets_excluded": "UAV123 (all), VisDrone-SOT test-dev, VisDrone-MOT test-dev never used in training"},
                    "schedule": {"epochs": args.epochs, "steps_per_epoch": args.steps_per_epoch, "batch": args.batch,
-                                "lr_table_used": scheduler.table[:args.epochs], "backbone_unfreeze_epoch": 10},
+                                "lr_table_used": scheduler.table[:args.epochs],
+                                "backbone_mode": (f"fine-tune, backbone {args.ft_backbone}" + (" (layers3-5 + their BN train from step 0)"
+                                                  if args.ft_backbone == "trainable" else " (all frozen, BN eval)"))
+                                                 if args.init == "official" else "source schedule: layers unfreeze at source epoch 10",
+                                "deterministic_algorithms": False},
                    "backbone_weights": ("released HiFT checkpoint (hash-pinned)" if args.init == "official" else
                                         "third_party/HiFT/pretrained_models/alexnet-bn.pth" if args.backbone == "alexnet" else
                                         f"{args.resnet_weights.name} sha256 {sha256(args.resnet_weights)}"),

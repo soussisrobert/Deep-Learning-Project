@@ -48,7 +48,17 @@ case $STAGE in
     NAME=${2:?job name}; JOB=$NAME; SEEDK=""
     case $NAME in *_s[2-9]) SEEDK=${NAME##*_s}; NAME=${NAME%_s[2-9]} ;; esac   # seed replicate k of a table job
     [ -f "$B/env/.ready" ] && [ -f "$B/data/.ready" ] || { echo "NOT SUBMITTED $NAME: env/data not ready"; exit 0; }
+    if [ "$NAME" = hift_val_diag ]; then  # stage-2 diagnostics D1/D2: validation only, existing checkpoints (V1+V2)
+      V="B0-RAW-UPSTREAM|--official --score raw --selection upstream;B0-SIGMOID-NANSAFE|--official"
+      for r in TC2-B0FT-CORR-001 TC2-B0FT-CORR-S2-001 TC2-B0FT-CORR-S3-001 TC2-B0FT-ORIG-001 TC2-B0FT-ORIG-S2-001 TC2-B0FT-ORIG-S3-003; do
+        [ -f "$B/runs/$r/final-model.pt" ] || { echo "NOT SUBMITTED $NAME: missing $r/final-model.pt"; exit 1; }
+        V="$V;$r|--checkpoint $B/runs/$r/final-model.pt"
+      done
+      submit "$JOB" hift_validate.sbatch --export=ALL,REPO="$R",VAL_JOBS="$V"; exit 0
+    fi
     FT="--backbone alexnet --init official --epochs 10 --steps-per-epoch 1000"
+    P1="--backbone alexnet --init official --layout corrected --epochs 10"   # stage 2 P1: forgetting / LR sweep
+    VAL=""   # stage-2 runs hold out 10% of UAVDT videos (V3) and validate in-job
     S3="--init scratch-head --epochs 20 --steps-per-epoch 1000"
     case $NAME in  # job name | run id | training args (step 1 = B0 fine-tune; step 3 = scale augmentation test)
       hift_b0ft_orig) RUN=TC2-B0FT-ORIG-001; ARGS="$FT --layout original" ;;
@@ -57,13 +67,18 @@ case $STAGE in
       hift_s3_alex40) RUN=TC2-S3-ALEX-SC40-001; ARGS="$S3 --backbone alexnet --search-scale-aug 0.40" ;;
       hift_s3_res18)  RUN=TC2-S3-RES18-SC18-001; ARGS="$S3 --backbone resnet18 --search-scale-aug 0.18 --resnet-weights $B/pretrained/resnet18-f37072fd.pth" ;;
       hift_s3_res40)  RUN=TC2-S3-RES18-SC40-001; ARGS="$S3 --backbone resnet18 --search-scale-aug 0.40 --resnet-weights $B/pretrained/resnet18-f37072fd.pth" ;;
+      hift_p1_ref)    RUN=TC2-P1-REF-001;    ARGS="$P1 --steps-per-epoch 1000 --ft-lr 1e-3 1e-4"; VAL=1 ;;
+      hift_p1_lr3e4)  RUN=TC2-P1-LR3E4-001;  ARGS="$P1 --steps-per-epoch 1000 --ft-lr 3e-4 3e-5"; VAL=1 ;;
+      hift_p1_frozen) RUN=TC2-P1-FROZEN-001; ARGS="$P1 --steps-per-epoch 1000 --ft-lr 1e-3 1e-4 --ft-backbone frozen"; VAL=1 ;;
+      hift_p1_long)   RUN=TC2-P1-LONG-001;   ARGS="$P1 --steps-per-epoch 3000 --ft-lr 1e-3 1e-5"; VAL=1 ;;
       *) echo "NOT SUBMITTED $NAME: unknown job"; exit 1 ;;
     esac
     if [ -n "$SEEDK" ]; then RUN=${RUN%-001}-S$SEEDK-001; ARGS="$ARGS --seed $((20261100+SEEDK)) --data-seed $((20261027+SEEDK))"; fi
     ATTEMPT=${3:-1}; case $ATTEMPT in [1-9]) RUN=${RUN%-001}-00$ATTEMPT ;; *) echo "NOT SUBMITTED $NAME: bad attempt $ATTEMPT"; exit 1 ;; esac
     [ -e "$B/runs/$RUN" ] && { echo "NOT SUBMITTED $JOB: run dir $RUN exists (never reused)"; exit 1; }
     case $NAME in hift_s3_res*) (cd "$B/pretrained" 2>/dev/null && sha256sum -c resnet18.sha256 >/dev/null) || { echo "NOT SUBMITTED $NAME: resnet weights missing/unverified"; exit 1; } ;; esac
-    submit "$JOB" hift_train.sbatch --export=ALL,REPO="$R",RUN_ID=$RUN,TRAIN_ARGS="$ARGS" ;;
+    EXTRA=""; [ -n "$VAL" ] && EXTRA=",HOLDOUT=0.1,VALIDATE=1"
+    submit "$JOB" hift_train.sbatch --export=ALL,REPO="$R",RUN_ID=$RUN,TRAIN_ARGS="$ARGS"$EXTRA ;;
   *) echo "unknown stage $STAGE"; exit 1 ;;
 esac
 squeue -u "$USER" -o "%.10i %.20j %.8T %.10M %R"
