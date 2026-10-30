@@ -71,6 +71,8 @@ case $STAGE in
       hift_p1_lr3e4)  RUN=TC2-P1-LR3E4-001;  ARGS="$P1 --steps-per-epoch 1000 --ft-lr 3e-4 3e-5"; VAL=1 ;;
       hift_p1_frozen) RUN=TC2-P1-FROZEN-001; ARGS="$P1 --steps-per-epoch 1000 --ft-lr 1e-3 1e-4 --ft-backbone frozen"; VAL=1 ;;
       hift_p1_long)   RUN=TC2-P1-LONG-001;   ARGS="$P1 --steps-per-epoch 3000 --ft-lr 1e-3 1e-5"; VAL=1 ;;
+      hift_p2_d10)    RUN=TC2-P2-D10-001;    ARGS="$P1 --steps-per-epoch 1000 --ft-lr 1e-3 1e-4 --distractor-probability 0.10"; VAL=1 ;;
+      hift_p2_d20)    RUN=TC2-P2-D20-001;    ARGS="$P1 --steps-per-epoch 1000 --ft-lr 1e-3 1e-4 --distractor-probability 0.20"; VAL=1 ;;
       *) echo "NOT SUBMITTED $NAME: unknown job"; exit 1 ;;
     esac
     if [ -n "$SEEDK" ]; then RUN=${RUN%-001}-S$SEEDK-001; ARGS="$ARGS --seed $((20261100+SEEDK)) --data-seed $((20261027+SEEDK))"; fi

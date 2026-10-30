@@ -3,6 +3,10 @@
 Positive: same sequence, both frames visible (not fully occluded / out of view, positive size),
 gap 1..max_gap frames. Negative (probability negative_probability): search from a DIFFERENT
 sequence, so the template object cannot appear; dense-zero targets via robust_pair_targets.
+Distractor negative (optional, probability distractor_probability, stage-2 P2): search centred on ANOTHER
+same-group track of the SAME video at a frame within max_gap, accepted only when the template object's
+annotated box at that frame lies entirely outside the 511-px source crop window; otherwise the pair falls
+back to an ordinary different-video negative. distractor_probability=0 draws no extra random numbers.
 Each index uses its own NumPy seed (seed+index), so a pair is reproducible per index.
 Rejected candidates (e.g. no positive support) return None and are counted by the caller.
 LaSOT boxes are used as published (1-based convention not shifted; <=1 px at 511 crop scale).
@@ -46,10 +50,24 @@ def load_sequence(directory):
             "valid": np.flatnonzero(valid)}
 
 
+def template_outside_crop(search_box, template_box):
+    """True when template_box (xywh, positive size) lies entirely outside the 511-px source crop window centred
+    on search_box (context size sqrt((w+p)(h+p)), p=(w+h)/2, scaled 511/127), which bounds every augmented
+    287-px search region."""
+    x, y, w, h = map(float, search_box)
+    tx, ty, tw, th = map(float, template_box)
+    if not (w > 0 and h > 0 and tw > 0 and th > 0):
+        return False
+    p = (w+h)/2
+    half = np.sqrt((w+p)*(h+p))*511/127/2
+    cx, cy = x+w/2, y+h/2
+    return tx >= cx+half or tx+tw <= cx-half or ty >= cy+half or ty+th <= cy-half
+
+
 class TrackPairDataset(Dataset):
     """Pairs over generic tracks (see tracks.py). Negatives always come from a different video."""
     def __init__(self, tracks, *, length, seed, negative_probability=0.05, max_gap=100, source_weights=None,
-                 search_scale=None):
+                 search_scale=None, distractor_probability=0.0):
         # search_scale: optional override of SEARCH_AUG["scale"] (default 0.18, the source pysot value)
         self.search_aug = dict(SEARCH_AUG, scale=search_scale) if search_scale is not None else dict(SEARCH_AUG)
         if not 0 <= self.search_aug["scale"] < 1:
@@ -68,6 +86,20 @@ class TrackPairDataset(Dataset):
             raise ValueError("at least two usable videos required (negatives come from another video)")
         if length < 1 or not 0 <= negative_probability < 1 or max_gap < 1:
             raise ValueError("invalid length/negative_probability/max_gap")
+        if not 0 <= distractor_probability < 1:
+            raise ValueError("distractor_probability must be in [0, 1)")
+        self.distractor_probability = float(distractor_probability)
+        self._same_video = None
+        if self.distractor_probability:
+            from hift_research.evaluation.validation import group_of
+            buckets = {}
+            for i, t in enumerate(self.sequences):
+                if "frame_ids" in t and group_of(t) != "unlabeled":
+                    buckets.setdefault((t["video"], group_of(t)), []).append(i)
+            self._same_video = [np.array([], dtype=int) for _ in self.sequences]
+            for members in buckets.values():
+                for i in members:
+                    self._same_video[i] = np.array([j for j in members if j != i], dtype=int)
         self.length, self.seed = length, seed
         self.negative_probability, self.max_gap = negative_probability, max_gap
         videos = [t["video"] for t in self.sequences]
@@ -100,12 +132,35 @@ class TrackPairDataset(Dataset):
         crop, _ = jpeg_crop511(image, [x, y, w, h], self._ops)
         return crop, self._ops.get_bbox(None, crop, [x, y, x+w, y+h])
 
+    def _distractor(self, first, tf):
+        """(track index, frame) of a same-video same-group distractor whose crop excludes the template object."""
+        a = self.sequences[first]
+        candidates = self._same_video[first]
+        if not len(candidates):
+            return None
+        absolute = int(a["frame_ids"][tf])
+        for _ in range(3):
+            j = int(candidates[int(np.random.randint(len(candidates)))])
+            b = self.sequences[j]
+            valid = b["valid"]
+            near = valid[np.abs(np.asarray(b["frame_ids"])[valid]-absolute) <= self.max_gap]
+            if not len(near):
+                continue
+            sf = int(np.random.choice(near))
+            ai = int(b["frame_ids"][sf])-int(a["frame_ids"][0])
+            if not 0 <= ai < len(a["boxes"]):
+                continue  # template object's location unknown at that frame
+            if template_outside_crop(b["boxes"][sf], a["boxes"][ai]):
+                return j, sf
+        return None
+
     def __getitem__(self, index):
         if not 0 <= index < self.length:
             raise IndexError(index)
         self._setup()
         with numpy_seed(self.seed+int(index)):
             negative = bool(np.random.random() < self.negative_probability)
+            distractor = bool(self.distractor_probability and np.random.random() < self.distractor_probability)
             if self._source_tracks is None:
                 first = int(np.random.randint(len(self.sequences)))
             else:
@@ -113,7 +168,11 @@ class TrackPairDataset(Dataset):
                 first = int(pool[int(np.random.randint(len(pool)))])
             template_sequence = self.sequences[first]
             tf = int(np.random.choice(template_sequence["valid"]))
-            if negative:
+            picked = self._distractor(first, tf) if distractor else None
+            negative = negative or distractor
+            if picked is not None:
+                search_sequence, sf = self.sequences[picked[0]], picked[1]
+            elif negative:
                 candidates = self._other_video[first]  # for one-track-per-video data: same draw as other+(other>=first)
                 search_sequence = self.sequences[int(candidates[int(np.random.randint(len(candidates)))])]
                 sf = int(np.random.choice(search_sequence["valid"]))
@@ -126,6 +185,8 @@ class TrackPairDataset(Dataset):
                 sf = int(np.random.choice(near))
             record = {"index": index, "negative": negative, "template": [template_sequence["name"], tf],
                       "search": [search_sequence["name"], sf]}
+            if distractor:
+                record["distractor"] = picked is not None
             try:
                 template_crop, tbox = self._crop(template_sequence, tf)
                 search_crop, sbox = self._crop(search_sequence, sf)

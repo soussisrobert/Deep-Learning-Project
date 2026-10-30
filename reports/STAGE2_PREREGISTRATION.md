@@ -45,3 +45,19 @@ largest seed-averaged dM. Otherwise REF stays the stage-2 model.
 ## Deferred
 P2 (same-video distractor negatives), P3 (category rebalancing), P4 (ResNet-18 with an annealed schedule)
 depend on the P1 outcome. R1/template-update work stays deferred per AGENTS.md.
+
+## P1 outcome (2026-10-31, validation only; recorded before any P2 run)
+M seed1/seed2: REF 0.648/0.649; LR3E4 0.634/0.637; FROZEN 0.639/0.638; LONG 0.629/(running; already fails the
+both-seeds-positive rule). No arm qualifies: REF stays the stage-2 model. Sealed test opened once for B0
+(sigmoid/NaN-safe) and REF seeds 1-2 (results appended to reports/TC2_STATE.md).
+
+## P2 — same-video distractor negatives (on the REF recipe), preregistered 2026-10-31
+Motivation (stage-1 per-sequence analysis): failures concentrate in similar-object / background-clutter /
+low-resolution sequences. Change: --distractor-probability p; a pair becomes a negative whose search crop is
+centred on another same-group (vehicle/person) track of the same video within max_gap frames, accepted only if
+the template object's annotated box lies outside the 511-px crop window (else an ordinary cross-video negative).
+Arms (REF recipe: corrected layout, --ft-lr 1e-3 1e-4, 10 x 1000 steps, UAVDT holdout 0.1, in-job V, seeds 1-2
+paired with REF-001 / REF-S2-001): D10 (p=0.10), D20 (p=0.20).
+Decision rule (same as P1, against REF): seed-averaged dM >= +0.010, both seeds dM > 0, no V subset
+(V1, V2-vehicle, V2-person, V3) dropping more than 0.015 seed-averaged; if both arms qualify, the larger dM.
+The sealed test is not reopened for P2 unless an arm qualifies; then it is opened once for that arm.

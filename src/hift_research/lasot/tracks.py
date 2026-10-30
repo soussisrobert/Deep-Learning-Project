@@ -1,7 +1,8 @@
 """Single-object track loaders for the aerial-vehicle/pedestrian domain.
 
 A track is {"name", "video", "source", "category", "frames": [Path], "boxes": float[N,4] xywh,
-"valid": int indices}. Valid frames are visible, unoccluded-enough and of positive size; pair
+"valid": int indices}; MOT tracks also carry "frame_ids" (absolute video frame of each row; boxes of
+non-valid rows are kept, zero when unannotated). Valid frames are visible, unoccluded-enough and of positive size; pair
 sampling uses only valid frames. Negatives must come from a different "video" (MOT tracks from
 the same video can appear inside each other's search crops).
 
@@ -78,7 +79,7 @@ def _mot_tracks(video, frames_by_id, rows, *, source, classes, min_length, minim
             continue
         tracks.append({"name": f"{video}#{track_id}", "video": f"{source}/{video}", "source": source,
                        "category": classes[category], "frames": [frames_by_id[f] for f in span],
-                       "boxes": np.nan_to_num(boxes, nan=0.0), "valid": valid})
+                       "boxes": np.nan_to_num(boxes, nan=0.0), "valid": valid, "frame_ids": span})
     return tracks
 
 
