@@ -1,0 +1,1 @@
+bench/r4c_attributes	python scripts/export_attributes.py && mkdir -p results/bench/r4c_attributes && echo '{}' > results/bench/r4c_attributes/summary.json

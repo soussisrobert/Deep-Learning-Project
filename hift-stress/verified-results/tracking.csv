@@ -1,0 +1,12 @@
+run,dataset,sequences,frames,variant,attack,eps,steps,defense,adaptive,success_auc,precision_20,fps_end_to_end,device,seed
+uav123-sub40_fp32_fgsm1_nodef,flat,40,37681,fp32,fgsm,1.0,1,none,False,0.5524,0.7721,33.0627,cuda,0
+uav123-sub40_fp32_fgsm2_nodef,flat,40,37681,fp32,fgsm,2.0,1,none,False,0.4729,0.7093,32.883,cuda,0
+uav123-sub40_fp32_fgsm4_nodef,flat,40,37681,fp32,fgsm,4.0,1,none,False,0.4177,0.6722,32.8823,cuda,0
+uav123-sub40_fp32_fgsm8_nodef,flat,40,37681,fp32,fgsm,8.0,1,none,False,0.3192,0.5778,32.5363,cuda,0
+uav123-sub40_fp32_noise2_nodef,flat,40,37681,fp32,noise,2.0,0,none,False,0.5824,0.7559,70.2014,cuda,0
+uav123-sub40_fp32_noise4_nodef,flat,40,37681,fp32,noise,4.0,0,none,False,0.5625,0.7294,70.7569,cuda,0
+uav123-sub40_fp32_noise8_nodef,flat,40,37681,fp32,noise,8.0,0,none,False,0.5559,0.7381,70.0308,cuda,0
+uav123-sub40_fp32_clean_nodef,flat,40,37681,fp32,none,0,0,none,False,0.5825,0.7538,93.9419,cuda,0
+uav123_fp32_clean_nodef,flat,123,112578,fp32,none,0,0,none,False,0.5838,0.7539,95.3593,cuda,0
+uav123_fp32_clean_nodef_t4,flat,123,112578,fp32,none,0,0,none,False,0.5865,0.7575,10.8493,cpu,0
+uav123-sub40_fp32_pgd4s10_nodef,flat,40,37681,fp32,pgd,4.0,10,none,False,0.0955,0.323,6.2908,cuda,0

@@ -1,0 +1,22 @@
+E all123 +0.0030 [-0.0054, +0.0140] (median +0.0001; 2 up / 3 down by >0.05)
+E test40 -0.0074 [-0.0168, -0.0013] (median -0.0006; 0 up / 1 down by >0.05)
+E nt83 +0.0080 [-0.0033, +0.0239] (median +0.0003; 2 up / 2 down by >0.05)
+E nt83_sens ['+0.0078 [-0.0001, +0.0211] (median +0.0004; 2 up / 1 down by >0.05)', '+0.0022 [-0.0058, +0.0129] (median +0.0004; 1 up / 3 down by >0.05)']
+worst [('uav2', -0.155), ('car4_s', -0.11), ('group1_2', -0.073), ('group3_2', -0.049), ('car1_2', -0.048), ('car12', -0.038)] best [('building3', 0.011), ('uav1_2', 0.012), ('uav4', 0.359), ('person19_2', 0.456)]
+videos within ±0.02: 114 / 123; >0.05 up 2 down 3
+noise floor fp32 CPU vs GPU (123): +0.0027 [-0.0007, +0.0071] (median -0.0001; 3 up / 0 down by >0.05)
+E excl person19_2, uav4: -0.0037 [-0.0076, -0.0006] (median +0.0001; 0 up / 3 down by >0.05)
+speed {'net_t4': 1.8039056610568367, 'fp32': 94.39234383869916, 's1': 52.32665203977376, 'nt83_track_ms': 53.53841747893704}
+F: {'test_auroc': 0.968, 'ci': [0.9379212756578929, 0.9885219446093767], 'failed': 6075, 'good': 31020, 'dev_auroc': 0.92, 'failed_frames_top5': [('person1_s', 1112), ('person13', 867), ('car2', 748), ('uav1_1', 496), ('group1_4', 432)], 'videos_with_failures': 17, 'within_video_auroc_median': 0.975, 'within_video_n': 13, 'recall_at_thr': 0.424, 'false_alarm_at_thr': 0.002, 'precision_at_thr': 0.976, 'onsets': 32, 'alarm_before_onset': 10}
+AUROC under corruption (fp32 / int8): {'gauss_noise3': (0.955, 0.95), 'gauss_blur3': (0.978, 0.98), 'motion_blur3': (0.937, 0.942), 'contrast3': (0.892, 0.916), 'low_light3': (0.963, 0.96), 'low_light5': (0.946, 0.94), 'night3': (0.97, 0.969)}
+A: {'broken_frames': 11303, 'flagged': 0.003, 'median_conf_broken': 2.235, 'median_conf_clean_good': 2.326, 'median_conf_clean_failed': 1.445, 'share_broken_above_clean_good_median': 0.386, 'exploratory_auroc_high_conf_flags_attack': 0.411}
+K gauss_noise3: fp32 -0.079 int8 -0.100 extra -0.0210 [-0.0582, +0.0081] (median +0.0004; 1 up / 4 down by >0.05) jpeg -0.014
+K gauss_blur3: fp32 -0.059 int8 -0.052 extra +0.0067 [-0.0083, +0.0214] (median +0.0003; 3 up / 1 down by >0.05) jpeg +0.008
+K motion_blur3: fp32 -0.031 int8 -0.036 extra -0.0055 [-0.0254, +0.0150] (median +0.0000; 1 up / 3 down by >0.05) jpeg -0.019
+K contrast3: fp32 -0.060 int8 -0.044 extra +0.0157 [-0.0050, +0.0395] (median -0.0001; 5 up / 1 down by >0.05) jpeg -0.008
+K low_light3: fp32 -0.027 int8 -0.033 extra -0.0060 [-0.0322, +0.0154] (median +0.0002; 2 up / 2 down by >0.05) jpeg -0.014
+K low_light5: fp32 -0.043 int8 -0.060 extra -0.0170 [-0.0442, +0.0049] (median +0.0009; 2 up / 5 down by >0.05) jpeg +0.006
+K night3: fp32 -0.078 int8 -0.076 extra +0.0029 [-0.0305, +0.0330] (median +0.0005; 2 up / 3 down by >0.05) jpeg +0.005
+K mean extra -0.0034764044877036676
+problems: none
+figures written

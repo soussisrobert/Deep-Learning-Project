@@ -1,0 +1,3 @@
+bench/defense_cpu_fp32_t4	python scripts/bench_defense.py --dataset flat --root data/uav123_flat --snapshot weights/general_model.pth --device cpu --threads 4 --variant fp32 --out results/bench/defense_cpu_fp32_t4
+bench/defense_cpu_int8bb_t4	python scripts/bench_defense.py --dataset flat --root data/uav123_flat --snapshot weights/general_model.pth --device cpu --threads 4 --variant int8bb --out results/bench/defense_cpu_int8bb_t4
+bench/defense_cpu_int8bb_t1	python scripts/bench_defense.py --dataset flat --root data/uav123_flat --snapshot weights/general_model.pth --device cpu --threads 1 --variant int8bb --out results/bench/defense_cpu_int8bb_t1
