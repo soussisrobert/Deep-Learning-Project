@@ -68,9 +68,17 @@ class BitDepth(Defense):
 
 
 class JPEG(Defense):
+    """libjpeg (OpenCV) on the CPU: the deployed defence. Not differentiable; adaptive attacks use
+    either BPDA (identity gradient) or the differentiable PyTorch surrogate (see surrogate())."""
+
     def __init__(self, quality=75):
         self.quality = int(quality)
         self.name = f"jpeg{quality}"
+
+    def surrogate(self, x, quality=None):
+        """Differentiable stand-in with the same quality (Shin & Song 2017 rounding)."""
+        from .torchjpeg import jpeg
+        return jpeg(x, self.quality if quality is None else quality, mode="approx")
 
     def __call__(self, x):
         img = x[0].detach().permute(1, 2, 0).clamp(0, 255).round().byte().cpu().numpy()
@@ -79,11 +87,25 @@ class JPEG(Defense):
         return torch.from_numpy(dec).permute(2, 0, 1)[None].to(x.device, x.dtype)
 
 
+class TorchJPEG(JPEG):
+    """The same JPEG written in PyTorch: runs wherever the crop already is (GPU), no CPU round-trip.
+    Matches OpenCV's output to about 46 dB PSNR (under one grey level), but is evaluated separately."""
+
+    def __init__(self, quality=75):
+        super().__init__(quality)
+        self.name = f"tjpeg{quality}"
+
+    def __call__(self, x):
+        from .torchjpeg import jpeg
+        return jpeg(x, self.quality, mode="hard")
+
+
 def make_defense(spec):
-    """'none', 'blur1', 'blur1.5', 'median3', 'bits5', 'jpeg75' ..."""
+    """'none', 'blur1', 'blur1.5', 'median3', 'bits5', 'jpeg75', 'tjpeg90' ..."""
     if spec in (None, "", "none"):
         return None
-    for prefix, cls in (("blur", GaussianBlur), ("median", Median), ("bits", BitDepth), ("jpeg", JPEG)):
+    for prefix, cls in (("blur", GaussianBlur), ("median", Median), ("bits", BitDepth), ("tjpeg", TorchJPEG),
+                        ("jpeg", JPEG)):
         if spec.startswith(prefix):
             return cls(float(spec[len(prefix):]) if prefix == "blur" else int(spec[len(prefix):]))
     raise SystemExit(f"unknown defence {spec}")

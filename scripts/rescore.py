@@ -73,11 +73,21 @@ def main():
             s["name"] = name
             per.append(s)
         agg = aggregate(per)
-        repro = abs(agg["success_auc"] - stored["success_auc"]) < 1e-6 and abs(agg["precision_20"] - stored["precision_20"]) < 1e-6
+        # Saved boxes are rounded to 4 decimals, so an IoU sitting exactly on a threshold can flip for a
+        # frame (one frame at one threshold = 1/(21*frames) of that sequence's AUC, e.g. ~1e-4 for 469
+        # frames, ~2.5e-6 on a 40-sequence mean). TOL = 1e-4 allows a few such flips and is 100x below the
+        # smallest decision threshold (0.010 AUC). A real scoring mismatch shows up far above it.
+        TOL = 1e-4
+        auc_diff = abs(agg["success_auc"] - stored["success_auc"])
+        prec_diff = abs(agg["precision_20"] - stored["precision_20"])
+        seq_diff = {p["name"]: abs(p["success_auc"] - stored_seq[p["name"]]["success_auc"]) for p in per}
+        repro = auc_diff < TOL and prec_diff < TOL
         row = dict(run=run.name, sequences=agg["sequences"], frames=agg["frames"],
                    success_auc=agg["success_auc"], precision_20_strict=agg["precision_20"],
                    precision_20_official=agg["precision_20_official"],
-                   absent_frames=sum(p["absent_frames"] for p in per), reproduces_stored=repro)
+                   absent_frames=sum(p["absent_frames"] for p in per), reproduces_stored=repro,
+                   auc_diff=auc_diff, precision_diff=prec_diff,
+                   max_seq_auc_diff=max(seq_diff.values()), max_seq=max(seq_diff, key=seq_diff.get))
         rows.append(row)
         (run / "rescore.json").write_text(json.dumps({**row, "per_seq": [
             {k: p[k] for k in ("name", "frames", "success_auc", "precision_20", "precision_20_official", "absent_frames")}

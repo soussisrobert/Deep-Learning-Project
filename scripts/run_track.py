@@ -51,6 +51,19 @@ def parse():
     p.add_argument("--eps", type=float, default=0, help="L-inf budget in pixels (of 255)")
     p.add_argument("--steps", type=int, default=10)
     p.add_argument("--adaptive", action="store_true", help="attack differentiates through the defence")
+    p.add_argument("--grad", default="bpda", choices=["bpda", "diff"],
+                   help="adaptive gradient through non-differentiable defences: bpda (identity) or diff (JPEG surrogate)")
+    p.add_argument("--eot", type=int, default=1, help="surrogate samples per PGD step (expectation over transformation)")
+    p.add_argument("--eot-jitter", type=int, default=0, help="JPEG quality jitter (+-) for EOT samples")
+    p.add_argument("--objective", default="cool", choices=["cool", "shift"],
+                   help="attack objective: cool (lower target score) or shift (lower target, keep confidence high elsewhere)")
+    p.add_argument("--shift-lambda", type=float, default=1.0, help="weight of the keep-confidence-high term (shift)")
+    p.add_argument("--corrupt", default="none", help="natural corruption of every crop, e.g. gauss_noise:3")
+    p.add_argument("--calib-frames", type=int, default=2, help="frames per calibration sequence")
+    p.add_argument("--calib-spread", action="store_true", help="calibration frames spread through each video")
+    p.add_argument("--calib-exclude", help="JSON/txt list of videos never used for calibration")
+    p.add_argument("--calib-set", type=int, default=0,
+                   help="int8 calibration set: 0 = evenly spread (round 1-2), k>0 = random draw with seed k")
     p.add_argument("--defense", default="none")
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--threads", type=int, default=0, help="CPU threads (0 = torch default)")
@@ -74,41 +87,59 @@ def main():
 
     net_fp32, model_info = build_model(a.snapshot, device)
     calib, pairs, calib_names = None, None, []
-    if a.variant in ("int8bb", "int8full"):
+    if a.variant.startswith("int8bb") or a.variant == "int8full":
         pool = load_dataset(a.dataset, a.root, None, None, None, a.seed + 1)
         if not a.calib_overlap_ok:
             evald = {s.name for s in seqs}
             pool = [s for s in pool if s.name not in evald] or pool
-        idx = np.linspace(0, len(pool) - 1, num=min(a.calib_seqs, len(pool))).round().astype(int)
+        if a.calib_exclude:   # e.g. keep TEST videos out of calibration for DEV pilot runs
+            txt = Path(a.calib_exclude).read_text()
+            ex = set(json.loads(txt)["sequences"] if a.calib_exclude.endswith(".json") else txt.split())
+            pool = [s for s in pool if s.name not in ex]
+        if a.calib_set:
+            idx = np.random.default_rng(1000 + a.calib_set).choice(len(pool), min(a.calib_seqs, len(pool)), replace=False)
+        else:
+            idx = np.linspace(0, len(pool) - 1, num=min(a.calib_seqs, len(pool))).round().astype(int)
         cal_seqs = [pool[i] for i in sorted(set(idx))]
         calib_names = [s.name for s in cal_seqs]
-        _, calib = gt_crops(cal_seqs, frames_per_seq=2, device="cpu")
-        pairs = gt_pairs(cal_seqs, frames_per_seq=2, device="cpu")
+        _, calib = gt_crops(cal_seqs, frames_per_seq=a.calib_frames, device="cpu", spread=a.calib_spread)
+        pairs = gt_pairs(cal_seqs, frames_per_seq=a.calib_frames, device="cpu", spread=a.calib_spread)
     net, dtype, run_device, var_info = make_variant(a.variant, net_fp32, device, calib, pairs)
     if calib_names:
         var_info["calibration_sequences"] = calib_names
+        var_info["calib_set"] = a.calib_set
+        var_info["calib_frames"] = a.calib_frames
+        var_info["calib_spread"] = a.calib_spread
     if a.attack_device:
         attack_net = net_fp32.to(torch.device(a.attack_device))
     else:
         attack_net = net_fp32 if run_device == device else net_fp32.to(run_device)
 
-    attack = make_attack(a.attack, a.eps, a.steps, a.adaptive, a.seed)
+    attack = make_attack(a.attack, a.eps, a.steps, a.adaptive, a.seed, a.grad, a.eot, a.eot_jitter, a.objective, a.shift_lambda)
     defense = make_defense(a.defense)
+    from hiftstress.corruptions import make_corruption
+    corruption = make_corruption(a.corrupt, a.seed)
     cond = f"{a.variant}_{a.attack if attack else 'clean'}{('%g' % a.eps) if attack else ''}" \
            f"{'s%d' % a.steps if a.attack == 'pgd' else ''}_{defense.name if defense else 'nodef'}" \
            f"{'_adaptive' if a.adaptive and attack and defense else ''}"
     name = a.name or f"{a.dataset}{'-sub%d' % a.max_seqs if a.max_seqs else ''}_{cond}"
     out = Path(a.out) / name
     (out / "preds").mkdir(parents=True, exist_ok=True)
+    (out / "scores").mkdir(parents=True, exist_ok=True)
     print(f"[run] {name} on {run_device} | {len(seqs)} sequences | {model_info.get('warning', 'weights ' + str(a.snapshot))}")
 
     per_seq, totals = [], {"attack_s": 0.0, "defense_s": 0.0, "model_s": 0.0, "frames": 0, "wall_s": 0.0}
     drops = []
     t_all = time.perf_counter()
     for k, seq in enumerate(seqs):
-        model = TrackingModel(net, run_device, dtype, attack, defense, attack_net)
+        model = TrackingModel(net, run_device, dtype, attack, defense, attack_net, corruption)
         preds, scores, times = run_sequence(seq, model, run_device)
         np.savetxt(out / "preds" / f"{seq.name}.txt", preds, fmt="%.4f", delimiter=",")
+        conf = np.full((len(preds), 3), np.nan)          # per frame: HiFT best_score, map peak, map PSR (frame 0 = init)
+        conf[1:, 0] = scores[1:]
+        if len(model.frame_conf) == len(preds) - 1:
+            conf[1:, 1:] = np.array(model.frame_conf)
+        np.savetxt(out / "scores" / f"{seq.name}.txt", conf, fmt="%.6f", delimiter=",", header="best_score,peak,psr")
         s = sequence_scores(preds, seq.gt)
         s.update(name=seq.name, fps=float((len(times) - 1) / max(times[1:].sum(), 1e-9)),
                  mean_score=float(np.nanmean(scores)) if len(scores) > 1 else float("nan"))
@@ -128,6 +159,9 @@ def main():
         run=name, dataset=a.dataset, root=a.root, variant=a.variant, attack=a.attack if attack else "none",
         eps=a.eps if attack else 0, steps=a.steps if a.attack == "pgd" else (1 if a.attack == "fgsm" else 0),
         adaptive=bool(a.adaptive and attack and defense), defense=defense.name if defense else "none",
+        grad=a.grad if (a.adaptive and attack and defense) else None, eot=a.eot, eot_jitter=a.eot_jitter,
+        corruption=corruption.name if corruption else "none", calib_set=a.calib_set,
+        objective=a.objective if attack else None, shift_lambda=a.shift_lambda if (attack and a.objective == "shift") else None,
         device=str(run_device), attack_device=str(next(attack_net.parameters()).device) if attack else None,
         seqs_file=a.seqs_file, torch=torch.__version__, seed=a.seed, model=model_info, variant_info=var_info,
         fps_end_to_end=totals["frames"] / max(totals["wall_s"], 1e-9),

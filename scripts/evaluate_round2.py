@@ -73,7 +73,7 @@ def main():
     md += ["## 1. Defences (proposed improvement for robustness)", "",
            f"Pass = clean cost ≥ −{CLEAN_COST_MAX:.3f} AND adaptive gain ≥ +{ADAPT_GAIN_MIN:.2f} with interval above 0 "
            f"AND time overhead ≤ {OVERHEAD_MAX:.1%}.", "",
-           "| Defence | Clean AUC (Δ vs clean) | PGD, attacker unaware (Δ vs PGD) | PGD, adaptive (Δ vs PGD) | Share of loss recovered (adaptive) | Overhead per frame | Verdict |",
+           "| Defence | Clean AUC (Δ vs clean) | PGD, attacker unaware (Δ vs PGD) | PGD, adaptive (Δ vs PGD) | Share of loss recovered (adaptive) | Defence time per frame (share of clean) | Verdict |",
            "|---|---|---|---|---|---|---|"]
     J["defences"] = {}
     for d in DEFENCES:
@@ -84,16 +84,21 @@ def main():
             continue
         pc, pu, pa = paired(c, clean), paired(u, pgd), paired(ad, pgd)
         rec = pa["mean"] / lost if lost > 0 else float("nan")
-        ovh_ms = c["ms_per_frame"]["total"] - clean["ms_per_frame"]["total"]
+        # Overhead = the defence's own measured time per frame (timed inside the same run), relative to
+        # clean tracking. Differences in total wall time between separate jobs are dominated by
+        # cluster noise (they even came out negative), so they are logged but not judged on.
+        ovh_ms = c["ms_per_frame"]["defense"]
         ovh = ovh_ms / clean["ms_per_frame"]["total"]
+        wall_diff_ms = c["ms_per_frame"]["total"] - clean["ms_per_frame"]["total"]
         ok = [pc["mean"] >= -CLEAN_COST_MAX, pa["mean"] >= ADAPT_GAIN_MIN and pa["lo"] > 0, ovh <= OVERHEAD_MAX]
-        verdict = "IMPROVEMENT" if all(ok) else ("robust but costly" if ok[1] else
-                                                 ("helps only if attacker unaware" if pu["lo"] > 0 else "no gain"))
+        verdict = ("IMPROVEMENT" if all(ok) else "robust but costly" if ok[1] else
+                   "partial adaptive gain (below +0.10)" if pa["lo"] > 0 else
+                   "helps only if attacker unaware" if pu["lo"] > 0 else "no gain")
         md.append(f"| {d} | {c['success_auc']:.3f} ({fmt(pc)}) | {u['success_auc']:.3f} ({fmt(pu)}) | "
                   f"{ad['success_auc']:.3f} ({fmt(pa)}) | {rec:.0%} | {ovh_ms:+.2f} ms ({ovh:+.1%}) | {verdict} |")
         J["defences"][d] = dict(clean=c["success_auc"], unaware=u["success_auc"], adaptive=ad["success_auc"],
                                 clean_cost=pc, gain_unaware=pu, gain_adaptive=pa, recovered=rec,
-                                overhead_ms=ovh_ms, overhead=ovh, checks=ok, verdict=verdict)
+                                overhead_ms=ovh_ms, overhead=ovh, wall_diff_ms=wall_diff_ms, checks=ok, verdict=verdict)
 
     # ---------------- compression
     md += ["", "## 2. Compression (proposed improvement for efficiency)", "",

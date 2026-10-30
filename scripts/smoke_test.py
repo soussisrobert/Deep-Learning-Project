@@ -118,11 +118,45 @@ def main():
         y = PGD(4, steps=2, adaptive=True)(xs[0], lambda inp: score_map(net, inp), d)
         assert y.shape == xs[0].shape
 
-    variants = ["fp32", "prune50"] + (["fp16"] if device.type in ("cuda", "mps") else []) + ["int8dyn", "int8bb"]
+    @check("round 5: per-frame confidence, confidence-preserving attack, night corruption")
+    def _():
+        from hiftstress.corruptions import make_corruption
+        from hiftstress.tracker import TrackingModel, confidence_stats
+        net.template(zs[0])
+        out = net.track(xs[0])
+        pk, psr = confidence_stats(out)
+        assert np.isfinite(pk) and np.isfinite(psr)
+        y = PGD(4, steps=2, objective="shift", shift_lambda=3)(xs[0], lambda inp: score_map(net, inp))
+        assert float((y - xs[0]).abs().max()) <= 4 + 1e-3
+        z = make_corruption("night:3")(xs[0])
+        assert z.shape == xs[0].shape and z.min() >= 0 and z.max() <= 255
+        m = TrackingModel(net, device)
+        m.template(zs[0]); m.track(xs[0])
+        assert len(m.frame_conf) == 1
+        return f"(peak {pk:.3f}, PSR {psr:.1f})"
+
+    @check("round 3: torch JPEG matches OpenCV; surrogate gradient + EOT attack; corruptions")
+    def _():
+        from hiftstress.corruptions import make_corruption
+        x = xs[0]
+        a, b = make_defense("jpeg75")(x), make_defense("tjpeg75")(x)
+        psnr = 10 * float(torch.log10(255 ** 2 / ((a - b) ** 2).mean().clamp_min(1e-9)))
+        assert psnr > 38 and b.device == x.device, psnr
+        net.template(zs[0])
+        y = PGD(4, steps=2, adaptive=True, grad="diff", eot=2, eot_jitter=5)(x, lambda inp: score_map(net, inp),
+                                                                             make_defense("jpeg75"))
+        assert float((y - x).abs().max()) <= 4 + 1e-3
+        for c in ("gauss_noise:3", "gauss_blur:3", "motion_blur:3", "low_light:3", "contrast:3"):
+            z = make_corruption(c)(x)
+            assert z.shape == x.shape and z.min() >= 0 and z.max() <= 255, c
+        return f"(torch vs OpenCV JPEG {psnr:.1f} dB)"
+
+    variants = ["fp32", "prune50"] + (["fp16"] if device.type in ("cuda", "mps") else []) + ["int8dyn", "int8bb", "int8bb-s1", "int8full"]
     for v in variants:
         @check(f"variant {v} runs")
         def _(v=v):
-            m, dtype, dev, vinfo = make_variant(v, net, device, [x.cpu() for x in xs])
+            m, dtype, dev, vinfo = make_variant(v, net, device, [x.cpu() for x in xs],
+                                               calib_pairs=[(zs[0].cpu(), x.cpu()) for x in xs])
             m.template(zs[0].to(dev, dtype))
             out = m.track(xs[0].to(dev, dtype))
             assert out["cls1"].shape[-2:] == (11, 11)

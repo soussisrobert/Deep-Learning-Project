@@ -1,0 +1,1 @@
+uav123-sub40_fp32_pgd4s10_tjpegsel_adaptive_diff	python scripts/run_track.py --dataset flat --root data/uav123_flat --snapshot weights/general_model.pth --out results --seqs-file attack-subset-40.json --device cuda --attack pgd --eps 4 --steps 10 --defense $(python scripts/r3_selected.py tjpeg) --adaptive --grad diff --name uav123-sub40_fp32_pgd4s10_tjpegsel_adaptive_diff
