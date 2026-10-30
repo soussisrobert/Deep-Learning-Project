@@ -1,0 +1,2 @@
+uav123-sub40_fp32_pgd4s10_nodef_seed2	python scripts/run_track.py --dataset flat --root data/uav123_flat --snapshot weights/general_model.pth --out results --seqs-file attack-subset-40.json --device cuda --attack pgd --eps 4 --steps 10 --seed 2 --name uav123-sub40_fp32_pgd4s10_nodef_seed2
+uav123-sub40_fp32_noise4_nodef_seed2	python scripts/run_track.py --dataset flat --root data/uav123_flat --snapshot weights/general_model.pth --out results --seqs-file attack-subset-40.json --device cuda --attack noise --eps 4 --seed 2 --name uav123-sub40_fp32_noise4_nodef_seed2

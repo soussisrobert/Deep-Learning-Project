@@ -4,6 +4,9 @@ AI6103 group project, Route 2: improve HiFT (Cao et al., ICCV 2021, real-time dr
 This repo is the **shared base** everyone can build on. It gives you working HiFT code, weights, the UAV123 benchmark on TC2, and an evaluation harness.
 Each member picks their own improvement angle on top of it.
 
+## Round 2 (Manzi's tracks)
+See [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md) (hypotheses, pass rules, literature) and [plan/SCHEDULE.md](plan/SCHEDULE.md) (TC2 job queues). Round-1 analysis: `analysis/2026-10-17_first-results/REPORT.md`.
+
 ## Who owns what
 | Part | Owner | Status |
 |---|---|---|
