@@ -21,6 +21,15 @@ python -c "import huggingface_hub" 2>/dev/null || python -m pip install -q huggi
 mkdir -p data/raw
 df -h data | tail -1
 if [[ ! -d data/raw/UAV123_extracted_ok ]]; then
+  if [[ ${STREAM_DOWNLOAD:-0} == 1 ]]; then
+    # Avoid storing a second 13 GiB copy when the home quota is tight.
+    # pipefail checks both download and gzip/tar integrity before marking success.
+    echo "[$(date +%T)] streaming UAV123 into extraction (restart required if interrupted)"
+    curl --fail --location --retry 5 \
+      https://huggingface.co/datasets/xche32/UAV123/resolve/main/UAV123.tar.gz \
+      | tar -xzf - -C data/raw
+    mkdir -p data/raw/UAV123_extracted_ok
+  else
   echo "[$(date +%T)] downloading with huggingface_hub (resumable; uses your token if you ran 'hf auth login')"
   python - <<'PY'
 from huggingface_hub import hf_hub_download
@@ -34,6 +43,7 @@ PY
   echo "[$(date +%T)] extracting"
   tar -xzf data/raw/UAV123.tar.gz -C data/raw
   mkdir -p data/raw/UAV123_extracted_ok && rm -f data/raw/UAV123.tar.gz
+  fi
 fi
 # the archive may unpack as data/raw/UAV123/{data_seq,anno} or straight into data/raw
 RAW=$(dirname "$(find data/raw -maxdepth 3 -type d -path '*/anno/UAV123' | head -1)")
@@ -48,7 +58,11 @@ for root in ("data/uav123_flat", "data/uav20l_flat"):
     try:
         s = load_dataset("flat", root)
         print(f"{root}: {len(s)} sequences, {sum(len(x) for x in s)} frames")
+        if root == "data/uav123_flat":
+            assert len(s) == 123 and sum(len(x) for x in s) == 112578, "Incomplete UAV123 conversion"
     except SystemExit as e:
+        if root == "data/uav123_flat":
+            raise
         print(f"{root}: {e}")
 PY
 # small subset to copy back to a laptop for local quick runs (real files, ~5 sequences x 60 frames)

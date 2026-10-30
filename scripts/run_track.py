@@ -21,7 +21,7 @@ warnings.filterwarnings("ignore", category=UserWarning)  # torch quantisation de
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from hiftstress.attacks import make_attack  # noqa: E402
-from hiftstress.crops import gt_crops  # noqa: E402
+from hiftstress.crops import gt_crops, gt_pairs  # noqa: E402
 from hiftstress.data import load_dataset  # noqa: E402
 from hiftstress.defenses import make_defense  # noqa: E402
 from hiftstress.edge import make_variant  # noqa: E402
@@ -36,12 +36,17 @@ def parse():
     p.add_argument("--root", help="dataset folder")
     p.add_argument("--max-seqs", type=int, help="spread subset of N sequences (quick runs)")
     p.add_argument("--seqs", nargs="*", help="exact sequence names")
+    p.add_argument("--seqs-file", help="JSON with a 'sequences' list (e.g. attack-subset-40.json) or one name per line")
     p.add_argument("--max-frames", type=int, help="truncate every sequence (quick runs only)")
     p.add_argument("--snapshot", help="HiFT weights (general_model.pth)")
     p.add_argument("--allow-random", action="store_true", help="run without weights (pipeline test)")
     p.add_argument("--device", default="auto")
     p.add_argument("--variant", default="fp32")
-    p.add_argument("--calib-seqs", type=int, default=20, help="sequences used to calibrate int8bb")
+    p.add_argument("--calib-seqs", type=int, default=20, help="sequences used to calibrate int8 variants")
+    p.add_argument("--calib-overlap-ok", action="store_true",
+                   help="allow calibration sequences that are also evaluated (default: excluded)")
+    p.add_argument("--attack-device", default=None,
+                   help="device for the attacker's fp32 network (e.g. cuda while an int8 model tracks on cpu)")
     p.add_argument("--attack", default="none", choices=["none", "noise", "fgsm", "pgd"])
     p.add_argument("--eps", type=float, default=0, help="L-inf budget in pixels (of 255)")
     p.add_argument("--steps", type=int, default=10)
@@ -62,15 +67,30 @@ def main():
         torch.set_num_threads(a.threads)
     torch.manual_seed(a.seed)
     device = pick_device(a.device)
+    if a.seqs_file:
+        txt = Path(a.seqs_file).read_text()
+        a.seqs = json.loads(txt)["sequences"] if a.seqs_file.endswith(".json") else txt.split()
     seqs = load_dataset(a.dataset, a.root, a.max_seqs, a.seqs, a.max_frames, a.seed)
 
     net_fp32, model_info = build_model(a.snapshot, device)
-    calib = None
-    if a.variant == "int8bb":
-        cal_seqs = load_dataset(a.dataset, a.root, a.calib_seqs, None, None, a.seed + 1)
+    calib, pairs, calib_names = None, None, []
+    if a.variant in ("int8bb", "int8full"):
+        pool = load_dataset(a.dataset, a.root, None, None, None, a.seed + 1)
+        if not a.calib_overlap_ok:
+            evald = {s.name for s in seqs}
+            pool = [s for s in pool if s.name not in evald] or pool
+        idx = np.linspace(0, len(pool) - 1, num=min(a.calib_seqs, len(pool))).round().astype(int)
+        cal_seqs = [pool[i] for i in sorted(set(idx))]
+        calib_names = [s.name for s in cal_seqs]
         _, calib = gt_crops(cal_seqs, frames_per_seq=2, device="cpu")
-    net, dtype, run_device, var_info = make_variant(a.variant, net_fp32, device, calib)
-    attack_net = net_fp32 if run_device == device else net_fp32.to(run_device)
+        pairs = gt_pairs(cal_seqs, frames_per_seq=2, device="cpu")
+    net, dtype, run_device, var_info = make_variant(a.variant, net_fp32, device, calib, pairs)
+    if calib_names:
+        var_info["calibration_sequences"] = calib_names
+    if a.attack_device:
+        attack_net = net_fp32.to(torch.device(a.attack_device))
+    else:
+        attack_net = net_fp32 if run_device == device else net_fp32.to(run_device)
 
     attack = make_attack(a.attack, a.eps, a.steps, a.adaptive, a.seed)
     defense = make_defense(a.defense)
@@ -108,7 +128,8 @@ def main():
         run=name, dataset=a.dataset, root=a.root, variant=a.variant, attack=a.attack if attack else "none",
         eps=a.eps if attack else 0, steps=a.steps if a.attack == "pgd" else (1 if a.attack == "fgsm" else 0),
         adaptive=bool(a.adaptive and attack and defense), defense=defense.name if defense else "none",
-        device=str(run_device), torch=torch.__version__, seed=a.seed, model=model_info, variant_info=var_info,
+        device=str(run_device), attack_device=str(next(attack_net.parameters()).device) if attack else None,
+        seqs_file=a.seqs_file, torch=torch.__version__, seed=a.seed, model=model_info, variant_info=var_info,
         fps_end_to_end=totals["frames"] / max(totals["wall_s"], 1e-9),
         ms_per_frame={"model": 1e3 * totals["model_s"] / n, "attack": 1e3 * totals["attack_s"] / n,
                       "defense": 1e3 * totals["defense_s"] / n, "total": 1e3 * totals["wall_s"] / n},

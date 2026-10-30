@@ -6,6 +6,8 @@ Variants (none needs retraining):
   int8dyn         dynamic int8 quantisation of the transformer's Linear layers (CPU only)
   int8bb          static int8 quantisation of the AlexNet backbone, calibrated on real
                   search crops; the transformer head stays fp32 (CPU only)
+  int8full        int8bb + static int8 of the head's convolutions (fusion convs, loc/cls
+                  towers); the transformer and the template/search correlation stay fp32 (CPU only)
   prune30/50/70   global L1 unstructured pruning of conv + linear weights (any device);
                   this removes weights but dense hardware does not get faster, which is
                   itself a result worth reporting
@@ -23,7 +25,7 @@ from torch.utils.flop_counter import FlopCounterMode
 from .model import count_params, load_cfg
 
 cfg = load_cfg()
-VARIANTS = ["fp32", "fp16", "int8dyn", "int8bb", "prune30", "prune50", "prune70", "compile"]
+VARIANTS = ["fp32", "fp16", "int8dyn", "int8bb", "int8full", "prune30", "prune50", "prune70", "compile"]
 
 
 def state_size_mb(module):
@@ -60,7 +62,27 @@ def _quantize_backbone_static(net, calib_crops):
     return net, engine
 
 
-def make_variant(name, net_fp32, device, calib_crops=None):
+def _quantize_head_static(net, calib_pairs, engine):
+    """Static int8 for the head's conv layers. calib_pairs: list of (template crop, search crop)."""
+    import torch.nn.functional as F
+    from torch.ao.quantization import get_default_qconfig_mapping
+    from torch.ao.quantization.quantize_fx import convert_fx, prepare_fx
+    qm = (get_default_qconfig_mapping(engine)
+          .set_module_name("transformer", None).set_module_name("row_embed", None)
+          .set_module_name("col_embed", None).set_object_type(F.conv2d, None))  # keep xcorr fp32
+    head = copy.deepcopy(net.grader).eval()
+    with torch.no_grad():
+        net.template(calib_pairs[0][0])
+        example = (net.backbone(calib_pairs[0][1]), net.zf)
+        prepared = prepare_fx(head, qm, example, prepare_custom_config={"non_traceable_module_name": ["transformer"]})
+        for z, x in calib_pairs:
+            net.template(z)
+            prepared(net.backbone(x), net.zf)
+    net.grader = convert_fx(prepared)
+    return net
+
+
+def make_variant(name, net_fp32, device, calib_crops=None, calib_pairs=None):
     """Returns (net, dtype, device, info). Never modifies net_fp32."""
     info = {"variant": name}
     if name == "fp32":
@@ -88,6 +110,15 @@ def make_variant(name, net_fp32, device, calib_crops=None):
         net, engine = _quantize_backbone_static(net, [c.cpu() for c in calib_crops])
         info.update(note="CPU only; backbone int8, transformer head fp32", engine=engine,
                     calibration_crops=len(calib_crops))
+        return net, torch.float32, torch.device("cpu"), info
+    if name == "int8full":
+        if not calib_pairs:
+            raise SystemExit("int8full needs calibration (template, search) pairs")
+        net = copy.deepcopy(net_fp32).cpu().eval()
+        net, engine = _quantize_backbone_static(net, [x.cpu() for _, x in calib_pairs])
+        net = _quantize_head_static(net, [(z.cpu(), x.cpu()) for z, x in calib_pairs], engine)
+        info.update(note="CPU only; backbone + head convs int8; transformer and correlation fp32",
+                    engine=engine, calibration_pairs=len(calib_pairs))
         return net, torch.float32, torch.device("cpu"), info
     if name == "compile":
         net = copy.deepcopy(net_fp32)

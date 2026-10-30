@@ -21,7 +21,7 @@ import torch
 warnings.filterwarnings("ignore", category=UserWarning)  # torch quantisation deprecation notices
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from hiftstress.crops import gt_crops  # noqa: E402
+from hiftstress.crops import gt_crops, gt_pairs  # noqa: E402
 from hiftstress.data import load_dataset  # noqa: E402
 from hiftstress.edge import benchmark, count_flops, make_variant, state_size_mb  # noqa: E402
 from hiftstress.model import build_model, count_params, pick_device  # noqa: E402
@@ -59,9 +59,10 @@ def main():
     device = pick_device(a.device)
     if a.variants is None:
         a.variants = ["fp32", "prune30", "prune50", "prune70"] + (
-            ["fp16", "compile"] if device.type == "cuda" else ["fp16"] if device.type == "mps" else ["int8dyn", "int8bb"])
+            ["fp16", "compile"] if device.type == "cuda" else ["fp16"] if device.type == "mps" else ["int8dyn", "int8bb", "int8full"])
     seqs = load_dataset(a.dataset, a.root, a.crop_seqs, None, None, 1)
     zs, xs = gt_crops(seqs, frames_per_seq=3, device="cpu")
+    pairs = gt_pairs(seqs, frames_per_seq=2, device="cpu")
     z, x = zs[0], xs[0]
     ref, info = build_model(a.snapshot, device)
     flops = count_flops(ref, z.to(device), x.to(device))
@@ -73,7 +74,7 @@ def main():
             torch.set_num_threads(threads)
         for v in a.variants:
             try:
-                net, dtype, dev, vinfo = make_variant(v, ref, device, xs[:40])
+                net, dtype, dev, vinfo = make_variant(v, ref, device, xs[:40], pairs)
             except SystemExit as e:
                 print(f"[skip] {v}: {e}")
                 continue

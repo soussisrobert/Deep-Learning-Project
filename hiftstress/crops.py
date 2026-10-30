@@ -25,3 +25,12 @@ def gt_crops(seqs, frames_per_seq=2, device="cpu"):
             c = np.array([bx + (bw - 1) / 2, by + (bh - 1) / 2])
             xs.append(helper.get_subwindow(seq.image(i), c, cfg.TRACK.INSTANCE_SIZE, s_x, avg))
     return zs, xs
+
+
+def gt_pairs(seqs, frames_per_seq=2, device="cpu"):
+    """(template crop, search crop) pairs from the same sequence, for head calibration."""
+    pairs = []
+    for seq in seqs:
+        zs, xs = gt_crops([seq], frames_per_seq, device)
+        pairs += [(zs[0], x) for x in xs]
+    return pairs
