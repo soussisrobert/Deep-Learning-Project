@@ -36,20 +36,38 @@ def score_map(net, x):
     return (p * cfg.TRACK.w2 + cls2[:, 0] * cfg.TRACK.w3) / 2
 
 
+@torch.no_grad()
+def confidence_stats(out):
+    """Peak and peak-to-sidelobe ratio (PSR) of the fused score map (same fusion HiFT uses to pick the box).
+    Used only for failure / attack awareness; does not change tracking."""
+    p = F.softmax(out["cls1"], dim=1)[0, 1]
+    m = ((p * cfg.TRACK.w2 + out["cls2"][0, 0] * cfg.TRACK.w3) / 2).cpu()
+    peak = float(m.max())
+    i, j = divmod(int(m.argmax()), m.shape[1])
+    mask = torch.ones_like(m, dtype=torch.bool)
+    mask[max(0, i - 1):i + 2, max(0, j - 1):j + 2] = False
+    side = m[mask]
+    return peak, float((peak - side.mean()) / (side.std() + 1e-6))
+
+
 class TrackingModel:
     """Stands in for ModelBuilder inside HiFTTracker."""
 
-    def __init__(self, net, device, dtype=torch.float32, attack=None, defense=None, attack_net=None):
+    def __init__(self, net, device, dtype=torch.float32, attack=None, defense=None, attack_net=None, corruption=None):
         self.net, self.device, self.dtype = net, device, dtype
+        self.corruption = corruption  # natural corruption of every crop (part of the scene, not timed)
         self.attack, self.defense = attack, defense
         self.attack_net = attack_net if attack_net is not None else net
         self.stats = {"attack_s": 0.0, "defense_s": 0.0, "model_s": 0.0, "frames": 0}
+        self.frame_conf = []   # per tracked frame: (peak, psr) of the fused 11x11 score map HiFT selects from
 
     def eval(self):
         return self
 
     def template(self, z):
         z = z.to(self.device)
+        if self.corruption is not None:
+            z = self.corruption(z)
         with torch.no_grad():
             self.net.template(z.to(self.dtype))
             if self.attack is not None and self.attack_net is not self.net:
@@ -57,6 +75,8 @@ class TrackingModel:
 
     def track(self, x):
         x = x.to(self.device)
+        if self.corruption is not None:
+            x = self.corruption(x)
         if self.attack is not None:
             t0 = time.perf_counter()
             adev = next(self.attack_net.parameters()).device
@@ -79,7 +99,9 @@ class TrackingModel:
         _sync(self.device)
         self.stats["model_s"] += time.perf_counter() - t0
         self.stats["frames"] += 1
-        return {k: v.float() for k, v in out.items()}
+        out = {k: v.float() for k, v in out.items()}
+        self.frame_conf.append(confidence_stats(out))
+        return out
 
 
 class HookedTracker(HiFTTracker):

@@ -1,6 +1,8 @@
 # HiFT-stress: verified TC2 handoff
 
 > **New here? Read [TEAM_HANDOFF.md](TEAM_HANDOFF.md) first.**
+>
+> **Just want the results? See [RESULTS.md](RESULTS.md)** (all five rounds on one page).
 
 ## What worked
 
