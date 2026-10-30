@@ -2,6 +2,7 @@
 env/
 third_party/
 weights/*
+!weights/README.md
 !weights/.gitkeep
 data/
 results*/

@@ -53,13 +53,18 @@ class TrackingModel:
         with torch.no_grad():
             self.net.template(z.to(self.dtype))
             if self.attack is not None and self.attack_net is not self.net:
-                self.attack_net.template(z)
+                self.attack_net.template(z.to(next(self.attack_net.parameters()).device))
 
     def track(self, x):
         x = x.to(self.device)
         if self.attack is not None:
             t0 = time.perf_counter()
-            x = self.attack(x, lambda inp: score_map(self.attack_net, inp), self.defense)
+            adev = next(self.attack_net.parameters()).device
+            if adev != x.device:   # e.g. attacker computes on the GPU against an int8 model on the CPU
+                x = self.attack(x.to(adev), lambda inp: score_map(self.attack_net, inp), self.defense).to(self.device)
+                _sync(adev)
+            else:
+                x = self.attack(x, lambda inp: score_map(self.attack_net, inp), self.defense)
             _sync(self.device)
             self.stats["attack_s"] += time.perf_counter() - t0
         if self.defense is not None:

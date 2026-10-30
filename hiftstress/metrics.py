@@ -2,7 +2,12 @@
 
 success AUC : mean over IoU thresholds 0, 0.05, ..., 1.0 of the fraction of frames
               whose IoU exceeds the threshold (frames with no valid ground truth count as 0 IoU)
-precision   : fraction of frames whose centre error is <= 20 pixels
+precision   : fraction of frames whose centre error is <= 20 pixels; frames without a valid
+              ground-truth box count as misses (strict rule, used by all earlier runs)
+*_official  : the rule in HiFT's own toolkit (toolkit/utils/statistics.py): for precision, a frame
+              whose ground-truth centre is not positive in both coordinates (target absent / NaN)
+              counts as a HIT. Success is identical under both rules. Use *_official when
+              comparing with numbers printed in the HiFT paper.
 """
 import numpy as np
 
@@ -41,6 +46,13 @@ def sequence_scores(pred, gt):
     errs[ok] = centre_error(pred[ok], gt[ok])
     succ_curve = np.array([(ious > t).mean() for t in IOU_THRESHOLDS])
     prec_curve = np.array([(errs <= t).mean() for t in PIX_THRESHOLDS])
+    # official toolkit rule
+    gc = gt[:, :2] + (gt[:, 2:] - 1) / 2
+    with np.errstate(invalid="ignore"):
+        cmask = np.sum(gc > 0, axis=1) == 2
+    dist = np.full(n, -1.0)
+    dist[cmask] = centre_error(pred[cmask], gt[cmask])
+    prec_off = np.array([(dist <= t).mean() for t in PIX_THRESHOLDS])
     return {
         "frames": int(n),
         "success_auc": float(succ_curve.mean()),
@@ -48,6 +60,9 @@ def sequence_scores(pred, gt):
         "mean_iou_valid": float(ious[ok].mean()) if ok.any() else float("nan"),
         "success_curve": succ_curve.tolist(),
         "precision_curve": prec_curve.tolist(),
+        "precision_20_official": float(prec_off[20]),
+        "precision_curve_official": prec_off.tolist(),
+        "absent_frames": int((~ok).sum()),
     }
 
 
@@ -57,6 +72,10 @@ def aggregate(per_seq):
         return {}
     succ = np.mean([s["success_curve"] for s in per_seq], axis=0)
     prec = np.mean([s["precision_curve"] for s in per_seq], axis=0)
+    extra = {}
+    if all("precision_curve_official" in s for s in per_seq):
+        po = np.mean([s["precision_curve_official"] for s in per_seq], axis=0)
+        extra = {"precision_20_official": float(po[20]), "precision_curve_official": po.tolist()}
     return {
         "sequences": len(per_seq),
         "frames": int(sum(s["frames"] for s in per_seq)),
@@ -64,4 +83,5 @@ def aggregate(per_seq):
         "precision_20": float(prec[20]),
         "success_curve": succ.tolist(),
         "precision_curve": prec.tolist(),
+        **extra,
     }

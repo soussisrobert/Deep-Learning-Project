@@ -26,6 +26,8 @@ common=(--dataset "$DATASET" --root "$ROOT" "${W[@]}" --out "$OUT" --seed "$SEED
 sub=""; [[ -n "$MAXSEQ" ]] && sub="-sub$MAXSEQ"
 
 run() {  # run <expected run-name suffix> <args...>
+  # Optional exact suffix list for batches that fit the six-hour wall limit.
+  if [[ -n ${RUN_ONLY:-} && " $RUN_ONLY " != *" $1 "* ]]; then return; fi
   local name="${TAG}${sub}_$1"; shift
   if [[ -f "$OUT/$name/summary.json" ]]; then echo "[skip] $name (done)"; return; fi
   echo "[$(date +%H:%M:%S)] $name"
