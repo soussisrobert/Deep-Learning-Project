@@ -1,0 +1,2 @@
+uav123-dev20_fp32_clean_nodef_sc	python scripts/run_track.py --dataset flat --root data/uav123_flat --snapshot weights/general_model.pth --out results --seqs-file plan/round3/dev-20.json --device cuda --name uav123-dev20_fp32_clean_nodef_sc
+uav123-dev20_fp32_pgd4s10_nodef_sc	python scripts/run_track.py --dataset flat --root data/uav123_flat --snapshot weights/general_model.pth --out results --seqs-file plan/round3/dev-20.json --device cuda --attack pgd --eps 4 --steps 10 --name uav123-dev20_fp32_pgd4s10_nodef_sc

@@ -1,0 +1,2 @@
+uav123_int8bb_clean_nodef_t4	python scripts/run_track.py --dataset flat --root data/uav123_flat --snapshot weights/general_model.pth --out results  --device cpu --threads 4 --variant int8bb --name uav123_int8bb_clean_nodef_t4
+uav123_int8full_clean_nodef_t4	python scripts/run_track.py --dataset flat --root data/uav123_flat --snapshot weights/general_model.pth --out results  --device cpu --threads 4 --variant int8full --name uav123_int8full_clean_nodef_t4

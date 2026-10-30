@@ -1,0 +1,47 @@
+validated 19 round-4 runs; problems: none
+calibration overlap between draws: 20 19 19 | with DEV: [8, 7, 7]
+draw 1: AUC 0.5782  change -0.0100 [-0.0237, -0.0011] (median -0.0006; +0/-2 videos beyond ±0.05)
+draw 2: AUC 0.5792  change -0.0091 [-0.0226, -0.0007] (median -0.0011; +0/-2 videos beyond ±0.05)
+draw 3: AUC 0.5851  change -0.0032 [-0.0068, -0.0006] (median -0.0006; +0/-1 videos beyond ±0.05)
+mean change over draws -0.007444374681576956 SD 0.0037234355135389564 t-interval [-0.016694647794088406, 0.001805898430934494]
+draw-averaged per-video -0.0074 [-0.0168, -0.0013] (median -0.0006; +0/-1 videos beyond ±0.05) | two-level 95% {'lo': -0.01930470393035345, 'hi': -0.0011960165127099498, 'p_below_m010': 0.2333}
+official precision@20: fp32 CPU 0.7853941819922834 draws [0.76876711 0.77082233 0.77911545] change -0.0125 [-0.0291, -0.0018] (median +0.0000; +0/-4 videos beyond ±0.05)
+NOISE CPU vs GPU fp32 (same weights, different hardware arithmetic): +0.0058 [-0.0002, +0.0163] (median -0.0002; +1/-0 videos beyond ±0.05)
+NOISE random noise eps=1 (GPU): -0.0009 [-0.0149, +0.0131] (median -0.0000; +1/-1 videos beyond ±0.05)
+NOISE old int8bb recipe draw 0: -0.0125 [-0.0275, -0.0010] (median -0.0004; +0/-3 videos beyond ±0.05)
+NOISE old int8bb recipe draw 1: -0.0214 [-0.0513, -0.0023] (median -0.0007; +0/-3 videos beyond ±0.05)
+NOISE old int8bb recipe draw 2: -0.0251 [-0.0563, -0.0040] (median -0.0010; +0/-4 videos beyond ±0.05)
+NOISE old int8bb recipe draw 3: -0.0055 [-0.0169, +0.0026] (median +0.0001; +1/-2 videos beyond ±0.05)
+NOISE int8sel draw 1 vs draw 2 (same recipe, different calibration videos): -0.0009 [-0.0044, +0.0017] (median +0.0002; +0/-1 videos beyond ±0.05)
+NOISE int8sel draw 1 vs draw 3: -0.0069 [-0.0196, +0.0008] (median -0.0006; +0/-2 videos beyond ±0.05)
+NOISE int8sel draw 2 vs draw 3: -0.0059 [-0.0193, +0.0027] (median -0.0005; +1/-2 videos beyond ±0.05)
+old recipe 4 draws [-0.012481164424314978, -0.021350738739766652, -0.02510621526510768, -0.00545527769629889] mean -0.016098349031372052 SD 0.008852273599829418
+
+WORST videos for int8sel (draw-averaged change vs fp32 CPU):
+  uav2        fp32 0.270  draws -0.226 -0.230 -0.009  avg -0.155 | init size 7px absent 14% motion 0.193 | cpu-gpu -0.003 jpeg75 -0.227 jpeg85 -0.049
+  car1_2      fp32 0.664  draws -0.069 -0.070 -0.005  avg -0.048 | init size 29px absent 3% motion 0.041 | cpu-gpu +0.001 jpeg75 +0.003 jpeg85 -0.067
+  car12       fp32 0.077  draws -0.045 -0.034 -0.035  avg -0.038 | init size 19px absent 21% motion 0.073 | cpu-gpu +0.033 jpeg75 +0.001 jpeg85 -0.002
+  car8_1      fp32 0.857  draws -0.050 +0.003 -0.052  avg -0.033 | init size 107px absent 0% motion 0.011 | cpu-gpu +0.005 jpeg75 +0.008 jpeg85 +0.003
+  person19_1  fp32 0.756  draws -0.004 -0.014 -0.009  avg -0.009 | init size 191px absent 8% motion 0.010 | cpu-gpu +0.013 jpeg75 +0.005 jpeg85 +0.011
+  boat8       fp32 0.693  draws -0.011 -0.002 -0.005  avg -0.006 | init size 12px absent 0% motion 0.028 | cpu-gpu +0.006 jpeg75 -0.002 jpeg85 -0.008
+BEST:
+  boat1       fp32 0.873  avg +0.003
+  group3_3    fp32 0.641  avg +0.003
+  building5   fp32 0.797  avg +0.003
+concentration: {'within_002': 36, 'lost_gt_005': 1, 'share_of_loss_top2': 0.6817859876844979, 'mean_without_worst2': -0.002493583512215343}
+videos with a >0.05 loss in at least one draw: ['uav2', 'car1_2', 'car8_1']
+Spearman |change| vs proxies: {'init_size': 0.01, 'absent_frac': 0.12, 'motion_proxy': -0.01, 'fp32_cpu': -0.09, 'frames': -0.08}
+size split (init box sqrt-area <= median): -0.0125 [-0.0306, -0.0008] (median -0.0008; +0/-1 videos beyond ±0.05) | -0.0024 [-0.0062, +0.0000] (median -0.0003; +0/-0 videos beyond ±0.05)
+videos moving >0.05: {'int8sel': ['uav2'], 'jpeg75': ['uav2', 'wakeboard6'], 'jpeg85': ['car1_2', 'truck3', 'car4'], 'cpu_vs_gpu': ['person1_s']}
+NET t1_int8bb {'net_ms': 72.083, 'fp32_ms': 178.898, 'speedup': 2.482, 'backbone_ms': 37.966, 'head_ms': 34.117, 'fp32_backbone': 142.707, 'fp32_head': 36.192, 'size_mb': 33.095, 'fp32_size': 44.333, 'same_peak': 0.933}
+NET t1_int8bb-s1 {'net_ms': 93.161, 'fp32_ms': 178.898, 'speedup': 1.92, 'backbone_ms': 57.939, 'head_ms': 35.222, 'fp32_backbone': 142.707, 'fp32_head': 36.192, 'size_mb': 33.196, 'fp32_size': 44.333, 'same_peak': 0.983}
+NET t4_int8bb {'net_ms': 41.546, 'fp32_ms': 94.392, 'speedup': 2.272, 'backbone_ms': 18.427, 'head_ms': 23.119, 'fp32_backbone': 71.925, 'fp32_head': 22.467, 'size_mb': 33.095, 'fp32_size': 44.333, 'same_peak': 0.933}
+NET t4_int8bb-s1 {'net_ms': 52.327, 'fp32_ms': 94.392, 'speedup': 1.804, 'backbone_ms': 28.058, 'head_ms': 24.268, 'fp32_backbone': 71.925, 'fp32_head': 22.467, 'size_mb': 33.196, 'fp32_size': 44.333, 'same_peak': 0.983}
+tracking ms/frame (per-frame tracker step, no image loading): {'fp32_cpu_on_40 (round 1 job)': 91.9, 'int8sel draw 1': 52.8, 'int8sel draw 2': 51.9, 'int8sel draw 3': 52.0, 'old int8bb (round 2 job)': 45.0} -> speed-up 1.76
+ms_per_frame components int8sel {'model': 49.6, 'attack': 0.0, 'defense': 0.0, 'total': 52.8} fp32(123) {'model': 88.8, 'attack': 0.0, 'defense': 0.0, 'total': 92.2}
+JPEG75: DEV +0.0228 [-0.0530, +0.1005] (median -0.0000; +2/-1 videos beyond ±0.05) | TEST -0.0116 [-0.0288, +0.0003] (median -0.0003; +0/-2 videos beyond ±0.05)
+JPEG85: DEV +0.0044 [-0.0007, +0.0128] (median +0.0014; +1/-0 videos beyond ±0.05) | TEST -0.0303 [-0.0714, -0.0015] (median -0.0011; +0/-3 videos beyond ±0.05)
+DEV recipes (draw-averaged per-video): {'int8bb_c20x2': '+0.0065 [-0.0083, +0.0254] (median +0.0007; +1/-1 videos beyond ±0.05)', 'int8bb_c40x4s': '+0.0197 [-0.0102, +0.0692] (median +0.0001; +1/-1 videos beyond ±0.05)', 'int8bb-s1_c20x2': '-0.0008 [-0.0074, +0.0038] (median +0.0003; +0/-1 videos beyond ±0.05)', 'int8bb-s1_c40x4s': '+0.0251 [-0.0035, +0.0738] (median +0.0003; +2/-0 videos beyond ±0.05)'}
+DEV fp32 CPU vs GPU: +0.0010 [-0.0066, +0.0109] (median +0.0003; +1/-0 videos beyond ±0.05)
+DEV selected recipe, largest per-video moves: [('person19_2', 0.455, 0.38, 0.381), ('bike3', 0.057, 0.188, 0.19), ('group1_2', -0.049, 0.674, 0.599), ('person8_1', 0.029, 0.717, 0.758)]
+figures written

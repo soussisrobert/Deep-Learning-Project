@@ -1,0 +1,2 @@
+uav123-sub40_fp32_clean_jpeg85_t4	python scripts/run_track.py --dataset flat --root data/uav123_flat --snapshot weights/general_model.pth --out results --seqs-file attack-subset-40.json --device cpu --threads 4 --defense jpeg85 --name uav123-sub40_fp32_clean_jpeg85_t4
+uav123-sub40_fp32_clean_nodef_t4	python scripts/run_track.py --dataset flat --root data/uav123_flat --snapshot weights/general_model.pth --out results --seqs-file attack-subset-40.json --device cpu --threads 4 --name uav123-sub40_fp32_clean_nodef_t4

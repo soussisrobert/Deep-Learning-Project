@@ -1,0 +1,1 @@
+bench/r4_edge_cpu	python scripts/bench_edge.py --snapshot weights/general_model.pth --dataset flat --root data/uav123_flat --device cpu --variants fp32 int8bb int8bb-s1 --threads 4 1 --iters 200 --out results/edge_round4 && mkdir -p results/bench/r4_edge_cpu && echo '{}' > results/bench/r4_edge_cpu/summary.json

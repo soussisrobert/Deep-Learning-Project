@@ -1,0 +1,16 @@
+.venv/
+env/
+third_party/
+weights/*
+!weights/README.md
+!weights/.gitkeep
+data/
+results*/
+runs/
+logs/
+__pycache__/
+*.pyc
+*.zip
+*.tar
+*.tar.gz
+.DS_Store

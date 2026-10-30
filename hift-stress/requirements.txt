@@ -1,0 +1,8 @@
+# torch is installed separately (CUDA build on the cluster, default build on a Mac)
+numpy
+opencv-python-headless
+pyyaml
+yacs
+matplotlib
+gdown
+huggingface_hub
