@@ -63,7 +63,7 @@ python scripts/smoke_test.py --snapshot weights/general_model.pth   # expect 13/
 Connect GlobalProtect VPN, then from the laptop:
 
 ```bash
-rsync -av --exclude .venv --exclude results --exclude third_party ./ ma00011e@10.96.189.12:~/hift-stress/
+rsync -av --exclude .venv --exclude results --exclude third_party ./ <you>@10.96.189.12:~/hift-stress/
 ```
 
 (this sends `weights/` too). On the login node, one job at a time, checking each log before the next:
@@ -94,7 +94,7 @@ sbatch --export=ALL,PART=cpu slurm/job_edge_tc2.sbatch
 ```
 
 A job that hits the wall time can be resubmitted unchanged: finished runs are skipped. Bring
-everything back with `rsync -av ma00011e@10.96.189.12:~/hift-stress/{results,runs} ./`.
+everything back with `rsync -av <you>@10.96.189.12:~/hift-stress/{results,runs} ./`.
 
 ## Optional: quick runs on the laptop
 
@@ -102,7 +102,7 @@ The data job also writes `data/uav123_mini.tar` (5 real sequences x 60 frames, a
 back and unpack it to try things locally. Laptop numbers are **not** results.
 
 ```bash
-scp ma00011e@10.96.189.12:~/hift-stress/data/uav123_mini.tar data/ && tar -xf data/uav123_mini.tar -C data/
+scp <you>@10.96.189.12:~/hift-stress/data/uav123_mini.tar data/ && tar -xf data/uav123_mini.tar -C data/
 source .venv/bin/activate
 export DATASET=flat ROOT=data/uav123_mini TAG=mini SNAP=weights/general_model.pth MAXSEQ= MAXFRAMES= STEPS=5 PY=python
 PHASE=A bash scripts/sweep_adv.sh
