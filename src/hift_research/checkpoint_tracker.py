@@ -7,6 +7,34 @@ from pathlib import Path
 from types import MethodType
 
 B2_SCHEMAS = ("hift-wave4-serial-pilot-boundary-v1", "hift-b2-lasot-checkpoint-v1", "hift-b2-domain-checkpoint-v1")
+UPSTREAM_MANIFEST = "configs/upstream_992aa7c_files.sha256"  # git-blob sha256 of every tracked upstream file
+
+
+def verify_upstream_files(root):
+    """Fail-closed upstream identity for a code copy without .git (cluster bundle): every tracked file of the
+    pinned upstream commit must be present with its git-blob sha256."""
+    from .provenance import sha256
+    root = Path(root)
+    upstream = root/"third_party/HiFT"
+    lines = (root/UPSTREAM_MANIFEST).read_text(encoding="utf-8").splitlines()
+    bad = [name for digest, name in (line.split(" *", 1) for line in lines if line.strip())
+           if not (upstream/name).is_file() or sha256(upstream/name) != digest]
+    if bad or not lines:
+        raise ValueError(f"upstream files differ from the pinned commit: {bad[:5]}")
+    return len(lines)
+
+
+def ensure_upstream_identity(root):
+    """'git' when the submodule checkout exists (inference.configure_upstream verifies it unchanged); otherwise
+    verify the file manifest and let configure_upstream use it instead of git (isolated adapter: inference.py
+    and provenance.py stay unchanged)."""
+    root = Path(root)
+    if (root/"third_party/HiFT/.git").exists():
+        return "git"
+    from . import provenance
+    count = verify_upstream_files(root)
+    provenance.source_identity = lambda _root: {"upstream_verification": f"file manifest ({count} files)"}
+    return f"file manifest ({count} files, {UPSTREAM_MANIFEST})"
 
 
 def build_tracker(root, checkpoint=None, *, official=False, score="sigmoid", selection="nan-safe"):
@@ -17,6 +45,7 @@ def build_tracker(root, checkpoint=None, *, official=False, score="sigmoid", sel
     from .provenance import sha256
 
     root = Path(root)
+    upstream_verification = ensure_upstream_identity(root)
     config = root/"third_party/HiFT/experiments/config.yaml"
     if official == (checkpoint is not None):
         raise ValueError("give exactly one of checkpoint / official")
@@ -59,5 +88,5 @@ def build_tracker(root, checkpoint=None, *, official=False, score="sigmoid", sel
     else:
         raise ValueError("selection must be upstream or nan-safe")
     info.update({"checkpoint": str(Path(checkpoint).resolve()), "checkpoint_sha256": sha256(checkpoint),
-                 "score": score, "selection": selection})
+                 "score": score, "selection": selection, "upstream_verification": upstream_verification})
     return tracker, info

@@ -116,3 +116,30 @@ def test_finetune_frozen_backbone_mode():
     assert any(p.requires_grad for p in trainable.backbone.parameters())
     with pytest.raises(ValueError):
         trainer.build_official_finetune("corrected", 2, 1e-3, 1e-4, backbone="partial")
+
+
+def test_upstream_file_manifest_fails_closed(tmp_path):
+    import hashlib
+    from hift_research import checkpoint_tracker as ct
+    upstream = tmp_path/"third_party/HiFT"
+    (upstream/"pysot").mkdir(parents=True)
+    files = {"LICENSE": b"license\n", "pysot/a.py": b"x = 1\n"}
+    for name, data in files.items():
+        (upstream/name).write_bytes(data)
+    (tmp_path/"configs").mkdir()
+    (tmp_path/ct.UPSTREAM_MANIFEST).write_text(
+        "".join(f"{hashlib.sha256(d).hexdigest()} *{n}\n" for n, d in files.items()), encoding="utf-8")
+    assert ct.verify_upstream_files(tmp_path) == 2
+    (upstream/"pysot/a.py").write_bytes(b"x = 2\n")
+    with pytest.raises(ValueError):
+        ct.verify_upstream_files(tmp_path)
+    (upstream/"pysot/a.py").unlink()
+    with pytest.raises(ValueError):
+        ct.verify_upstream_files(tmp_path)
+
+
+def test_repo_checkout_uses_git_identity():
+    from hift_research import checkpoint_tracker as ct
+    assert ct.ensure_upstream_identity(ROOT) == "git"
+    lines = (ROOT/ct.UPSTREAM_MANIFEST).read_text(encoding="utf-8").splitlines()
+    assert len(lines) == 167 and all(len(l.split(" *", 1)[0]) == 64 for l in lines)

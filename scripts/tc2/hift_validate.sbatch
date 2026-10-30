@@ -26,10 +26,12 @@ cd "$R"; mkdir -p "$B/validation"; STATUS=0
 IFS=';' read -ra ITEMS <<< "$VAL_JOBS"
 for item in "${ITEMS[@]}"; do
   label=${item%%|*}; vargs=${item#*|}
-  [ -e "$B/validation/$label" ] && { echo "skip $label (exists)"; continue; }
-  echo "=== $label: $vargs $(date --iso-8601=seconds)"
+  out=$B/validation/$label
+  [ -f "$out/validation.json" ] && { echo "skip $label (done)"; continue; }
+  [ -e "$out" ] && out=$out-retry$(date +%s)   # a failed attempt's directory is kept, never reused
+  echo "=== $label -> $out: $vargs $(date --iso-8601=seconds)"
   # shellcheck disable=SC2086
-  python -u scripts/validate_domain.py $vargs --data-root "$B/data" --output "$B/validation/$label" --subsets V1 V2     | grep VALIDATION || STATUS=1
+  python -u scripts/validate_domain.py $vargs --data-root "$B/data" --output "$out" --subsets V1 V2     | grep VALIDATION || STATUS=1
 done
 echo "=== exit $STATUS $(date --iso-8601=seconds)"
 exit $STATUS
