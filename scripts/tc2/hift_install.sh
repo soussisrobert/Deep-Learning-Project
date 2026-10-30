@@ -48,7 +48,7 @@ case $STAGE in
     NAME=${2:?job name}; JOB=$NAME; SEEDK=""
     case $NAME in *_s[2-9]) SEEDK=${NAME##*_s}; NAME=${NAME%_s[2-9]} ;; esac   # seed replicate k of a table job
     [ -f "$B/env/.ready" ] && [ -f "$B/data/.ready" ] || { echo "NOT SUBMITTED $NAME: env/data not ready"; exit 0; }
-    if [ "$NAME" = hift_val_diag ]; then  # stage-2 diagnostics D1/D2: validation only, existing checkpoints (V1+V2)
+    if [ "$NAME" = hift_val_diag ] || [ "$NAME" = hift_val_diag2 ]; then  # stage-2 diagnostics D1/D2 (diag2: rerun after the git-identity fix): validation only, existing checkpoints (V1+V2)
       V="B0-RAW-UPSTREAM|--official --score raw --selection upstream;B0-SIGMOID-NANSAFE|--official"
       for r in TC2-B0FT-CORR-001 TC2-B0FT-CORR-S2-001 TC2-B0FT-CORR-S3-001 TC2-B0FT-ORIG-001 TC2-B0FT-ORIG-S2-001 TC2-B0FT-ORIG-S3-003; do
         [ -f "$B/runs/$r/final-model.pt" ] || { echo "NOT SUBMITTED $NAME: missing $r/final-model.pt"; exit 1; }
