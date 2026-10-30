@@ -12,9 +12,12 @@
 set -euo pipefail
 cd "$SLURM_SUBMIT_DIR"
 source slurm/env_tc2.sh
-UAVJSON=$(find data/raw -maxdepth 3 -name UAV.json | head -1 || true)
-python scripts/rescore.py --dataset "$DATASET" --root "$ROOT" --results results \
-  ${UAVJSON:+--uav-json "$UAVJSON"} --out results/rescore
+# Attribute labels: pysot UAV.json if the archive has one, else KAUST anno/UAV123/att/*.txt
+UAVJSON=$(find -L data -maxdepth 4 -name UAV.json 2>/dev/null | head -1 || true)
+ATTDIR=$(find -L data -maxdepth 5 -type d -path "*anno/UAV123/att" 2>/dev/null | head -1 || true)
+ATTR=(); if [[ -n "$UAVJSON" ]]; then ATTR=(--uav-json "$UAVJSON"); elif [[ -n "$ATTDIR" ]]; then ATTR=(--att-dir "$ATTDIR"); fi
+echo "attribute source: ${ATTR[*]:-none (overall scores only)}"
+python scripts/rescore.py --dataset "$DATASET" --root "$ROOT" --results results "${ATTR[@]}" --out results/rescore
 python scripts/bench_edge.py --snapshot weights/general_model.pth --dataset "$DATASET" --root "$ROOT" \
   --device cpu --variants fp32 int8bb int8full --threads 1 2 4 --iters 200 --out results/edge_round2   # keeps the verified round-1 rows untouched
 python scripts/summarize.py --results results

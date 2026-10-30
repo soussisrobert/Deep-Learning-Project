@@ -5,7 +5,7 @@ This repo is the **shared base** everyone can build on. It gives you working HiF
 Each member picks their own improvement angle on top of it.
 
 ## Round 2 (Sandhy's tracks)
-See [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md) (hypotheses, pass rules, literature) and [plan/SCHEDULE.md](plan/SCHEDULE.md) (TC2 job queues). Round-1 analysis: `analysis/2026-10-17_first-results/REPORT.md`.
+**Running it on TC2 (agent instructions): [AGENT_RUNBOOK_ROUND2.md](AGENT_RUNBOOK_ROUND2.md).** See [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md) (hypotheses, pass rules, literature) and [plan/SCHEDULE.md](plan/SCHEDULE.md) (TC2 job queues). Round-1 analysis: `analysis/2026-10-17_first-results/REPORT.md`.
 
 ## Who owns what
 | Part | Owner | Status |
