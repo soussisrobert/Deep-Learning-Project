@@ -80,3 +80,17 @@ All four are made by `tools/patch_hift.py`. No other source line differs.
 ## Suggested sentence (once the cluster output matches)
 
 > "Our checkout is the official commit `992aa7c1605360d607af84cb804b93cd8ee81caf` (vision4robotics/HiFT, the repository linked from the HiFT paper), changed only in 4 lines across 2 files to replace hard-coded CUDA calls with device-neutral equivalents; the configuration files are unchanged."
+
+## Cluster confirmation (3 Nov)
+
+The TC2 checkout that produced the results gives, verbatim:
+```
+992aa7c1605360d607af84cb804b93cd8ee81caf
+ pysot/models/model_builder.py | 4 ++--
+ pysot/models/utile/utile.py   | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+```
+- **Match:** the same HEAD, and the same 2 source files and 4 lines. No `.pyc` deletions on the cluster.
+- **The marker can be replaced** with the suggested sentence above.
+- **Source:** `../2026-11-03_layer-sensitivity/cluster_hift_git_check.txt`.
+

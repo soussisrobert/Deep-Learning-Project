@@ -1,0 +1,22 @@
+{
+ "pairs": 192,
+ "dev_videos": 20,
+ "draws": [
+  1,
+  2,
+  3
+ ],
+ "threads": 4,
+ "identity": {
+  "draw1_calibration_matches_round4": true,
+  "none_draw1_wakeboard7_boxes_iou>0.99": 1.0,
+  "keep1_draw1_wakeboard7_boxes_iou>0.99": 1.0,
+  "draw2_calibration_matches_round4": true,
+  "draw3_calibration_matches_round4": true
+ },
+ "fp32_net_ms": [
+  88.98,
+  86.73
+ ],
+ "engine": "fbgemm"
+}

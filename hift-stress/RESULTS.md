@@ -20,6 +20,7 @@ Five rounds of tests, about 100 tracking runs on the TC2 cluster.
 | **4 cheap input filters** (blur, median, bit-depth, JPEG) against an attacker who knows the filter | JPEG-75 works best. Against our strongest attacker it raises the worst case from 0.08 to 0.23 (+0.15); 26 videos better, none worse | ✅ Real protection… |
 | …but the filter on normal video | Costs −0.012 success (JPEG-85: −0.030), just over our −0.010 limit. The cost comes from 2 fragile videos | ❌ Not free |
 | **Compression: int8 backbone, first layer kept in full precision** | Network 1.75× faster on CPU (89 → 51 ms; tracker step 1.72×), measured in 6 matched sessions against the exact accuracy-tested model; model 25% smaller (44 → 33 MB). On all 123 videos, accuracy unchanged on average (+0.003); about −0.004 once two lucky videos are set aside | ✅ Our main improvement |
+| Why keep layer 1 in full precision? (per-layer test, 20 DEV videos) | Quantising layer 1 alone distorts HiFT's score map most (error 0.013 vs 0.002–0.008 for layers 2–5, same in all 3 calibration draws). Tracking accuracy on DEV can't tell the placements apart (all intervals include zero) | ✅ Choice justified; no accuracy claim |
 | Other compression | Whole backbone int8: 2.1× faster but −0.016 on average, depending on calibration videos. Full int8 including the attention head: 2.3× faster but −0.04 to −0.07. Pruning 50%: no speed-up and −0.13 | ❌ Dropped |
 | int8 under 7 image corruptions (noise, blur, darkness, synthetic night…) | Hurts the same as the original model (extra loss −0.0035 on average) | ✅ As robust as the original |
 | **Does HiFT know when it fails?** (its own confidence score) | Yes for normal failures: AUROC 0.97. When the alarm fires it is right 98% of the time, but it only catches 42% of failures, mostly after they start | ✅ Useful after-the-fact signal |
@@ -37,7 +38,7 @@ Five rounds of tests, about 100 tracking runs on the TC2 cluster.
 - Physical attacks.
 - That JPEG is free.
 
-**Update, 2 Nov:** the speed numbers come from a matched re-timing. It used the exact model whose accuracy was tested, ran fp32 and int8 in the same job, and repeated the measurement in alternating sessions. It replaces the earlier 1.80×, which came from an unmatched benchmark. Details: [`analysis/2026-11-02_retime-matched/`](analysis/2026-11-02_retime-matched/REVIEW.md). The HiFT code pin check is in [`analysis/2026-11-02_hift-pin-check/`](analysis/2026-11-02_hift-pin-check/PIN_CHECK.md).
+**Update, 2 Nov:** the speed numbers come from a matched re-timing. It used the exact model whose accuracy was tested, ran fp32 and int8 in the same job, and repeated the measurement in alternating sessions. It replaces the earlier 1.80×, which came from an unmatched benchmark. Details: [`analysis/2026-11-02_retime-matched/`](analysis/2026-11-02_retime-matched/REVIEW.md). The HiFT code pin check (official commit `992aa7c`, only 4 device lines changed, confirmed on the cluster) is in [`analysis/2026-11-02_hift-pin-check/`](analysis/2026-11-02_hift-pin-check/PIN_CHECK.md). The per-layer test is in [`analysis/2026-11-03_layer-sensitivity/`](analysis/2026-11-03_layer-sensitivity/REVIEW.md).
 
 ## Why you can trust these numbers
 
