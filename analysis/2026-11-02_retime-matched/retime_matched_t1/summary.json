@@ -1,0 +1,284 @@
+{
+ "cpu": "Intel(R) Xeon(R) Gold 6230R CPU @ 2.10GHz",
+ "host": "TC2N01",
+ "torch": "2.8.0+cu128",
+ "sessions": 4,
+ "time_seqs": [
+  "bike1",
+  "car1_2",
+  "person11",
+  "person7_2"
+ ],
+ "frames_per_session": 5496,
+ "variant": "int8bb-s1",
+ "recipe": {
+  "calib_seqs": 40,
+  "calib_frames": 4,
+  "spread": true,
+  "calib_set": 1,
+  "calibration_sequences": [
+   "bike2",
+   "boat2",
+   "boat3",
+   "boat5",
+   "boat6",
+   "boat7",
+   "boat9",
+   "building3",
+   "car13",
+   "car14",
+   "car16_1",
+   "car18",
+   "car1_3",
+   "car2_s",
+   "car3",
+   "car4_s",
+   "car5",
+   "car6_5",
+   "group1_3",
+   "group2_2",
+   "group3_1",
+   "group3_2",
+   "group3_4",
+   "person12_1",
+   "person19_2",
+   "person19_3",
+   "person20",
+   "person23",
+   "person3",
+   "person4_2",
+   "person6",
+   "person7_1",
+   "person8_2",
+   "truck4_2",
+   "uav3",
+   "uav4",
+   "uav8",
+   "wakeboard2",
+   "wakeboard5",
+   "wakeboard7"
+  ]
+ },
+ "identity": {
+  "calibration_sequences_match": true,
+  "ref_run": "uav123-sub40_int8sel_clean_nodef_t4_cal1",
+  "ref_calibration_crops": 158,
+  "this_calibration_crops": 158
+ },
+ "checks": {
+  "fp32_session1": {
+   "bike1": {
+    "frames": 3084,
+    "same_box_iou_0_99": 0.4695201037613489,
+    "median_iou": 0.9858095901890938,
+    "max_abs_px": 20.97395384246761
+   },
+   "car1_2": {
+    "frames": 876,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.999972960568075,
+    "max_abs_px": 0.0004548773129045003
+   },
+   "person11": {
+    "frames": 720,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999857777518032,
+    "max_abs_px": 0.00041213349857116555
+   },
+   "person7_2": {
+    "frames": 816,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.999991708113514,
+    "max_abs_px": 0.0005502598536963887
+   }
+  },
+  "fp32_auc_session1": {
+   "bike1": 0.7246276144169175,
+   "car1_2": 0.6643318672965195,
+   "person11": 0.7285516148206856,
+   "person7_2": 0.7273416098385498
+  },
+  "int8bb-s1_session1": {
+   "bike1": {
+    "frames": 3084,
+    "same_box_iou_0_99": 0.930609597924773,
+    "median_iou": 0.9999882633292247,
+    "max_abs_px": 4.02183636089535
+   },
+   "car1_2": {
+    "frames": 876,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999904282558194,
+    "max_abs_px": 0.00021135533735616718
+   },
+   "person11": {
+    "frames": 720,
+    "same_box_iou_0_99": 0.5763888888888888,
+    "median_iou": 0.9999926022318681,
+    "max_abs_px": 2.3983578821355422
+   },
+   "person7_2": {
+    "frames": 816,
+    "same_box_iou_0_99": 0.36764705882352944,
+    "median_iou": 0.983363719371525,
+    "max_abs_px": 3.121416565010122
+   }
+  },
+  "int8bb-s1_auc_session1": {
+   "bike1": 0.7210774098942656,
+   "car1_2": 0.5953195417277515,
+   "person11": 0.7281553398058254,
+   "person7_2": 0.7280410328145948
+  },
+  "int8bb-s1_session2": {
+   "bike1": {
+    "frames": 3084,
+    "same_box_iou_0_99": 0.930609597924773,
+    "median_iou": 0.9999882633292247,
+    "max_abs_px": 4.02183636089535
+   },
+   "car1_2": {
+    "frames": 876,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999904282558194,
+    "max_abs_px": 0.00021135533735616718
+   },
+   "person11": {
+    "frames": 720,
+    "same_box_iou_0_99": 0.5763888888888888,
+    "median_iou": 0.9999926022318681,
+    "max_abs_px": 2.3983578821355422
+   },
+   "person7_2": {
+    "frames": 816,
+    "same_box_iou_0_99": 0.36764705882352944,
+    "median_iou": 0.983363719371525,
+    "max_abs_px": 3.121416565010122
+   }
+  },
+  "int8bb-s1_auc_session2": {
+   "bike1": 0.7210774098942656,
+   "car1_2": 0.5953195417277515,
+   "person11": 0.7281553398058254,
+   "person7_2": 0.7280410328145948
+  },
+  "fp32_session2": {
+   "bike1": {
+    "frames": 3084,
+    "same_box_iou_0_99": 0.4695201037613489,
+    "median_iou": 0.9858095901890938,
+    "max_abs_px": 20.97395384246761
+   },
+   "car1_2": {
+    "frames": 876,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.999972960568075,
+    "max_abs_px": 0.0004548773129045003
+   },
+   "person11": {
+    "frames": 720,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999857777518032,
+    "max_abs_px": 0.00041213349857116555
+   },
+   "person7_2": {
+    "frames": 816,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.999991708113514,
+    "max_abs_px": 0.0005502598536963887
+   }
+  },
+  "fp32_auc_session2": {
+   "bike1": 0.7246276144169175,
+   "car1_2": 0.6643318672965195,
+   "person11": 0.7285516148206856,
+   "person7_2": 0.7273416098385498
+  }
+ },
+ "size_mb": {
+  "fp32": 44.333207,
+  "int8bb-s1": 33.196325
+ },
+ "env": {
+  "OMP_NUM_THREADS": "4",
+  "MKL_NUM_THREADS": "4",
+  "SLURM_JOB_ID": "50143"
+ },
+ "by_threads": {
+  "1": {
+   "fp32_net_ms": {
+    "median": 170.248,
+    "min": 169.76,
+    "max": 171.386
+   },
+   "int8bb-s1_net_ms": {
+    "median": 94.064,
+    "min": 93.701,
+    "max": 94.305
+   },
+   "speedup_net_ms": {
+    "median": 1.813367493979698,
+    "min": 1.8048246313484089,
+    "max": 1.8173585705954083,
+    "per_session": [
+     1.813,
+     1.817,
+     1.813,
+     1.805
+    ]
+   },
+   "fp32_backbone_ms": {
+    "median": 139.0065,
+    "min": 138.72,
+    "max": 139.635
+   },
+   "int8bb-s1_backbone_ms": {
+    "median": 60.644999999999996,
+    "min": 60.589,
+    "max": 60.773
+   },
+   "speedup_backbone_ms": {
+    "median": 2.2928711379600957,
+    "min": 2.28805172527545,
+    "max": 2.2976486268573213,
+    "per_session": [
+     2.294,
+     2.298,
+     2.292,
+     2.288
+    ]
+   },
+   "fp32_head_ms": {
+    "median": 31.2405,
+    "min": 31.04,
+    "max": 31.752
+   },
+   "int8bb-s1_head_ms": {
+    "median": 33.419,
+    "min": 33.112,
+    "max": 33.532
+   },
+   "fp32_step_ms": {
+    "median": 171.86849999999998,
+    "min": 170.556,
+    "max": 173.114
+   },
+   "int8bb-s1_step_ms": {
+    "median": 95.0385,
+    "min": 94.397,
+    "max": 95.511
+   },
+   "speedup_step_ms": {
+    "median": 1.8053972599171075,
+    "min": 1.7917051853096901,
+    "max": 1.8338930262614277,
+    "per_session": [
+     1.792,
+     1.8,
+     1.811,
+     1.834
+    ]
+   }
+  }
+ }
+}

@@ -12,8 +12,12 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-R = Path(sys.argv[1]); OUT = Path(__file__).resolve().parent
-earlier = [Path(p) for p in sys.argv[2:]]
+args = sys.argv[1:]
+RETIME = None
+if "--retime" in args:                      # matched re-timing summary (4 threads) replaces the round-4 bench speeds
+    i = args.index("--retime"); RETIME = json.loads(Path(args[i + 1]).read_text()); del args[i:i + 2]
+R = Path(args[0]); OUT = Path(__file__).resolve().parent
+earlier = [Path(p) for p in args[1:]]
 first = {}
 for i, p in enumerate(earlier, 1):
     for s in p.glob("*/summary.json"):
@@ -68,11 +72,18 @@ ax[0].set_xticks(x); ax[0].set_xticklabels([b[0] for b in bars], fontsize=8)
 ax[0].set_ylabel("success AUC (40 TEST videos)"); ax[0].set_ylim(0, .7)
 ax[0].set_title("A. An invisible attack breaks HiFT; JPEG gets some back", loc="left", fontsize=10)
 E4 = {p.stem: json.loads(p.read_text()) for p in (R / "edge_round4").glob("cpu_t4_*.json")}
-pts = [("fp32 (original)", E4["cpu_t4_fp32"]["latency_ms_mean"], A["uav123_fp32_clean_nodef_t4"], "#8c8c8c")]
+if RETIME:
+    bt = RETIME["by_threads"]["4"]
+    ms_fp32, ms_int8 = bt["fp32_net_ms"]["median"], bt["int8bb-s1_net_ms"]["median"]
+    spd = bt["speedup_net_ms"]["median"]
+else:
+    ms_fp32, ms_int8 = E4["cpu_t4_fp32"]["latency_ms_mean"], E4["cpu_t4_int8bb-s1"]["latency_ms_mean"]
+    spd = ms_fp32 / ms_int8
+pts = [("fp32 (original)", ms_fp32, A["uav123_fp32_clean_nodef_t4"], "#8c8c8c")]
 nt = {k: v for k, v in perv["uav123-nt83_int8sel_clean_nodef_t4_cal0"].items()}
 t40 = [perv[T + f"int8sel_clean_nodef_t4_cal{k}"] for k in (1, 2, 3)]
 pooled = np.mean([np.mean([d[v] for d in t40]) if v in t40[0] else nt[v] for v in perv["uav123_fp32_clean_nodef_t4"]])
-pts.append(("int8 backbone,\nlayer1 kept fp32\n(our pick)", E4["cpu_t4_int8bb-s1"]["latency_ms_mean"], pooled, "#2a6fb0"))
+pts.append(("int8 backbone,\nlayer1 kept fp32\n(our pick)", ms_int8, pooled, "#2a6fb0"))
 for (n, ms, auc, c), (dx, dy) in zip(pts, [(0, -34), (10, -38)]):
     ax[1].scatter(ms, auc, s=90, color=c, zorder=3)
     ax[1].annotate(f"{n}\n{ms:.0f} ms, AUC {auc:.3f}", (ms, auc), textcoords="offset points", xytext=(dx, dy),
@@ -82,6 +93,7 @@ ax[1].text(37, .5735, "Per video: +0.003 overall, but −0.004 if two lucky\nvid
            fontsize=8, color="#444")
 ax[1].set_xlim(35, 110); ax[1].set_ylim(.57, .60)
 ax[1].set_xlabel("network time per frame, 4 CPU threads (ms)"); ax[1].set_ylabel("success AUC (all 123 videos)")
-ax[1].set_title("B. int8: 1.8× faster for a very small accuracy cost", loc="left", fontsize=10)
+ax[1].set_title(f"B. int8: {spd:.2f}× faster network for a very small accuracy cost", loc="left", fontsize=10)
+ax[1].set_xlabel("network time per frame, 4 CPU threads (ms)" + ("\nmatched re-timing, median of 6 sessions" if RETIME else ""), fontsize=9)
 fig.tight_layout(); fig.savefig(OUT / "fig0_overview.png", dpi=160)
 print("pooled int8 123:", round(float(pooled), 4))
