@@ -241,3 +241,37 @@ and `ls -d /scratch* /local*`; python/curl on the head node; one 3-min `srun` pr
 | 2026-11-02 18:35 | hift_s3grid_b0 | 50139 S3GRID-B0-001 | COMPLETED 5056s |
 | 2026-11-02 18:36 | retrieve hift_s3grid_b0 | grid outputs (sha256 OK) -> artifacts/tc2-validation | OK |
 | 2026-11-02 18:36 | orchestrator v9 | hift_s3grid_ref=retrieved hift_s3grid_b0=retrieved  | DONE |
+| 2026-11-02 19:17 | orchestrator v10 | bundle 59c97a4 upload: scp failed (TC2 socket dropped mid-transfer); nothing submitted | STOPPED (reconnect socket, relaunch v10) |
+| 2026-11-02 19:56 | upload | bundle 59c97a4 (sha256 1572650c...), stage-4 S4-GAP | sha256 OK, unpacked |
+| 2026-11-02 19:56 | orchestrator v10 | stage 4: S4-GAP (REF-C, G300, GMIX x 2 seeds) | started |
+| 2026-11-02 19:56 | submit hift_s4_refc | run TC2-S4-REFC-001 | job 50305 |
+| 2026-11-02 20:11 | submit hift_s4_g300 | run TC2-S4-G300-001 | job 50320 |
+| 2026-11-02 21:26 | hift_s4_refc | 50305 TC2-S4-REFC-001 | COMPLETED 4738s |
+| 2026-11-02 21:26 | retrieve TC2-S4-REFC-001 | final-model.pt sha256 88fef3aa4be46eab... + summary/manifest/journal/slurm log | OK |
+| 2026-11-02 21:26 | submit hift_s4_gmix | run TC2-S4-GMIX-001 | job 50360 |
+| 2026-11-02 21:26 | validation TC2-S4-REFC-001 | in-job V (sealed test untouched) | M=0.6478 V1=0.5495 V2veh=0.7091 V2per=0.6117 V3=0.7334 |
+| 2026-11-02 22:41 | hift_s4_g300 | 50320 TC2-S4-G300-001 | COMPLETED 4517s |
+| 2026-11-02 22:42 | retrieve TC2-S4-G300-001 | final-model.pt sha256 dbf5753f34c66b46... + summary/manifest/journal/slurm log | OK |
+| 2026-11-02 22:42 | validation TC2-S4-G300-001 | in-job V (sealed test untouched) | M=0.6346 V1=0.5227 V2veh=0.7147 V2per=0.6116 V3=0.7179 |
+| 2026-11-02 22:42 | submit hift_s4_refc_s2 | run TC2-S4-REFC-S2-001 | job 50393 |
+| 2026-11-02 23:58 | hift_s4_gmix | 50360 TC2-S4-GMIX-001 | COMPLETED 4475s |
+| 2026-11-02 23:59 | retrieve TC2-S4-GMIX-001 | final-model.pt sha256 86f4f0a2ecaadbfc... + summary/manifest/journal/slurm log | OK |
+| 2026-11-02 23:59 | validation TC2-S4-GMIX-001 | in-job V (sealed test untouched) | M=0.6336 V1=0.5105 V2veh=0.7195 V2per=0.6053 V3=0.7279 |
+| 2026-11-02 23:59 | submit hift_s4_g300_s2 | run TC2-S4-G300-S2-001 | job 50430 |
+| 2026-11-03 01:22 | orchestrator v10 | TC2 socket lost; orchestrator stopped (queue verified after reconnect: 50393 COMPLETED, 50430 RUNNING, no duplicate submission) | STOPPED -> resumed |
+| 2026-11-03 01:24 | orchestrator v10 | stage 4: S4-GAP resumed after socket loss (50393 to retrieve, 50430 running, gmix_s2 todo) | started |
+| 2026-11-03 01:24 | hift_s4_refc_s2 | 50393 TC2-S4-REFC-S2-001 | COMPLETED 4593s |
+| 2026-11-03 01:24 | retrieve TC2-S4-REFC-S2-001 | final-model.pt sha256 c475d0372d452c35... + summary/manifest/journal/slurm log | OK |
+| 2026-11-03 01:24 | validation TC2-S4-REFC-S2-001 | in-job V (sealed test untouched) | M=0.6485 V1=0.5549 V2veh=0.7067 V2per=0.6117 V3=0.7313 |
+| 2026-11-03 01:24 | submit hift_s4_gmix_s2 | run TC2-S4-GMIX-S2-001 | job 50447 |
+| 2026-11-03 02:26 | hift_s4_g300_s2 | 50430 TC2-S4-G300-S2-001 | COMPLETED 4551s |
+| 2026-11-03 02:26 | retrieve TC2-S4-G300-S2-001 | final-model.pt sha256 806f9d79388c2938... + summary/manifest/journal/slurm log | OK |
+| 2026-11-03 02:26 | validation TC2-S4-G300-S2-001 | in-job V (sealed test untouched) | M=0.6422 V1=0.5237 V2veh=0.7178 V2per=0.6118 V3=0.738 |
+| 2026-11-03 04:14 | orchestrator | socket check failed | STOPPED (reconnect VPN/socket) |
+| 2026-11-03 04:16 | orchestrator v10 | socket recreated; queue verified: 50430 + 50447 COMPLETED, nothing queued | resumed to retrieve 50447 + decision |
+| 2026-11-03 04:16 | orchestrator v10 | stage 4: S4-GAP resumed after 2nd socket loss (50447 COMPLETED, to retrieve) | started |
+| 2026-11-03 04:16 | hift_s4_gmix_s2 | 50447 TC2-S4-GMIX-S2-001 | COMPLETED 4463s |
+| 2026-11-03 04:17 | retrieve TC2-S4-GMIX-S2-001 | final-model.pt sha256 2aae95cc0a6ec929... + summary/manifest/journal/slurm log | OK |
+| 2026-11-03 04:17 | validation TC2-S4-GMIX-S2-001 | in-job V (sealed test untouched) | M=0.6326 V1=0.5101 V2veh=0.7194 V2per=0.6076 V3=0.724 |
+| 2026-11-03 04:18 | orchestrator v10 | hift_s4_refc=retrieved hift_s4_g300=retrieved hift_s4_gmix=retrieved hift_s4_refc_s2=retrieved hift_s4_g300_s2=retrieved hift_s4_gmix_s2=retrieved  | DONE |
+| 2026-11-03 04:18 | stage-4 decision | scripts/stage4_decision.py (V only) | DECISION: REJECT both arms (sealed test stays closed) |

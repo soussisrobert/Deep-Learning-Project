@@ -48,3 +48,20 @@ otherwise it stays closed for stage 4.
 - VisDrone-SOT train_part2 (12.59 GB > ~10 GB TC2 headroom): needs a download approval + pruning plan; natural
   follow-up if S4-GAP helps. T1 template update: stage 5 if late-frame IoU rises but M misses the bar.
 - R1 source resolution: existing data indicate a ceiling of ~+0.005 M; not justified. ResNet-18: rejected.
+
+## Outcome (2026-11-03, validation only; scripts/stage4_decision.py -> artifacts/stage4/stage4_decision.json)
+All 6 runs COMPLETED on TC2 (jobs 50305, 50320, 50360, 50393, 50430, 50447); manifests record max_gap /
+long_gap_probability 100/0.0 (REF-C), 300/0.0 (G300), 100/0.5 (GMIX) and the preregistered seed pairs.
+- Gate PASS, and stronger than required: REF-C final-model.pt sha256 equals REF's for both seeds (88fef3aa...,
+  c475d037...) and every per-episode AUC is identical. TC2 training is bitwise deterministic for a fixed seed pair,
+  and the gap-policy code path leaves the default sampler unchanged end to end. Seed choice is the only noise source.
+- dM vs REF-C (seed 1 / seed 2; seed-avg subset deltas V1 / V2veh / V2per / V3):
+  G300 -0.0132 / -0.0063 (avg -0.0097); -0.029 / +0.008 / -0.000 / -0.004. Fails criteria 1, 2, 3, 5, 6.
+  GMIX -0.0142 / -0.0159 (avg -0.0150); -0.042 / +0.012 / -0.005 / -0.006. Fails criteria 1, 2, 3, 5, 6.
+  Bootstrap P10 -0.021 (G300), -0.032 (GMIX); LOO-V1 min -0.014, -0.019.
+- DECISION: REJECT both arms. REF remains the model. Sealed test stays closed for stage 4.
+- Mechanism: falsified. V1 IoU on frames >= 300 FELL vs REF-C in both seeds (G300 -0.012 / -0.039; GMIX -0.056 /
+  -0.065); [0,100) moved < 0.01. Long template-search gaps hurt V1 most where they were meant to help. The only
+  consistent gain is V2-vehicle (+0.008 / +0.012), not enough to offset V1.
+- Consequence for the deferred list: T1 (template update) was conditional on late-frame IoU rising; it did not,
+  so the stage-5 trigger for T1 is not met.
