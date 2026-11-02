@@ -1,5 +1,7 @@
 # HiFT stress test, round 4: what we can defend, and where to go next (21 Oct 2026)
 
+> **Erratum (2 Nov 2026):** the int8bb-s1 tracker step is 52.3 ms (frame-weighted mean 52.262 ms over the three draws), not 52.2 ms; the 1.76× ratio is unchanged. The speed figures here are also being re-timed against the exact accuracy-tested model (`AGENT_RUNBOOK_RETIME.md`).
+
 Scope: Manzi's tracks (adversarial robustness + edge cost).
 
 - **Pass rules:** [`ROUND4_PLAN.md`](../../ROUND4_PLAN.md), fixed in advance.
