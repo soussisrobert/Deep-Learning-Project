@@ -42,3 +42,20 @@ post-processing).
 ## Identity and sealed test
 REF/T = B2 weights (REF) + tracker post-processing tuned on V; not a correction (not B1). If c* is adopted, the
 sealed test is opened once for REF/T (both seeds) and B0-sigmoid/T; otherwise it stays closed for stage 3.
+
+## Outcome (2026-11-02; measured on V only, sealed test NOT opened)
+Grid jobs 50127 (REF seeds) and 50139 (B0) COMPLETED; 3 x 37 validation.json retrieved (sha256 OK), one episode
+listing hash for all 111; recomputed M equals each recorded M. Decision: `python scripts/stage3_decision.py`
+(writes artifacts/stage3-diag/stage3_decision.json).
+- c* = "upstream" (config.yaml values) — the best of 37 by seed-averaged M (0.6481; seed-1 0.6478 reproduces the
+  stage-2 REF in-job validation). Next: wi0.42_lr0.3_pk0.04 -0.0012, wi0.42_lr0.3_pk0.15 -0.0016; worst
+  wi0.15_lr0.7_pk0.15 -0.0395; score-matched point (0.23, 0.73, 0.08) -0.0362 (rank 36/37).
+- Criteria 1, 2, 5 fail (dM = 0). **REF/T rejected; REF with upstream post-processing stays the stage result.**
+- B0-sigmoid: upstream M 0.6212; its own best (wi0.25_lr0.3_pk0.15) 0.6230 (+0.0018, within noise).
+- Two-fold by-video selection (20 splits): optimism +0.0074; held-out dM of the fold-selected config -0.0068.
+- Marginal knob effects (seed-averaged dM vs upstream, averaged over the other two knobs): lowering
+  WINDOW_INFLUENCE or raising LR hurts V1 most (WI 0.15: V1 -0.068; LR 0.7: V1 -0.066) and V3 next; PENALTY_K is
+  flat (+-0.003). V2-vehicle moves by <= +0.004.
+- Hypothesis falsified: the sigmoid score did not leave the window/size update over-weighted in the direction
+  predicted. The grid was one-sided (WI <= 0.42, LR >= 0.30), so stronger windows / slower size updates were not
+  tested; any such follow-up is a new, separately preregistered selection on V (motivated by this result).

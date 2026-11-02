@@ -232,3 +232,12 @@ and `ls -d /scratch* /local*`; python/curl on the head node; one 3-min `srun` pr
 | 2026-11-02 14:04 | retrieve TC2-P2-D20-S2-001 | final-model.pt sha256 f0ece776a01a9429... + summary/manifest/journal/slurm log | OK |
 | 2026-11-02 14:04 | validation TC2-P2-D20-S2-001 | in-job V (sealed test untouched) | M=0.6465 V1=0.5487 V2veh=0.7113 V2per=0.5903 V3=0.74 |
 | 2026-11-02 14:05 | orchestrator v8 | hift_p1_long_s2=retrieved hift_p2_d10=retrieved hift_p2_d20=retrieved hift_p2_d10_s2=retrieved hift_p2_d20_s2=retrieved  | DONE |
+| 2026-11-02 14:32 | upload | bundle 28fa974 (sha256 d57b6cdb...), stage-3 post-processing grid | sha256 OK, unpacked |
+| 2026-11-02 14:32 | orchestrator v9 | stage 3: post-processing grid (REF seeds, B0) | started |
+| 2026-11-02 14:32 | submit hift_s3grid_ref | run S3GRID-REF-001 | job 50127 |
+| 2026-11-02 14:48 | submit hift_s3grid_b0 | run S3GRID-B0-001 | job 50139 |
+| 2026-11-02 17:14 | hift_s3grid_ref | 50127 S3GRID-REF-001 | COMPLETED 9194s |
+| 2026-11-02 17:16 | retrieve hift_s3grid_ref | grid outputs (sha256 OK) -> artifacts/tc2-validation | OK |
+| 2026-11-02 18:35 | hift_s3grid_b0 | 50139 S3GRID-B0-001 | COMPLETED 5056s |
+| 2026-11-02 18:36 | retrieve hift_s3grid_b0 | grid outputs (sha256 OK) -> artifacts/tc2-validation | OK |
+| 2026-11-02 18:36 | orchestrator v9 | hift_s3grid_ref=retrieved hift_s3grid_b0=retrieved  | DONE |
