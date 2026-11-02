@@ -145,3 +145,90 @@ and `ls -d /scratch* /local*`; python/curl on the head node; one 3-min `srun` pr
 | 2026-10-30 06:03 | eval TC2-B0FT-CORR-S3-001 | UAV123, sigmoid, nan-safe | sequence_macro success_auc=0.584193105 precision@20px=0.762459460; partial |
 | 2026-10-30 06:26 | eval TC2-B0FT-CORR-S3-001 | VISDRONE, sigmoid, nan-safe | sequence_macro success_auc=0.597149767 precision@20px=0.805152240; expected_count_only |
 | 2026-10-30 06:26 | orchestrator v6 | hift_s3_res18_s2=retrieved hift_s3_res40_s2=retrieved hift_b0ft_orig_s2=retrieved hift_b0ft_corr_s2=retrieved hift_s3_res18_s3=retrieved hift_s3_res40_s3=retrieved hift_b0ft_orig_s3=retrieved hift_b0ft_corr_s3=retrieved  | DONE |
+| 2026-10-30 06:54 | upload | bundle 426402e (sha256 eaa0eb2e...), stage-2 validation harness + P1 | sha256 OK, unpacked |
+| 2026-10-30 06:54 | orchestrator v7 | stage 2: diag + P1 (4 arms x 2 seeds) | started |
+| 2026-10-30 06:54 | submit hift_val_diag | run DIAG-001 | job 49150 |
+| 2026-10-30 07:09 | hift_val_diag | 49150 DIAG-001 | FAILED - retrying once under a new run id |
+| 2026-10-30 07:09 | submit hift_val_diag | run DIAG-002 | job 49151 |
+| 2026-10-30 07:26 | orchestrator | socket check failed | STOPPED (reconnect VPN/socket) |
+| 2026-10-30 12:04 | note | diag 49150 FAILED: configure_upstream git rev-parse on the git-less bundle (exit 128); retry 49151 COMPLETED but skipped all labels (dirs existed) -> no results. Fixed in f01adda/38de4b2 (file-manifest upstream identity; retry keeps failed dirs); rerun as hift_val_diag2 | orchestrator v7 restarted |
+| 2026-10-30 12:04 | upload | bundle 38de4b2 (sha256 e48e3817...), git-less upstream identity fix + diag2 | sha256 OK, unpacked |
+| 2026-10-30 12:04 | orchestrator v7 | stage 2: diag + P1 (4 arms x 2 seeds) | started |
+| 2026-10-30 12:04 | submit hift_val_diag2 | run DIAG2-001 | job 49243 |
+| 2026-10-30 12:19 | hift_val_diag2 | 49243 DIAG2-001 | COMPLETED 816s |
+| 2026-10-30 12:19 | retrieve diagnostics | 8 validation.json files | OK |
+| 2026-10-30 12:19 | validation B0-RAW-UPSTREAM-retry1793333102 | in-job V (sealed test untouched) | SyntaxError: unmatched ')' |
+| 2026-10-30 12:19 | submit hift_p1_ref | run TC2-P1-REF-001 | job 49251 |
+| 2026-10-30 12:33 | validation B0-SIGMOID-NANSAFE-retry1793333212 | in-job V (sealed test untouched) | SyntaxError: unmatched ')' |
+| 2026-10-30 12:33 | validation TC2-B0FT-CORR-001-retry1793333316 | in-job V (sealed test untouched) | SyntaxError: unmatched ')' |
+| 2026-10-30 12:48 | validation TC2-B0FT-CORR-S2-001-retry1793333419 | in-job V (sealed test untouched) | SyntaxError: unmatched ')' |
+| 2026-10-30 12:48 | validation TC2-B0FT-CORR-S3-001-retry1793333516 | in-job V (sealed test untouched) | SyntaxError: unmatched ')' |
+| 2026-10-30 13:02 | validation TC2-B0FT-ORIG-001-retry1793333614 | in-job V (sealed test untouched) | SyntaxError: unmatched ')' |
+| 2026-10-30 13:02 | validation TC2-B0FT-ORIG-S2-001-retry1793333715 | in-job V (sealed test untouched) | SyntaxError: unmatched ')' |
+| 2026-10-30 13:17 | validation TC2-B0FT-ORIG-S3-003-retry1793333815 | in-job V (sealed test untouched) | SyntaxError: unmatched ')' |
+| 2026-10-30 13:17 | submit hift_p1_lr3e4 | run TC2-P1-LR3E4-001 | job 49294 |
+| 2026-10-30 13:46 | hift_p1_ref | 49251 TC2-P1-REF-001 | COMPLETED 4456s |
+| 2026-10-30 13:46 | retrieve TC2-P1-REF-001 | final-model.pt sha256 88fef3aa4be46eab... + summary/manifest/journal/slurm log | OK |
+| 2026-10-30 13:46 | validation TC2-P1-REF-001 | in-job V (sealed test untouched) | SyntaxError: unmatched ')' |
+| 2026-10-30 14:29 | submit hift_p1_frozen | run TC2-P1-FROZEN-001 | job 49353 |
+| 2026-10-30 14:57 | hift_p1_lr3e4 | 49294 TC2-P1-LR3E4-001 | COMPLETED 4486s |
+| 2026-10-30 14:57 | retrieve TC2-P1-LR3E4-001 | final-model.pt sha256 53f84e824460ced1... + summary/manifest/journal/slurm log | OK |
+| 2026-10-30 14:57 | validation TC2-P1-LR3E4-001 | in-job V (sealed test untouched) | SyntaxError: unmatched ')' |
+| 2026-10-30 15:40 | submit hift_p1_long | run TC2-P1-LONG-001 | job 49412 |
+| 2026-10-30 16:09 | hift_p1_frozen | 49353 TC2-P1-FROZEN-001 | COMPLETED 4536s |
+| 2026-10-30 16:09 | retrieve TC2-P1-FROZEN-001 | final-model.pt sha256 769389f570d8e1fe... + summary/manifest/journal/slurm log | OK |
+| 2026-10-30 16:09 | validation TC2-P1-FROZEN-001 | in-job V (sealed test untouched) | SyntaxError: unmatched ')' |
+| 2026-10-30 17:09 | orchestrator | socket check failed | STOPPED (reconnect VPN/socket) |
+| 2026-10-30 17:10 | validation (recomputed; orchestrator summary line had a SyntaxError, files were fine) | M/V1/V2veh/V2per/V3: B0-raw 0.544/0.464/0.679/0.570/-; B0-sigmoid 0.588/0.539/0.698/0.575/-; B0FT-CORR s1-3 M 0.587/0.604/0.584; B0FT-ORIG s1-3 M 0.592/0.611/0.608 (V1+V2 only, V3 n/a for stage-1 runs); P1-REF-001 0.648/0.549/0.709/0.612/0.733; P1-LR3E4-001 0.634/0.531/0.707/0.589/0.722; P1-FROZEN-001 0.639/0.529/0.716/0.607/0.725 | summary helper fixed |
+| 2026-10-31 01:02 | orchestrator v7 | resume after socket loss | tracking p1_long 49412; 4 seed-2 arms todo |
+| 2026-10-31 01:02 | hift_p1_long | 49412 TC2-P1-LONG-001 | COMPLETED 13231s |
+| 2026-10-31 01:02 | retrieve TC2-P1-LONG-001 | final-model.pt sha256 f406fa740be6a3ff... + summary/manifest/journal/slurm log | OK |
+| 2026-10-31 01:02 | validation TC2-P1-LONG-001 | in-job V (sealed test untouched) | M=0.6294 V1=0.4934 V2veh=0.71 V2per=0.6132 V3=0.7332 |
+| 2026-10-31 01:02 | submit hift_p1_ref_s2 | run TC2-P1-REF-S2-001 | job 49671 |
+| 2026-10-31 01:03 | orchestrator v7 | restart: queue next as soon as current runs | tracking ref_s2 49671; 3 seed-2 arms todo |
+| 2026-10-31 01:03 | submit hift_p1_lr3e4_s2 | run TC2-P1-LR3E4-S2-001 | job 49672 |
+| 2026-10-31 02:26 | hift_p1_ref_s2 | 49671 TC2-P1-REF-S2-001 | COMPLETED 4550s |
+| 2026-10-31 02:26 | retrieve TC2-P1-REF-S2-001 | final-model.pt sha256 c475d0372d452c35... + summary/manifest/journal/slurm log | OK |
+| 2026-10-31 02:26 | submit hift_p1_frozen_s2 | run TC2-P1-FROZEN-S2-001 | job 49687 |
+| 2026-10-31 02:26 | validation TC2-P1-REF-S2-001 | in-job V (sealed test untouched) | M=0.6485 V1=0.5549 V2veh=0.7067 V2per=0.6117 V3=0.7313 |
+| 2026-10-31 03:38 | hift_p1_lr3e4_s2 | 49672 TC2-P1-LR3E4-S2-001 | COMPLETED 4510s |
+| 2026-10-31 03:38 | retrieve TC2-P1-LR3E4-S2-001 | final-model.pt sha256 e36295813d223d11... + summary/manifest/journal/slurm log | OK |
+| 2026-10-31 03:38 | validation TC2-P1-LR3E4-S2-001 | in-job V (sealed test untouched) | M=0.6373 V1=0.5359 V2veh=0.7073 V2per=0.5944 V3=0.7252 |
+| 2026-10-31 03:38 | submit hift_p1_long_s2 | run TC2-P1-LONG-S2-001 | job 49695 |
+| 2026-10-31 04:53 | hift_p1_frozen_s2 | 49687 TC2-P1-FROZEN-S2-001 | COMPLETED 4488s |
+| 2026-10-31 04:53 | retrieve TC2-P1-FROZEN-S2-001 | final-model.pt sha256 d73ce568e779d2cf... + summary/manifest/journal/slurm log | OK |
+| 2026-10-31 04:53 | validation TC2-P1-FROZEN-S2-001 | in-job V (sealed test untouched) | M=0.6383 V1=0.5332 V2veh=0.7144 V2per=0.6049 V3=0.7221 |
+| 2026-10-31 06:11 | orchestrator | socket check failed | STOPPED (reconnect VPN/socket) |
+| 2026-10-31 06:18 | sealed test (stage 2, opened once) | B0 UAV123 sigmoid nan-safe | sequence_macro success_auc=0.593545385 precision@20px=0.740667146; partial |
+| 2026-10-31 06:35 | sealed test (stage 2, opened once) | B0 VISDRONE sigmoid nan-safe | sequence_macro success_auc=0.532096852 precision@20px=0.723308301; expected_count_only |
+| 2026-10-31 06:40 | sealed test (stage 2, opened once) | TC2-P1-REF-001 UAV123 sigmoid nan-safe | sequence_macro success_auc=0.582625501 precision@20px=0.758819349; partial |
+| 2026-10-31 06:52 | sealed test (stage 2, opened once) | TC2-P1-REF-001 VISDRONE sigmoid nan-safe | sequence_macro success_auc=0.606698336 precision@20px=0.816214433; expected_count_only |
+| 2026-10-31 06:57 | sealed test (stage 2, opened once) | TC2-P1-REF-S2-001 UAV123 sigmoid nan-safe | sequence_macro success_auc=0.594490354 precision@20px=0.774645646; partial |
+| 2026-10-31 07:09 | sealed test (stage 2, opened once) | TC2-P1-REF-S2-001 VISDRONE sigmoid nan-safe | sequence_macro success_auc=0.603461756 precision@20px=0.811348183; expected_count_only |
+| 2026-10-31 12:24 | upload | bundle c7a27cc (sha256 b463d637...), P2 distractor negatives | sha256 OK, unpacked |
+| 2026-10-31 12:24 | orchestrator v8 | P2: D10/D20 x 2 seeds (+ last P1 run long_s2) | started |
+| 2026-10-31 12:24 | hift_p1_long_s2 | 49695 TC2-P1-LONG-S2-001 | COMPLETED 13037s |
+| 2026-10-31 12:24 | retrieve TC2-P1-LONG-S2-001 | final-model.pt sha256 74823632892765bc... + summary/manifest/journal/slurm log | OK |
+| 2026-10-31 12:24 | validation TC2-P1-LONG-S2-001 | in-job V (sealed test untouched) | M=0.6288 V1=0.4947 V2veh=0.7077 V2per=0.6125 V3=0.7315 |
+| 2026-10-31 12:24 | submit hift_p2_d10 | run TC2-P2-D10-001 | job 49803 |
+| 2026-10-31 12:39 | submit hift_p2_d20 | run TC2-P2-D20-001 | job 49809 |
+| 2026-10-31 13:51 | hift_p2_d10 | 49803 TC2-P2-D10-001 | COMPLETED 4490s |
+| 2026-10-31 13:51 | submit hift_p2_d10_s2 | run TC2-P2-D10-S2-001 | job 49832 |
+| 2026-10-31 15:03 | hift_p2_d20 | 49809 TC2-P2-D20-001 | COMPLETED 4497s |
+| 2026-10-31 15:03 | submit hift_p2_d20_s2 | run TC2-P2-D20-S2-001 | job 49860 |
+| 2026-10-31 15:05 | orchestrator v8 | resume after local disk full (F: 0 bytes free) | re-retrieve d10/d20; track d10_s2 49832, d20_s2 49860 |
+| 2026-10-31 15:05 | hift_p2_d10 | 49803 TC2-P2-D10-001 | COMPLETED 4490s |
+| 2026-10-31 15:05 | retrieve TC2-P2-D10-001 | final-model.pt sha256 9a3ed3aa33870cf8... + summary/manifest/journal/slurm log | OK |
+| 2026-10-31 15:05 | hift_p2_d20 | 49809 TC2-P2-D20-001 | COMPLETED 4497s |
+| 2026-10-31 15:05 | retrieve TC2-P2-D20-001 | final-model.pt sha256 a1d15cf867f7ec49... + summary/manifest/journal/slurm log | OK |
+| 2026-10-31 15:05 | validation TC2-P2-D10-001 | in-job V (sealed test untouched) | M=0.6424 V1=0.5485 V2veh=0.7105 V2per=0.5929 V3=0.727 |
+| 2026-10-31 15:19 | validation TC2-P2-D20-001 | in-job V (sealed test untouched) | M=0.6487 V1=0.5469 V2veh=0.711 V2per=0.6076 V3=0.74 |
+| 2026-10-31 16:17 | hift_p2_d10_s2 | 49832 TC2-P2-D10-S2-001 | COMPLETED 4466s |
+| 2026-10-31 16:17 | retrieve TC2-P2-D10-S2-001 | final-model.pt sha256 0999453ed644034a... + summary/manifest/journal/slurm log | OK |
+| 2026-10-31 16:17 | validation TC2-P2-D10-S2-001 | in-job V (sealed test untouched) | M=0.6403 V1=0.5456 V2veh=0.7101 V2per=0.5987 V3=0.7208 |
+| 2026-10-31 17:31 | orchestrator | socket check failed | STOPPED (reconnect VPN/socket) |
+| 2026-11-02 14:04 | orchestrator v8 | resume after socket loss | tracking d20_s2 49860 (last P2 run) |
+| 2026-11-02 14:04 | hift_p2_d20_s2 | 49860 TC2-P2-D20-S2-001 | COMPLETED 4536s |
+| 2026-11-02 14:04 | retrieve TC2-P2-D20-S2-001 | final-model.pt sha256 f0ece776a01a9429... + summary/manifest/journal/slurm log | OK |
+| 2026-11-02 14:04 | validation TC2-P2-D20-S2-001 | in-job V (sealed test untouched) | M=0.6465 V1=0.5487 V2veh=0.7113 V2per=0.5903 V3=0.74 |
+| 2026-11-02 14:05 | orchestrator v8 | hift_p1_long_s2=retrieved hift_p2_d10=retrieved hift_p2_d20=retrieved hift_p2_d10_s2=retrieved hift_p2_d20_s2=retrieved  | DONE |

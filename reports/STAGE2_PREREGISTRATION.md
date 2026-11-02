@@ -61,3 +61,11 @@ paired with REF-001 / REF-S2-001): D10 (p=0.10), D20 (p=0.20).
 Decision rule (same as P1, against REF): seed-averaged dM >= +0.010, both seeds dM > 0, no V subset
 (V1, V2-vehicle, V2-person, V3) dropping more than 0.015 seed-averaged; if both arms qualify, the larger dM.
 The sealed test is not reopened for P2 unless an arm qualifies; then it is opened once for that arm.
+
+## P2 outcome (2026-11-02, validation only)
+dM vs REF (seed1, seed2; seed-averaged subset deltas V1 / V2-vehicle / V2-person / V3):
+- D10: -0.005, -0.008; -0.005 / +0.002 / -0.016 / -0.008 -> rejected
+- D20: +0.001, -0.002; -0.004 / +0.003 / -0.013 / +0.008 -> rejected
+P1 final (both seeds): LR3E4 -0.014/-0.011, FROZEN -0.009/-0.010, LONG -0.018/-0.020 -> all rejected.
+No arm qualifies; REF remains the stage-2 model. The sealed test is not reopened for P2.
+Observation (not a decision input): distractor negatives lower V2-person in both arms (-0.016, -0.013).
