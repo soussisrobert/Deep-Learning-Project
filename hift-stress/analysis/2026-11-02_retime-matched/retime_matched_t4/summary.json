@@ -1,0 +1,290 @@
+{
+ "cpu": "Intel(R) Xeon(R) Gold 6230R CPU @ 2.10GHz",
+ "host": "TC2N01",
+ "torch": "2.8.0+cu128",
+ "sessions": 6,
+ "time_seqs": [
+  "bike1",
+  "car1_2",
+  "person11",
+  "person7_2"
+ ],
+ "frames_per_session": 5496,
+ "variant": "int8bb-s1",
+ "recipe": {
+  "calib_seqs": 40,
+  "calib_frames": 4,
+  "spread": true,
+  "calib_set": 1,
+  "calibration_sequences": [
+   "bike2",
+   "boat2",
+   "boat3",
+   "boat5",
+   "boat6",
+   "boat7",
+   "boat9",
+   "building3",
+   "car13",
+   "car14",
+   "car16_1",
+   "car18",
+   "car1_3",
+   "car2_s",
+   "car3",
+   "car4_s",
+   "car5",
+   "car6_5",
+   "group1_3",
+   "group2_2",
+   "group3_1",
+   "group3_2",
+   "group3_4",
+   "person12_1",
+   "person19_2",
+   "person19_3",
+   "person20",
+   "person23",
+   "person3",
+   "person4_2",
+   "person6",
+   "person7_1",
+   "person8_2",
+   "truck4_2",
+   "uav3",
+   "uav4",
+   "uav8",
+   "wakeboard2",
+   "wakeboard5",
+   "wakeboard7"
+  ]
+ },
+ "identity": {
+  "calibration_sequences_match": true,
+  "ref_run": "uav123-sub40_int8sel_clean_nodef_t4_cal1",
+  "ref_calibration_crops": 158,
+  "this_calibration_crops": 158
+ },
+ "checks": {
+  "fp32_session1": {
+   "bike1": {
+    "frames": 3084,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999985309351935,
+    "max_abs_px": 4.999685732798298e-05
+   },
+   "car1_2": {
+    "frames": 876,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999957816184881,
+    "max_abs_px": 4.9998806787243666e-05
+   },
+   "person11": {
+    "frames": 720,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999979470929004,
+    "max_abs_px": 4.998138021505838e-05
+   },
+   "person7_2": {
+    "frames": 816,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999983380526085,
+    "max_abs_px": 4.999952204798319e-05
+   }
+  },
+  "fp32_auc_session1": {
+   "bike1": 0.7244578220267037,
+   "car1_2": 0.6643318672965195,
+   "person11": 0.7285516148206856,
+   "person7_2": 0.7273416098385498
+  },
+  "int8bb-s1_session1": {
+   "bike1": {
+    "frames": 3084,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999985015073147,
+    "max_abs_px": 4.9997952658031863e-05
+   },
+   "car1_2": {
+    "frames": 876,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999955439891607,
+    "max_abs_px": 4.999734267130407e-05
+   },
+   "person11": {
+    "frames": 720,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999979525084566,
+    "max_abs_px": 4.998015981527715e-05
+   },
+   "person7_2": {
+    "frames": 816,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999982659684084,
+    "max_abs_px": 4.9991286232398124e-05
+   }
+  },
+  "int8bb-s1_auc_session1": {
+   "bike1": 0.7211854595971289,
+   "car1_2": 0.5953195417277515,
+   "person11": 0.7283534773132556,
+   "person7_2": 0.7279827475665909
+  },
+  "int8bb-s1_session2": {
+   "bike1": {
+    "frames": 3084,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999985015073147,
+    "max_abs_px": 4.9997952658031863e-05
+   },
+   "car1_2": {
+    "frames": 876,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999955439891607,
+    "max_abs_px": 4.999734267130407e-05
+   },
+   "person11": {
+    "frames": 720,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999979525084566,
+    "max_abs_px": 4.998015981527715e-05
+   },
+   "person7_2": {
+    "frames": 816,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999982659684084,
+    "max_abs_px": 4.9991286232398124e-05
+   }
+  },
+  "int8bb-s1_auc_session2": {
+   "bike1": 0.7211854595971289,
+   "car1_2": 0.5953195417277515,
+   "person11": 0.7283534773132556,
+   "person7_2": 0.7279827475665909
+  },
+  "fp32_session2": {
+   "bike1": {
+    "frames": 3084,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999985309351935,
+    "max_abs_px": 4.999685732798298e-05
+   },
+   "car1_2": {
+    "frames": 876,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999957816184881,
+    "max_abs_px": 4.9998806787243666e-05
+   },
+   "person11": {
+    "frames": 720,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999979470929004,
+    "max_abs_px": 4.998138021505838e-05
+   },
+   "person7_2": {
+    "frames": 816,
+    "same_box_iou_0_99": 1.0,
+    "median_iou": 0.9999983380526085,
+    "max_abs_px": 4.999952204798319e-05
+   }
+  },
+  "fp32_auc_session2": {
+   "bike1": 0.7244578220267037,
+   "car1_2": 0.6643318672965195,
+   "person11": 0.7285516148206856,
+   "person7_2": 0.7273416098385498
+  }
+ },
+ "size_mb": {
+  "fp32": 44.333207,
+  "int8bb-s1": 33.196325
+ },
+ "env": {
+  "OMP_NUM_THREADS": "4",
+  "MKL_NUM_THREADS": "4",
+  "SLURM_JOB_ID": "50072"
+ },
+ "by_threads": {
+  "4": {
+   "fp32_net_ms": {
+    "median": 89.13,
+    "min": 88.55,
+    "max": 89.447
+   },
+   "int8bb-s1_net_ms": {
+    "median": 50.8805,
+    "min": 50.655,
+    "max": 51.138
+   },
+   "speedup_net_ms": {
+    "median": 1.7484393456175427,
+    "min": 1.7383878440457026,
+    "max": 1.7599708793262894,
+    "per_session": [
+     1.76,
+     1.748,
+     1.754,
+     1.748,
+     1.738,
+     1.749
+    ]
+   },
+   "fp32_backbone_ms": {
+    "median": 68.083,
+    "min": 67.823,
+    "max": 68.449
+   },
+   "int8bb-s1_backbone_ms": {
+    "median": 29.302,
+    "min": 29.056,
+    "max": 29.411
+   },
+   "speedup_backbone_ms": {
+    "median": 2.330790562713841,
+    "min": 2.314778156996587,
+    "max": 2.3351421898612443,
+    "per_session": [
+     2.327,
+     2.327,
+     2.335,
+     2.334,
+     2.315,
+     2.334
+    ]
+   },
+   "fp32_head_ms": {
+    "median": 20.9255,
+    "min": 20.727,
+    "max": 21.271
+   },
+   "int8bb-s1_head_ms": {
+    "median": 21.6185,
+    "min": 21.518,
+    "max": 21.788
+   },
+   "fp32_step_ms": {
+    "median": 90.517,
+    "min": 90.095,
+    "max": 90.894
+   },
+   "int8bb-s1_step_ms": {
+    "median": 52.5385,
+    "min": 52.447,
+    "max": 53.115
+   },
+   "speedup_step_ms": {
+    "median": 1.7170370653029505,
+    "min": 1.7112680033888732,
+    "max": 1.730794897706256,
+    "per_session": [
+     1.725,
+     1.731,
+     1.72,
+     1.714,
+     1.712,
+     1.711
+    ]
+   }
+  }
+ }
+}

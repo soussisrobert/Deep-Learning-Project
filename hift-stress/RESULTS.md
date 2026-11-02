@@ -19,7 +19,7 @@ Five rounds of tests, about 100 tracking runs on the TC2 cluster.
 | **Invisible attack (PGD, each pixel changed by ≤ 4/255)** | Success drops from 0.58 to 0.10. Random noise of the same size barely matters (0.56). Same result over 3 seeds | ⚠️ HiFT is very easy to fool |
 | **4 cheap input filters** (blur, median, bit-depth, JPEG) against an attacker who knows the filter | JPEG-75 works best. Against our strongest attacker it raises the worst case from 0.08 to 0.23 (+0.15); 26 videos better, none worse | ✅ Real protection… |
 | …but the filter on normal video | Costs −0.012 success (JPEG-85: −0.030), just over our −0.010 limit. The cost comes from 2 fragile videos | ❌ Not free |
-| **Compression: int8 backbone, first layer kept in full precision** | Network 1.8× faster on CPU (94 → 52 ms), model 25% smaller (44 → 33 MB). On all 123 videos, accuracy unchanged on average (+0.003); about −0.004 once two lucky videos are set aside | ✅ Our main improvement |
+| **Compression: int8 backbone, first layer kept in full precision** | Network 1.75× faster on CPU (89 → 51 ms; tracker step 1.72×), measured in 6 matched sessions against the exact accuracy-tested model; model 25% smaller (44 → 33 MB). On all 123 videos, accuracy unchanged on average (+0.003); about −0.004 once two lucky videos are set aside | ✅ Our main improvement |
 | Other compression | Whole backbone int8: 2.1× faster but −0.016 on average, depending on calibration videos. Full int8 including the attention head: 2.3× faster but −0.04 to −0.07. Pruning 50%: no speed-up and −0.13 | ❌ Dropped |
 | int8 under 7 image corruptions (noise, blur, darkness, synthetic night…) | Hurts the same as the original model (extra loss −0.0035 on average) | ✅ As robust as the original |
 | **Does HiFT know when it fails?** (its own confidence score) | Yes for normal failures: AUROC 0.97. When the alarm fires it is right 98% of the time, but it only catches 42% of failures, mostly after they start | ✅ Useful after-the-fact signal |
@@ -27,7 +27,7 @@ Five rounds of tests, about 100 tracking runs on the TC2 cluster.
 
 ## What we can write in the report
 
-1. **Efficiency:** "Post-training int8 quantisation of HiFT's AlexNet-style backbone, keeping the first layer in full precision, makes the network 1.8× faster on a CPU and 25% smaller. Average accuracy over all 123 UAV123 videos stays within 0.004 success AUC. A few small, fast targets (e.g. `uav2`) are the exception."
+1. **Efficiency:** "Post-training int8 quantisation of HiFT's AlexNet-style backbone, keeping the first layer in full precision, makes the network 1.75× faster on a server CPU (4 threads; 1.81× with 1 thread) and 25% smaller. Average accuracy over all 123 UAV123 videos stays within 0.004 success AUC. A few small, fast targets (e.g. `uav2`) are the exception."
 2. **Robustness:** "HiFT is highly vulnerable to imperceptible adversarial perturbations. A training-free JPEG input filter recovers part of the loss, even against an adaptive attacker, at a clean cost of about 1%."
 3. **Failure awareness:** "HiFT's confidence score is a reliable after-the-fact failure detector (AUROC 0.97). It cannot detect adversarial attacks, because the attacked tracker stays confident."
 
@@ -36,6 +36,8 @@ Five rounds of tests, about 100 tracking runs on the TC2 cluster.
 - Real night-time performance: our night test is synthetic.
 - Physical attacks.
 - That JPEG is free.
+
+**Update, 2 Nov:** the speed numbers come from a matched re-timing. It used the exact model whose accuracy was tested, ran fp32 and int8 in the same job, and repeated the measurement in alternating sessions. It replaces the earlier 1.80×, which came from an unmatched benchmark. Details: [`analysis/2026-11-02_retime-matched/`](analysis/2026-11-02_retime-matched/REVIEW.md). The HiFT code pin check is in [`analysis/2026-11-02_hift-pin-check/`](analysis/2026-11-02_hift-pin-check/PIN_CHECK.md).
 
 ## Why you can trust these numbers
 
