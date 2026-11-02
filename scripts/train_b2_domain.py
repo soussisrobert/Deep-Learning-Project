@@ -157,6 +157,9 @@ def main():
                         help="fine-tune: backbone layers3-5 trainable from step 0 (default, as before) or frozen")
     parser.add_argument("--distractor-probability", type=float, default=0.0,
                         help="stage-2 P2: share of pairs that are same-video same-group distractor negatives (default 0 = none)")
+    parser.add_argument("--max-gap", type=int, default=100, help="positive pairs: max template-search frame gap (default 100)")
+    parser.add_argument("--long-gap-probability", type=float, default=0.0,
+                        help="stage-4 S4-GAP: share of positive pairs whose search frame is drawn from the whole track (default 0)")
     parser.add_argument("--uavdt-holdout-fraction", type=float, default=0.0,
                         help="hold whole UAVDT videos out of training for validation V3 (default 0 = none, as before)")
     parser.add_argument("--owner-instruction", required=True)
@@ -199,7 +202,8 @@ def main():
     weights = {k: v for k, v in args.source_weights.items() if any(t["source"] == k for t in train_tracks)}
     total = args.epochs*args.steps_per_epoch*args.batch
     dataset = TrackPairDataset(train_tracks, length=total, seed=args.data_seed, source_weights=weights,
-                               search_scale=args.search_scale_aug, distractor_probability=args.distractor_probability)
+                               search_scale=args.search_scale_aug, distractor_probability=args.distractor_probability,
+                               max_gap=args.max_gap, long_gap_probability=args.long_gap_probability)
     dev_set = TrackPairDataset(val_tracks, length=512, seed=20261028, negative_probability=0.5)
     dev_batches = [collate_pairs([dev_set[i] for i in range(s, s+32)]) for s in range(0, 512, 32)]
     dev_batches = [b for b in dev_batches if b.get("template") is not None]
@@ -246,7 +250,7 @@ def main():
                             "val_tracks": len(dev_set.sequences), "source_weights": weights, "pairs_total": total,
                             "search_augmentation": dataset.search_aug,
                             "data_seed": args.data_seed, "uavdt_holdout_fraction": args.uavdt_holdout_fraction,
-                            "uavdt_holdout_videos": holdout, "distractor_probability": args.distractor_probability, "acquisition_ledgers": {str(p): sha256(p) for p in ledgers},
+                            "uavdt_holdout_videos": holdout, "distractor_probability": args.distractor_probability, "max_gap": args.max_gap, "long_gap_probability": args.long_gap_probability, "acquisition_ledgers": {str(p): sha256(p) for p in ledgers},
                             "test_sets_excluded": "UAV123 (all), VisDrone-SOT test-dev, VisDrone-MOT test-dev never used in training"},
                    "schedule": {"epochs": args.epochs, "steps_per_epoch": args.steps_per_epoch, "batch": args.batch,
                                 "lr_table_used": scheduler.table[:args.epochs],

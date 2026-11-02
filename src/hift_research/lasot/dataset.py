@@ -7,6 +7,7 @@ Distractor negative (optional, probability distractor_probability, stage-2 P2): 
 same-group track of the SAME video at a frame within max_gap, accepted only when the template object's
 annotated box at that frame lies entirely outside the 511-px source crop window; otherwise the pair falls
 back to an ordinary different-video negative. distractor_probability=0 draws no extra random numbers.
+Long-gap positives (optional, stage-4 S4-GAP): see gap_policy.py; long_gap_probability=0 is the unchanged sampler.
 Each index uses its own NumPy seed (seed+index), so a pair is reproducible per index.
 Rejected candidates (e.g. no positive support) return None and are counted by the caller.
 LaSOT boxes are used as published (1-based convention not shifted; <=1 px at 511 crop scale).
@@ -23,6 +24,7 @@ from torch.utils.data import Dataset
 from hift_research.corrections.positive_targets import CorrectedAnchorTarget, robust_pair_targets
 from hift_research.data_contract.pipeline import numpy_seed
 from hift_research.data_contract.source_ops import jpeg_crop511, source_operations
+from hift_research.lasot.gap_policy import check_gap_policy, search_frame
 
 TEMPLATE_AUG = {"shift": 4.0, "scale": 0.05, "blur": 0.0, "flip": 0.0, "color": 1.0}
 SEARCH_AUG = {"shift": 64.0, "scale": 0.18, "blur": 0.2, "flip": 0.0, "color": 1.0}
@@ -67,7 +69,7 @@ def template_outside_crop(search_box, template_box):
 class TrackPairDataset(Dataset):
     """Pairs over generic tracks (see tracks.py). Negatives always come from a different video."""
     def __init__(self, tracks, *, length, seed, negative_probability=0.05, max_gap=100, source_weights=None,
-                 search_scale=None, distractor_probability=0.0):
+                 search_scale=None, distractor_probability=0.0, long_gap_probability=0.0):
         # search_scale: optional override of SEARCH_AUG["scale"] (default 0.18, the source pysot value)
         self.search_aug = dict(SEARCH_AUG, scale=search_scale) if search_scale is not None else dict(SEARCH_AUG)
         if not 0 <= self.search_aug["scale"] < 1:
@@ -84,8 +86,10 @@ class TrackPairDataset(Dataset):
             self._source_tracks, self._source_p = members, weights/weights.sum()
         if len({t["video"] for t in self.sequences}) < 2:
             raise ValueError("at least two usable videos required (negatives come from another video)")
-        if length < 1 or not 0 <= negative_probability < 1 or max_gap < 1:
-            raise ValueError("invalid length/negative_probability/max_gap")
+        if length < 1 or not 0 <= negative_probability < 1:
+            raise ValueError("invalid length/negative_probability")
+        check_gap_policy(max_gap, long_gap_probability)
+        self.long_gap_probability = float(long_gap_probability)
         if not 0 <= distractor_probability < 1:
             raise ValueError("distractor_probability must be in [0, 1)")
         self.distractor_probability = float(distractor_probability)
@@ -178,11 +182,10 @@ class TrackPairDataset(Dataset):
                 sf = int(np.random.choice(search_sequence["valid"]))
             else:
                 search_sequence = template_sequence
-                valid = template_sequence["valid"]
-                near = valid[(np.abs(valid-tf) <= self.max_gap) & (valid != tf)]
-                if not len(near):
+                sf = search_frame(template_sequence["valid"], tf, max_gap=self.max_gap,
+                                  long_gap_probability=self.long_gap_probability)
+                if sf is None:
                     return {"index": index, "negative": negative, "reason": "no_visible_partner"}, None
-                sf = int(np.random.choice(near))
             record = {"index": index, "negative": negative, "template": [template_sequence["name"], tf],
                       "search": [search_sequence["name"], sf]}
             if distractor:
