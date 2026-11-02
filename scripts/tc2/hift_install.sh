@@ -56,6 +56,15 @@ case $STAGE in
       done
       submit "$JOB" hift_validate.sbatch --export=ALL,REPO="$R",VAL_JOBS="$V"; exit 0
     fi
+    case $NAME in hift_s3grid_ref|hift_s3grid_b0)  # stage 3: tracker post-processing grid on frozen weights (validation only)
+      G="--track-grid $R/configs/stage3_track_grid.json"
+      if [ "$NAME" = hift_s3grid_ref ]; then
+        V=""; for r in TC2-P1-REF-001 TC2-P1-REF-S2-001; do
+          [ -f "$B/runs/$r/final-model.pt" ] || { echo "NOT SUBMITTED $NAME: missing $r"; exit 1; }
+          V="${V:+$V;}S3GRID-$r|--checkpoint $B/runs/$r/final-model.pt $G"; done
+      else V="S3GRID-B0-SIGMOID|--official $G"; fi
+      submit "$JOB" hift_validate.sbatch --export=ALL,REPO="$R",VAL_JOBS="$V",SUBSETS="V1 V2 V3"; exit 0 ;;
+    esac
     FT="--backbone alexnet --init official --epochs 10 --steps-per-epoch 1000"
     P1="--backbone alexnet --init official --layout corrected --epochs 10"   # stage 2 P1: forgetting / LR sweep
     VAL=""   # stage-2 runs hold out 10% of UAVDT videos (V3) and validate in-job

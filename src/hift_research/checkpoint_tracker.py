@@ -24,6 +24,25 @@ def verify_upstream_files(root):
     return len(lines)
 
 
+TUNABLE_TRACK_KEYS = ("PENALTY_K", "WINDOW_INFLUENCE", "LR")  # stage-3 post-processing grid (REF/T identity)
+
+
+def apply_track_overrides(track_cfg, overrides):
+    """Set whitelisted cfg.TRACK post-processing values in place; returns the effective values of all tunable keys.
+    Unknown keys, non-finite values, WINDOW_INFLUENCE outside [0, 1] and negative PENALTY_K/LR are rejected."""
+    import math
+    overrides = dict(overrides or {})
+    unknown = set(overrides)-set(TUNABLE_TRACK_KEYS)
+    if unknown:
+        raise ValueError(f"not tunable: {sorted(unknown)}")
+    for key, value in overrides.items():
+        value = float(value)
+        if not math.isfinite(value) or value < 0 or (key == "WINDOW_INFLUENCE" and value > 1):
+            raise ValueError(f"invalid {key}={value}")
+        track_cfg[key] = value
+    return {key: float(track_cfg[key]) for key in TUNABLE_TRACK_KEYS}
+
+
 def ensure_upstream_identity(root):
     """'git' when the submodule checkout exists (inference.configure_upstream verifies it unchanged); otherwise
     verify the file manifest and let configure_upstream use it instead of git (isolated adapter: inference.py
@@ -37,8 +56,9 @@ def ensure_upstream_identity(root):
     return f"file manifest ({count} files, {UPSTREAM_MANIFEST})"
 
 
-def build_tracker(root, checkpoint=None, *, official=False, score="sigmoid", selection="nan-safe"):
-    """Returns (tracker, info). score: raw|sigmoid; selection: upstream|nan-safe."""
+def build_tracker(root, checkpoint=None, *, official=False, score="sigmoid", selection="nan-safe", track_overrides=None):
+    """Returns (tracker, info). score: raw|sigmoid; selection: upstream|nan-safe; track_overrides: whitelisted
+    cfg.TRACK values (None = upstream config). The upstream tracker reads cfg.TRACK at every frame."""
     import torch
     from .corrections.tensor_layout import encoder_forward_corrected
     from .inference import ScoreProbabilityAdapter, configure_upstream, load_original, make_tracker
@@ -80,6 +100,7 @@ def build_tracker(root, checkpoint=None, *, official=False, score="sigmoid", sel
     from pysot.core.config import cfg
     if cfg.TRAIN.groupchannel != 32:
         raise ValueError("GroupNorm groups differ from the B2 training graph")
+    track_config = apply_track_overrides(cfg.TRACK, track_overrides)
     if selection == "nan-safe":
         from .tracking_nan_safe import make_nan_safe_tracker
         tracker = make_nan_safe_tracker(ScoreProbabilityAdapter(model) if score == "sigmoid" else model)
@@ -88,5 +109,6 @@ def build_tracker(root, checkpoint=None, *, official=False, score="sigmoid", sel
     else:
         raise ValueError("selection must be upstream or nan-safe")
     info.update({"checkpoint": str(Path(checkpoint).resolve()), "checkpoint_sha256": sha256(checkpoint),
-                 "score": score, "selection": selection, "upstream_verification": upstream_verification})
+                 "score": score, "selection": selection, "upstream_verification": upstream_verification,
+                 "track_config": track_config, "track_overrides": dict(track_overrides or {})})
     return tracker, info

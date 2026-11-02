@@ -1,6 +1,6 @@
 #!/bin/bash
 # Validation-only job (no training): tracks existing checkpoints on validation V1 (VisDrone-SOT-val) + V2
-# (VisDrone-MOT-val episodes) into ~/hift/validation/<label>. V3 is omitted: the existing runs trained on all of UAVDT.
+# (VisDrone-MOT-val episodes) into ~/hift/validation/<label>; SUBSETS (default V1 V2) adds V3 for models that never saw it.
 # VAL_JOBS = ";"-separated "label|validate_domain.py args" (from the installer). Test sets are never read.
 #SBATCH --partition=MGPU-TC2
 #SBATCH --qos=normal
@@ -14,6 +14,7 @@
 #SBATCH --error=/home/msai/ning011/hift/logs/%x_%j.out
 set -o pipefail   # no -u: the cluster's conda activate.d scripts reference unset variables
 B=$HOME/hift; R=${REPO:?REPO}; VAL_JOBS=${VAL_JOBS:?VAL_JOBS}
+SUBSETS=${SUBSETS:-"V1 V2"}   # V3 only for models that never trained on the held-out UAVDT videos
 date --iso-8601=seconds; hostname; nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader
 [ -f "$B/env/.ready" ] && [ -f "$B/data/.ready" ] || { echo "env/data not ready"; exit 9; }
 module purge
@@ -31,7 +32,7 @@ for item in "${ITEMS[@]}"; do
   [ -e "$out" ] && out=$out-retry$(date +%s)   # a failed attempt's directory is kept, never reused
   echo "=== $label -> $out: $vargs $(date --iso-8601=seconds)"
   # shellcheck disable=SC2086
-  python -u scripts/validate_domain.py $vargs --data-root "$B/data" --output "$out" --subsets V1 V2     | grep VALIDATION || STATUS=1
+  python -u scripts/validate_domain.py $vargs --data-root "$B/data" --output "$out" --subsets $SUBSETS     | grep VALIDATION || STATUS=1
 done
 echo "=== exit $STATUS $(date --iso-8601=seconds)"
 exit $STATUS

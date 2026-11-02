@@ -79,6 +79,9 @@ def main():
     parser.add_argument("--data-root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--subsets", nargs="+", default=["V1", "V2", "V3"], choices=["V1", "V2", "V3"])
+    parser.add_argument("--track-grid", type=Path,
+                        help="JSON list of {label, PENALTY_K/WINDOW_INFLUENCE/LR overrides}: one output/<label> per entry "
+                             "(stage-3 post-processing grid; omitted = upstream cfg.TRACK, single output)")
     parser.add_argument("--uavdt-holdout-fraction", type=float, default=0.1,
                         help="must equal the trainer's --uavdt-holdout-fraction for V3 to be unseen")
     args = parser.parse_args()
@@ -93,40 +96,50 @@ def main():
     torch.manual_seed(0); torch.cuda.manual_seed_all(0)
     torch.backends.cudnn.benchmark = False
     torch.backends.cuda.matmul.allow_tf32 = False; torch.backends.cudnn.allow_tf32 = False
-    tracker, info = build_tracker(ROOT, args.checkpoint, official=args.official, score=args.score, selection=args.selection)
     episodes, holdout = build_episodes(args.data_root, args.subsets, args.uavdt_holdout_fraction)
     listing = [{"subset": s, "name": e["name"], "group": e["group"], "category": e["category"],
                 "first_frame": str(Path(e["frames"][0]).name), "frames": len(e["frames"]), "scored": len(e["scored"])}
                for s, e in episodes]
     listing_sha = hashlib.sha256(json.dumps(listing, sort_keys=True).encode()).hexdigest()
-    results, start_all = {}, time.perf_counter()
+    grid = [{"label": None}] if args.track_grid is None else json.loads(args.track_grid.read_text(encoding="utf-8"))
+    labels = [g["label"] for g in grid]
+    if args.track_grid is not None and (len(set(labels)) != len(labels) or any(not l or "/" in l for l in labels)):
+        raise ValueError("grid labels must be unique, non-empty and path-safe")
     read = lambda p: cv2.imread(str(p), cv2.IMREAD_COLOR)
-    with ThreadPoolExecutor(max_workers=6) as pool:
-        for subset, episode in episodes:
-            predictions = []
-            for index, image in enumerate(prefetched(pool, read, episode["frames"])):
-                if image is None:
-                    raise ValueError(f"cannot decode {episode['frames'][index]}")
-                if index == 0:
-                    tracker.init(image, episode["init_bbox"]); bbox = episode["init_bbox"]
-                else:
-                    bbox = tracker.track(image)["bbox"]
-                predictions.append(list(map(float, bbox)))
-            results[(subset, episode["name"])] = score_episode(episode, predictions)
-            safe = episode["name"].replace("/", "_").replace("#", "_")
-            np.savetxt(output/f"{subset}__{safe}.csv", np.asarray(predictions), delimiter=",", fmt="%.10g")
-    summary = summarize(results, [e for _, e in episodes])
-    per_episode = {f"{s}/{n}": {"success_auc": m["success_auc"], "precision_at_20px": m["precision_at_20px"]}
-                   for (s, n), m in results.items()}
-    record = {"schema": "hift-domain-validation-v1", "tracker": info, "subsets": args.subsets,
-              "uavdt_holdout_fraction": args.uavdt_holdout_fraction, "uavdt_holdout_videos": holdout,
-              "episode_listing_sha256": listing_sha, "episodes": listing, "summary": summary, "per_episode": per_episode,
-              "seconds": time.perf_counter()-start_all, "finished_utc": datetime.now(timezone.utc).isoformat(),
-              "software": {"torch": torch.__version__, "platform": platform.platform()},
-              "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None}
-    with (output/"validation.json").open("x", encoding="utf-8") as stream:
-        json.dump(record, stream, indent=2)
-    print("VALIDATION", json.dumps({k: summary[k] for k in summary if k != "M_definition"}), flush=True)
+    for entry in grid:
+        overrides = {k: v for k, v in entry.items() if k != "label"}
+        target = output if entry["label"] is None else output/entry["label"]
+        target.mkdir(exist_ok=entry["label"] is None)
+        tracker, info = build_tracker(ROOT, args.checkpoint, official=args.official, score=args.score,
+                                      selection=args.selection, track_overrides=overrides)
+        results, start_all = {}, time.perf_counter()
+        with ThreadPoolExecutor(max_workers=6) as pool:
+            for subset, episode in episodes:
+                predictions, scores = [], []
+                for index, image in enumerate(prefetched(pool, read, episode["frames"])):
+                    if image is None:
+                        raise ValueError(f"cannot decode {episode['frames'][index]}")
+                    if index == 0:
+                        tracker.init(image, episode["init_bbox"]); bbox = episode["init_bbox"]; best = float("nan")
+                    else:
+                        state = tracker.track(image); bbox = state["bbox"]; best = float(state.get("best_score", float("nan")))
+                    predictions.append(list(map(float, bbox))); scores.append(best)
+                results[(subset, episode["name"])] = score_episode(episode, predictions)
+                safe = episode["name"].replace("/", "_").replace("#", "_")
+                np.savetxt(target/f"{subset}__{safe}.csv", np.asarray(predictions), delimiter=",", fmt="%.10g")
+                np.savetxt(target/f"{subset}__{safe}.score.csv", np.asarray(scores), fmt="%.6g")
+        summary = summarize(results, [e for _, e in episodes])
+        per_episode = {f"{s}/{n}": {"success_auc": m["success_auc"], "precision_at_20px": m["precision_at_20px"]}
+                       for (s, n), m in results.items()}
+        record = {"schema": "hift-domain-validation-v1", "tracker": info, "grid_label": entry["label"], "subsets": args.subsets,
+                  "uavdt_holdout_fraction": args.uavdt_holdout_fraction, "uavdt_holdout_videos": holdout,
+                  "episode_listing_sha256": listing_sha, "episodes": listing, "summary": summary, "per_episode": per_episode,
+                  "seconds": time.perf_counter()-start_all, "finished_utc": datetime.now(timezone.utc).isoformat(),
+                  "software": {"torch": torch.__version__, "platform": platform.platform()},
+                  "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None}
+        with (target/"validation.json").open("x", encoding="utf-8") as stream:
+            json.dump(record, stream, indent=2)
+        print("VALIDATION", entry["label"] or "", json.dumps({k: summary[k] for k in summary if k != "M_definition"}), flush=True)
 
 
 if __name__ == "__main__":

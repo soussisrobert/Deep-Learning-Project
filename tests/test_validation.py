@@ -143,3 +143,15 @@ def test_repo_checkout_uses_git_identity():
     assert ct.ensure_upstream_identity(ROOT) == "git"
     lines = (ROOT/ct.UPSTREAM_MANIFEST).read_text(encoding="utf-8").splitlines()
     assert len(lines) == 167 and all(len(l.split(" *", 1)[0]) == 64 for l in lines)
+
+
+def test_track_overrides_whitelist_and_bounds():
+    from yacs.config import CfgNode
+    from hift_research.checkpoint_tracker import apply_track_overrides
+    track = CfgNode({"PENALTY_K": 0.08, "WINDOW_INFLUENCE": 0.42, "LR": 0.30, "STRIDE": 8})
+    assert apply_track_overrides(track, None) == {"PENALTY_K": 0.08, "WINDOW_INFLUENCE": 0.42, "LR": 0.30}
+    assert apply_track_overrides(track, {"WINDOW_INFLUENCE": 0.25, "LR": 0.7})["WINDOW_INFLUENCE"] == 0.25
+    assert track.LR == 0.7 and track.STRIDE == 8
+    for bad in ({"STRIDE": 4}, {"WINDOW_INFLUENCE": 1.5}, {"LR": -0.1}, {"PENALTY_K": float("nan")}):
+        with pytest.raises(ValueError):
+            apply_track_overrides(track, bad)
