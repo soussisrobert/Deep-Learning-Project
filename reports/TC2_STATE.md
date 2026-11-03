@@ -291,3 +291,4 @@ and `ls -d /scratch* /local*`; python/curl on the head node; one 3-min `srun` pr
 | 2026-11-03 15:55 | validation TC2-S5-SOT2-S2-001 | in-job V (sealed test untouched) | M=0.6485 V1=0.547 V2veh=0.7124 V2per=0.6096 V3=0.7375 |
 | 2026-11-03 15:57 | orchestrator v11 | hift_data_sot2=retrieved hift_s5_sot2=retrieved hift_s5_sot2_s2=retrieved  | DONE |
 | 2026-11-03 15:57 | stage-5 decision | scripts/stage5_decision.py (V only) | DECISION: REJECT SOT2 (sealed test stays closed) |
+| 2026-11-03 16:15 | source-video audit | ls of own ~/hift/data/visdrone sequence names (read-only) | test-dev shares 1 video (uav0000079) with MOT-train; REF sealed test-dev gain on disjoint 34: +0.075 (all 35: +0.073); reports/SOURCE_VIDEO_AUDIT.md |
