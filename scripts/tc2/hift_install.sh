@@ -49,6 +49,16 @@ case $STAGE in
     case $NAME in *_s[2-9]) SEEDK=${NAME##*_s}; NAME=${NAME%_s[2-9]} ;; esac   # seed replicate k of a table job
     [ -f "$B/env/.ready" ] && [ -f "$B/data/.ready" ] || { echo "NOT SUBMITTED $NAME: env/data not ready"; exit 0; }
     if [ "$NAME" = hift_data_sot2 ]; then submit "$JOB" hift_data_sot2.sbatch; exit 0; fi   # stage 5: SOT train_part2 + leakage check
+    if [ "$NAME" = hift_s6_v1b ]; then  # stage 6: V1B extra validation, inference only (V1 repeated as reproduction gate)
+      [ -f "$B/ledgers/SOT2.json" ] || { echo "NOT SUBMITTED $NAME: SOT train_part2 not present"; exit 1; }
+      (cd "$B/checkpoints" && sha256sum -c stage6.sha256 >/dev/null) || { echo "NOT SUBMITTED $NAME: stage-6 checkpoints missing/unverified"; exit 1; }
+      V="V1B-B0-SIGMOID|--official"
+      for r in TC2-P1-REF-001 TC2-P1-REF-S2-001; do
+        [ -f "$B/runs/$r/final-model.pt" ] || { echo "NOT SUBMITTED $NAME: missing $r"; exit 1; }
+        V="$V;V1B-$r|--checkpoint $B/runs/$r/final-model.pt"; done
+      for r in TC2-S4-G300-001 TC2-S4-G300-S2-001 TC2-S4-GMIX-001 TC2-S4-GMIX-S2-001; do V="$V;V1B-$r|--checkpoint $B/checkpoints/$r.pt"; done
+      submit "$JOB" hift_validate.sbatch --export=ALL,REPO="$R",VAL_JOBS="$V",SUBSETS="V1 V1B"; exit 0
+    fi
     if [ "$NAME" = hift_val_diag ] || [ "$NAME" = hift_val_diag2 ]; then  # stage-2 diagnostics D1/D2 (diag2: rerun after the git-identity fix): validation only, existing checkpoints (V1+V2)
       V="B0-RAW-UPSTREAM|--official --score raw --selection upstream;B0-SIGMOID-NANSAFE|--official"
       for r in TC2-B0FT-CORR-001 TC2-B0FT-CORR-S2-001 TC2-B0FT-CORR-S3-001 TC2-B0FT-ORIG-001 TC2-B0FT-ORIG-S2-001 TC2-B0FT-ORIG-S3-003; do

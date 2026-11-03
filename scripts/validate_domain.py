@@ -1,5 +1,5 @@
-"""Validation tracking (V1 VisDrone-SOT-val, V2 VisDrone-MOT-val episodes, V3 held-out UAVDT episodes) for
-model selection. The sealed test sets (UAV123 domain, VisDrone-SOT test-dev) are never read here.
+"""Validation tracking (V1 VisDrone-SOT-val, V2 VisDrone-MOT-val episodes, V3 held-out UAVDT episodes; opt-in V1B =
+the VisDrone-SOT train_part2 sequences in configs/v1b_sequences.txt, stage 6) for model selection. The sealed test sets (UAV123 domain, VisDrone-SOT test-dev) are never read here.
 Ground truth initializes each episode and scores it afterwards; the tracker never sees later GT.
 
     python scripts/validate_domain.py --checkpoint runs/X/final-model.pt --data-root ~/hift/data --output runs/X/validation
@@ -23,6 +23,7 @@ V2_PER_GROUP = {"vehicle": 40, "person": 40}
 V3_PER_GROUP = {"vehicle": 40}
 MAX_FRAMES = 200
 MAX_PER_VIDEO = 7
+V1B_LIST = ROOT/"configs/v1b_sequences.txt"
 
 
 def prefetched(pool, read, paths, depth=12):
@@ -41,6 +42,16 @@ def prefetched(pool, read, paths, depth=12):
         yield image
 
 
+def v1b_names(path=None):
+    """V1B sequence names: one per non-comment line, unique, VisDrone-SOT pattern."""
+    import re
+    path = Path(path or V1B_LIST)
+    names = [l.strip() for l in path.read_text(encoding="utf-8").splitlines() if l.strip() and not l.startswith("#")]
+    if not names or len(set(names)) != len(names) or not all(re.fullmatch(r"uav\d{7}_\d{5}_s", n) for n in names):
+        raise ValueError(f"malformed V1B list {path}")
+    return names
+
+
 def build_episodes(data_root, subsets, holdout_fraction):
     from hift_research.evaluation.validation import select_episodes, uavdt_holdout, make_episode
     from hift_research.lasot.tracks import uavdt_tracks, visdrone_mot_tracks, visdrone_sot_track
@@ -52,6 +63,14 @@ def build_episodes(data_root, subsets, holdout_fraction):
             episode = make_episode(visdrone_sot_track(seq, sot/"annotations"/f"{seq.name}.txt"), max_frames=10**6)
             if episode is not None:
                 episodes.append(("V1", episode))
+    if "V1B" in subsets:  # full-length like V1; a listed sequence that is missing is an error, never skipped
+        sot = data/"visdrone/SOT/VisDrone2019-SOT-train_part2/VisDrone2019-SOT-train"
+        for name in v1b_names():
+            if not (sot/"sequences"/name).is_dir():
+                raise FileNotFoundError(sot/"sequences"/name)
+            episode = make_episode(visdrone_sot_track(sot/"sequences"/name, sot/"annotations"/f"{name}.txt"), max_frames=10**6)
+            if episode is not None:
+                episodes.append(("V1B", episode))
     if "V2" in subsets:
         mot = data/"visdrone/MOT/VisDrone2019-MOT-val"
         tracks = [t for seq in sorted((mot/"sequences").iterdir())
@@ -78,7 +97,7 @@ def main():
     parser.add_argument("--selection", choices=["upstream", "nan-safe"], default="nan-safe")
     parser.add_argument("--data-root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--subsets", nargs="+", default=["V1", "V2", "V3"], choices=["V1", "V2", "V3"])
+    parser.add_argument("--subsets", nargs="+", default=["V1", "V2", "V3"], choices=["V1", "V1B", "V2", "V3"])
     parser.add_argument("--track-grid", type=Path,
                         help="JSON list of {label, PENALTY_K/WINDOW_INFLUENCE/LR overrides}: one output/<label> per entry "
                              "(stage-3 post-processing grid; omitted = upstream cfg.TRACK, single output)")
