@@ -2,6 +2,13 @@
 
 Research implementation for UAV single-object tracking. Source-resolution-aware fusion remains a **hypothesis**, not an established contribution. **Wave 4** establishes bounded authentic temporal positives, simultaneous known-distinct negatives, actual Windows/CUDA input-path correctness and a separately gated corrected-B2 reliability-pilot proposal—not real-data SGD, a learned baseline, full benchmark reproduction or R1. See [Wave 4 A–G delivery and gates](<reports/wave4_progress.md>) and [compact evidence](<experiments/wave4_validation.json>); all prior [Wave 3](<reports/wave3_progress.md>) and [Wave 2](<reports/wave2_progress.md>) findings remain frozen.
 
+## Domain-tracking close-out (stage 7, 2026-11-04) — REF frozen
+
+[Stage-7 close-out](<reports/STAGE7_CLOSEOUT.md>) freezes REF (B2-L1 head, AlexNet, fine-tuned from the official checkpoint on aerial vehicles + pedestrians; seeds 20261023/20261102) as the final model of stages 2-6. Measured on the stage-2 sealed predictions (stored outputs, not reopened; gated by exact re-scoring):
+- VisDrone-SOT test-dev, 34 sequences source-video-disjoint from training: success AUC **B0 0.527 → REF 0.602 (+0.075, 95% source-video cluster interval [+0.024, +0.124])**, both seeds positive.
+- UAV123@10fps domain subset (76 sequences): B0 0.594, REF 0.589 (−0.005, [−0.034, +0.027]): no difference detectable.
+- Eight further training arms and a 37-point post-processing grid were tested against REF on validation; none was adopted. The source-resolution hypothesis (R1) was not tested. These results are not comparable with published leaderboards.
+
 ## Wave 6 guarded execution — not approval ready
 
 [Wave6 executable safeguards](<reports/wave6_progress.md>) add native Windows process-tree/inclusive-deadline supervision, exact one-use human acknowledgment and GPU lease, immediate runtime/input guards, and durable checkpoint/telemetry around the byte-unchanged scientific controller. [Compact evidence](<experiments/wave6_validation.json>) distinguishes CPU/math replay and native control tests from authentic training. **G5 remains blocked** by ambiguous WDDM C+G ownership; resource availability is checked, not assumed. No real SGD, GPU experiment, real grant or new approval-ready pilot proposal was issued. The new [guarded entry](<scripts/run_b2_guarded.py>) is the only supported future Wave6 production route; the mechanically retained legacy CLI is not an approved bypass. Establish actual prerequisites, freeze a fresh exact unapproved proposal, then wait for human approval.
