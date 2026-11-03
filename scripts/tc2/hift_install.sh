@@ -48,6 +48,7 @@ case $STAGE in
     NAME=${2:?job name}; JOB=$NAME; SEEDK=""
     case $NAME in *_s[2-9]) SEEDK=${NAME##*_s}; NAME=${NAME%_s[2-9]} ;; esac   # seed replicate k of a table job
     [ -f "$B/env/.ready" ] && [ -f "$B/data/.ready" ] || { echo "NOT SUBMITTED $NAME: env/data not ready"; exit 0; }
+    if [ "$NAME" = hift_data_sot2 ]; then submit "$JOB" hift_data_sot2.sbatch; exit 0; fi   # stage 5: SOT train_part2 + leakage check
     if [ "$NAME" = hift_val_diag ] || [ "$NAME" = hift_val_diag2 ]; then  # stage-2 diagnostics D1/D2 (diag2: rerun after the git-identity fix): validation only, existing checkpoints (V1+V2)
       V="B0-RAW-UPSTREAM|--official --score raw --selection upstream;B0-SIGMOID-NANSAFE|--official"
       for r in TC2-B0FT-CORR-001 TC2-B0FT-CORR-S2-001 TC2-B0FT-CORR-S3-001 TC2-B0FT-ORIG-001 TC2-B0FT-ORIG-S2-001 TC2-B0FT-ORIG-S3-003; do
@@ -85,6 +86,8 @@ case $STAGE in
       hift_s4_refc)   RUN=TC2-S4-REFC-001;   ARGS="$P1 --steps-per-epoch 1000 --ft-lr 1e-3 1e-4"; VAL=1 ;;   # stage 4: REF re-run (control)
       hift_s4_g300)   RUN=TC2-S4-G300-001;   ARGS="$P1 --steps-per-epoch 1000 --ft-lr 1e-3 1e-4 --max-gap 300"; VAL=1 ;;
       hift_s4_gmix)   RUN=TC2-S4-GMIX-001;   ARGS="$P1 --steps-per-epoch 1000 --ft-lr 1e-3 1e-4 --long-gap-probability 0.5"; VAL=1 ;;
+      hift_s5_sot2)   RUN=TC2-S5-SOT2-001;   ARGS="$P1 --steps-per-epoch 1000 --ft-lr 1e-3 1e-4 --train-parts visdrone-sot-1 visdrone-sot-2 visdrone-mot uavdt"; VAL=1   # stage 5: + SOT train_part2
+                      [ -f "$B/ledgers/SOT2.json" ] || { echo "NOT SUBMITTED $JOB: SOT train_part2 not acquired"; exit 0; } ;;
       *) echo "NOT SUBMITTED $NAME: unknown job"; exit 1 ;;
     esac
     if [ -n "$SEEDK" ]; then RUN=${RUN%-001}-S$SEEDK-001; ARGS="$ARGS --seed $((20261100+SEEDK)) --data-seed $((20261027+SEEDK))"; fi

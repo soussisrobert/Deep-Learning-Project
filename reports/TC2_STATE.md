@@ -275,3 +275,4 @@ and `ls -d /scratch* /local*`; python/curl on the head node; one 3-min `srun` pr
 | 2026-11-03 04:17 | validation TC2-S4-GMIX-S2-001 | in-job V (sealed test untouched) | M=0.6326 V1=0.5101 V2veh=0.7194 V2per=0.6076 V3=0.724 |
 | 2026-11-03 04:18 | orchestrator v10 | hift_s4_refc=retrieved hift_s4_g300=retrieved hift_s4_gmix=retrieved hift_s4_refc_s2=retrieved hift_s4_g300_s2=retrieved hift_s4_gmix_s2=retrieved  | DONE |
 | 2026-11-03 04:18 | stage-4 decision | scripts/stage4_decision.py (V only) | DECISION: REJECT both arms (sealed test stays closed) |
+| 2026-11-03 04:45 | prune (stage-5 space) | 30 old HiFT runs whose final-model.pt sha256 matched the local copy (all except P1-REF seeds 1-2) + 5 old code copies; owner: limit is 100 GiB, go | home 89.2 -> 84.4 GiB; part2 needs 12.62 GiB -> ~2.9 GiB spare |
