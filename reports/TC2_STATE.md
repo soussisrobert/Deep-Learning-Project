@@ -301,4 +301,8 @@ and `ls -d /scratch* /local*`; python/curl on the head node; one 3-min `srun` pr
 | 2026-11-03 17:28 | upload | bundle 8e3ca6c (sha256 b8bdcb07...), stage-6 V1B | sha256 OK, unpacked |
 | 2026-11-03 17:28 | orchestrator v12 | stage 6: V1B validation job (no training) | started |
 | 2026-11-03 17:28 | submit hift_s6_v1b | 7 models x (V1 + V1B), attempt 1 | job 50675 |
-| 2026-11-03 18:19 | orchestrator | socket check failed | STOPPED (reconnect VPN/socket) |
+| 2026-11-03 20:30 | orchestrator v12 | socket down 18:01-20:28 (8 failed checks 18:19-20:21; their "STOPPED" log lines were removed: guard ran in a subshell, so v12 kept polling) | job 50675 finished 18:16 (+08) with exit 0; 7 V1B-* dirs present on TC2 |
+| 2026-11-03 20:36 | hift_s6_v1b | 50675 | COMPLETED 2854s |
+| 2026-11-03 20:37 | retrieve hift_s6_v1b | 7 V1B-* validation dirs (tar sha256 OK) | OK |
+| 2026-11-03 20:37 | stage-6 V1B analysis | scripts/stage6_v1b.py (validation only) | PASS |
+| 2026-11-03 20:40 | delete (stage-6, owner-approved) | SOT train_part2 data + ~/hift/checkpoints (4 re-uploaded stage-4 models) | home now 86988 MiB |
