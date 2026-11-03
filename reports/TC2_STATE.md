@@ -275,4 +275,19 @@ and `ls -d /scratch* /local*`; python/curl on the head node; one 3-min `srun` pr
 | 2026-11-03 04:17 | validation TC2-S4-GMIX-S2-001 | in-job V (sealed test untouched) | M=0.6326 V1=0.5101 V2veh=0.7194 V2per=0.6076 V3=0.724 |
 | 2026-11-03 04:18 | orchestrator v10 | hift_s4_refc=retrieved hift_s4_g300=retrieved hift_s4_gmix=retrieved hift_s4_refc_s2=retrieved hift_s4_g300_s2=retrieved hift_s4_gmix_s2=retrieved  | DONE |
 | 2026-11-03 04:18 | stage-4 decision | scripts/stage4_decision.py (V only) | DECISION: REJECT both arms (sealed test stays closed) |
-| 2026-11-03 04:45 | prune (stage-5 space) | 30 old HiFT runs whose final-model.pt sha256 matched the local copy (all except P1-REF seeds 1-2) + 5 old code copies; owner: limit is 100 GiB, go | home 89.2 -> 84.4 GiB; part2 needs 12.62 GiB -> ~2.9 GiB spare |
+| 2026-11-03 12:31 | prune (stage-5 space) | 30 old HiFT runs whose final-model.pt sha256 matched the local copy (all except P1-REF seeds 1-2) + 5 old code copies; owner: limit is 100 GiB, go | home 89.2 -> 84.4 GiB; part2 needs 12.62 GiB -> ~2.9 GiB spare |
+| 2026-11-03 12:42 | upload | bundle 613835f (sha256 3320c1f6...), stage-5 SOT2 | sha256 OK, unpacked |
+| 2026-11-03 12:42 | orchestrator v11 | stage 5: SOT2 (part2 data job + leakage gate, then REF + part2 x 2 seeds) | started |
+| 2026-11-03 12:42 | submit hift_data_sot2 | run DATA-SOT2-001 | job 50570 |
+| 2026-11-03 13:15 | hift_data_sot2 | 50570 DATA-SOT2-001 | COMPLETED 1666s |
+| 2026-11-03 13:15 | retrieve hift_data_sot2 | SOT2.json + SOT2-overlap.json + part2 frame hashes (sha256 OK) | byte-identical frames vs V: V1=0 V2=0 |
+| 2026-11-03 13:15 | submit hift_s5_sot2 | run TC2-S5-SOT2-001 | job 50574 |
+| 2026-11-03 13:31 | submit hift_s5_sot2_s2 | run TC2-S5-SOT2-S2-001 | job 50582 |
+| 2026-11-03 14:35 | hift_s5_sot2 | 50574 TC2-S5-SOT2-001 | COMPLETED 4574s |
+| 2026-11-03 14:35 | retrieve TC2-S5-SOT2-001 | final-model.pt sha256 7e887dd56b1c6e20... + summary/manifest/journal/slurm log | OK |
+| 2026-11-03 14:35 | validation TC2-S5-SOT2-001 | in-job V (sealed test untouched) | M=0.6475 V1=0.5413 V2veh=0.7129 V2per=0.6131 V3=0.7381 |
+| 2026-11-03 15:55 | hift_s5_sot2_s2 | 50582 TC2-S5-SOT2-S2-001 | COMPLETED 4618s |
+| 2026-11-03 15:55 | retrieve TC2-S5-SOT2-S2-001 | final-model.pt sha256 8e3124ab7f0e34ad... + summary/manifest/journal/slurm log | OK |
+| 2026-11-03 15:55 | validation TC2-S5-SOT2-S2-001 | in-job V (sealed test untouched) | M=0.6485 V1=0.547 V2veh=0.7124 V2per=0.6096 V3=0.7375 |
+| 2026-11-03 15:57 | orchestrator v11 | hift_data_sot2=retrieved hift_s5_sot2=retrieved hift_s5_sot2_s2=retrieved  | DONE |
+| 2026-11-03 15:57 | stage-5 decision | scripts/stage5_decision.py (V only) | DECISION: REJECT SOT2 (sealed test stays closed) |

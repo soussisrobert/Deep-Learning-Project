@@ -61,3 +61,20 @@ identical.
 - T1 template update: its trigger (late-frame V1 IoU rises under S4-GAP) was not met.
 - Half-pixel centre-offset question (B1 geometry, CPU synthetic test); IoU-aware score after a candidate-ceiling
   pass; R1 source resolution (ceiling about +0.005 M). Unchanged from stage 4.
+
+## Outcome (2026-11-03, measured on V; sealed test not opened)
+- Data job DATA-SOT2-001 (TC2 job 50570, 1666 s): 43 part2 sequences, 40,622 frames, ledger ~/hift/ledgers/SOT2.json.
+  Leakage gate PASS: 0 byte-identical part2 frames vs V1 (7,046 frames) and V2 (2,846 frames).
+- Runs TC2-S5-SOT2-001 (job 50574, 4574 s, seeds 20261023/20261027, final-model.pt 7e887dd5...) and
+  TC2-S5-SOT2-S2-001 (job 50582, 4618 s, seeds 20261102/20261029, 8e3124ab...). Manifests: train_parts lists
+  visdrone-sot-2, train_tracks 7521 = 7478 + 43 (all part2 tracks usable), clean committed archive 613835f.
+- V: SOT2 M 0.6475 / 0.6485 (V1 0.5413 / 0.5470, V2veh 0.7129 / 0.7124, V2per 0.6131 / 0.6096, V3 0.7381 / 0.7375).
+- vs REF: seed-avg dM -0.0001 (seeds -0.0003 / +0.0001); dV1 -0.0080, dV2veh +0.0047, dV2per -0.0004, dV3 +0.0055,
+  non-V1 +0.0038; LOO-V1 min -0.0018; bootstrap P10 -0.0060. Criteria 1, 2, 5, 6 FAIL; 3, 4 pass.
+  **DECISION: REJECT SOT2** (scripts/stage5_decision.py; artifacts/stage5/stage5_decision.json). Sealed test stays
+  closed; REF remains the B2 model.
+- Mechanism: falsified at this scale. Doubling VisDrone-SOT sequence diversity (43 -> 86, SOT pair share fixed at 40%)
+  lowered the subset it targeted (V1 -0.008) and moved non-V1 subsets by < +0.006. Descriptive V1 IoU change by frame
+  window [0,100) / [100,300) / [300,end): seed 1 +0.001 / -0.018 / -0.000, seed 2 +0.008 / -0.013 / -0.011.
+- Not tested: a larger SOT pair share (source weight), other SOT sources. V1 has 11 sequences, so it can resolve
+  only large V1-specific effects.
