@@ -292,3 +292,13 @@ and `ls -d /scratch* /local*`; python/curl on the head node; one 3-min `srun` pr
 | 2026-11-03 15:57 | orchestrator v11 | hift_data_sot2=retrieved hift_s5_sot2=retrieved hift_s5_sot2_s2=retrieved  | DONE |
 | 2026-11-03 15:57 | stage-5 decision | scripts/stage5_decision.py (V only) | DECISION: REJECT SOT2 (sealed test stays closed) |
 | 2026-11-03 16:15 | source-video audit | ls of own ~/hift/data/visdrone sequence names (read-only) | test-dev shares 1 video (uav0000079) with MOT-train; REF sealed test-dev gain on disjoint 34: +0.075 (all 35: +0.073); reports/SOURCE_VIDEO_AUDIT.md |
+| 2026-11-03 16:51 | upload | bundle 8e3ca6c (sha256 8a5c5b5e...), stage-6 V1B | sha256 OK, unpacked |
+| 2026-11-03 17:07 | upload checkpoints | 4 stage-4 final-model.pt | VERIFY FAILED |
+| 2026-11-03 17:09 | upload checkpoints (recheck) | 4 stage-4 final-model.pt in ~/hift/checkpoints | sha256 OK (4/4); earlier VERIFY FAILED was a local tee error in the orchestrator, not a mismatch |
+| 2026-11-03 17:09 | orchestrator v12 | stage 6: V1B validation job (no training) | started |
+| 2026-11-03 17:09 | submit hift_s6_v1b | refused | NOT SUBMITTED hift_s6_v1b: sbatch: error: Batch script contains DOS line breaks (\r\n) |
+| 2026-11-03 17:16 | upload fix | bundle 8e3ca6c was built with CRLF line endings (git archive used core.eol=native under text=auto); sbatch refused it | removed ~/hift/repo_8e3ca6c9a055; rebuilt with core.autocrlf=false core.eol=lf (diff vs bundle 613835f = only the commit's files); re-uploading |
+| 2026-11-03 17:28 | upload | bundle 8e3ca6c (sha256 b8bdcb07...), stage-6 V1B | sha256 OK, unpacked |
+| 2026-11-03 17:28 | orchestrator v12 | stage 6: V1B validation job (no training) | started |
+| 2026-11-03 17:28 | submit hift_s6_v1b | 7 models x (V1 + V1B), attempt 1 | job 50675 |
+| 2026-11-03 18:19 | orchestrator | socket check failed | STOPPED (reconnect VPN/socket) |
