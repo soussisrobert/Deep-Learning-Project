@@ -1,0 +1,3 @@
+[submodule "Ning/DroneUse/third_party/HiFT"]
+	path = Ning/DroneUse/third_party/HiFT
+	url = https://github.com/vision4robotics/HiFT.git
