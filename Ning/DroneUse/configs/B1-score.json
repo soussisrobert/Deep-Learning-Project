@@ -1,0 +1,12 @@
+{
+  "identity": "B1-score",
+  "status": "mathematical_correction_not_benchmark_validated",
+  "parent": "B0",
+  "upstream_commit": "992aa7c1605360d607af84cb804b93cd8ee81caf",
+  "upstream_config": "third_party/HiFT/experiments/config.yaml",
+  "checkpoint": "artifacts/checkpoints/general_model.pth",
+  "checkpoint_sha256": "8c697d2b6d2d7aa36e8d035c89e6897b3b5733b94abe56509420329bc4ba3101",
+  "corrections": ["sigmoid_BCE_classification_branch_at_inference"],
+  "preserved": ["original_transformer_layout", "minimum_box_size_10", "all_crop_and_penalty_rules"],
+  "seed": 0
+}

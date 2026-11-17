@@ -1,0 +1,8 @@
+{
+  "identity": "R1",
+  "status": "hypothesis_only",
+  "parent": "B2",
+  "launch_allowed": false,
+  "gates": ["M2 genuine baseline", "M3 matched corrected training", "R1-A controlled source-support association", "primary literature verification", "frozen matched controls and splits"],
+  "controls": ["existing_fusion", "fixed_weights", "scale_conditioning", "capacity_matched_controller", "source_support_conditioning"]
+}

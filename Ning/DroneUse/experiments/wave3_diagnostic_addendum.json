@@ -1,0 +1,11 @@
+{
+  "id": "WAVE3-DIAGNOSTIC-SECONDARY-CONTROL-001",
+  "timing": "after ordinary tracking completed and its macro metrics were reported, before lead retrospective diagnostic run",
+  "status": "explicit_nonpreregistered_secondary_known_policy_control",
+  "motivation": "Pinned original tracker enforces minimum predicted width and height 10px; tiny GT can be unable to reach IoU0.5 even with perfect localization. Do not attribute this structural limit to representation or source information.",
+  "ideal_iou_upper_bound_minimum_size_only": "GT_area/(max(10,GT_width)*max(10,GT_height))",
+  "handling": "Retain every frame in tracking metrics and all failure/containment counts. Additionally report bound<0.5 counts, and exclude these mechanically impossible cases only from secondary within-contained H3/quality comparisons against reliable IoU>=0.5 examples.",
+  "original_diagnostic_preregistration_unchanged": true,
+  "oracle_cases_and_conditions_unchanged": true,
+  "metric_or_baseline_retuning": false
+}

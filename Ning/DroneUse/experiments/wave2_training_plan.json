@@ -1,0 +1,13 @@
+{
+  "identity": "B2 corrected-training synthetic feasibility, NOT B0/B1 evaluation",
+  "status": "planned bounded profile; no full training authorized",
+  "source": {"repo_head_at_assignment": "5ce4a432aaa3027c7a45d4c678ae04e27a20223a", "upstream_sha": "992aa7c1605360d607af84cb804b93cd8ee81caf", "immutable_upstream": true},
+  "initialization": "random; official checkpoint exists but is not loaded",
+  "corrections": ["encoder spatial layout (changes checkpoint semantics)", "dense-background known negatives with distinct synthetic identities", "singleton/empty balanced NLL", "guarded positive support via CorrectedAnchorTarget", "select active IoU mask before arithmetic", "dynamic device/batch inverse-tanh regression decode", "mask raw regression before inverse-tanh and ignored cls1 before log-softmax; active finite validation"],
+  "graph": {"template_shape": ["B", 3, 127, 127], "search_shape": ["B", 3, 287, 287], "batch_sizes": [1, 2, 4], "dtype": "float32", "seed": 20261023, "tf32": false, "backbone": "actual upstream AlexNet; layers1-2 frozen, BN eval; layers3-5 train", "grader": "actual upstream HiFT transformer/correlation/heads; explicit corrected encoder", "positive_bbox_xyxy": [95, 95, 223, 223], "synthetic_pixels": "uniform [0,255]", "negative_mix": "B1 alternates; B2/4 mixed 50% for stress, not source 5%"},
+  "optimization": {"kind": "SGD feasibility steps only", "backbone_lr": 0.0005, "grader_lr": 0.005, "momentum": 0.9, "weight_decay": 0.0001, "clip_norm": 10, "loss": "2.4*masked IoU + balanced 0.5/0.5 NLL + mean BCE logits"},
+  "profile": {"cpu_tests_first": true, "gpu_token": "explicit lead grant required", "one_process_sequential_batches": true, "warmup_iterations": 2, "timed_iterations_min": 5, "memory": "CUDA allocated/reserved current+peak; CPU N/A", "timing": "synchronized per-stage wall time + total; no audit inside timed stages"},
+  "gates": ["finite losses and gradients", "nonzero positive active gradients; dormant eles and initial zero-gamma gate explicitly listed", "all-negative localization loss/grad zero", "no output reuse", "integration-owner mathematics review before acceptance", "no commit without lead instruction"],
+  "exclusions": ["I/O", "decoding", "augmentation", "data loading", "H2D transfer", "real sampler/distribution", "validation", "checkpoint save", "full training", "convergence", "accuracy", "distributed training"],
+  "estimates": {"effective_batch_formula": "microbatch*accumulation_steps (not BN-equivalent)", "source_effective_batch": 220, "accumulation_for_microbatch": {"1": 220, "2": 110, "4": 55}, "pilot": "planned 1000 optimizer updates at effective batch16; estimate only after measured latency, no authorization to run"}
+}

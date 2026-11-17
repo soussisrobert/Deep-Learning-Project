@@ -1,0 +1,221 @@
+[
+ {
+  "label": "upstream"
+ },
+ {
+  "label": "wi0.15_lr0.3_pk0.04",
+  "WINDOW_INFLUENCE": 0.15,
+  "LR": 0.3,
+  "PENALTY_K": 0.04
+ },
+ {
+  "label": "wi0.15_lr0.3_pk0.08",
+  "WINDOW_INFLUENCE": 0.15,
+  "LR": 0.3,
+  "PENALTY_K": 0.08
+ },
+ {
+  "label": "wi0.15_lr0.3_pk0.15",
+  "WINDOW_INFLUENCE": 0.15,
+  "LR": 0.3,
+  "PENALTY_K": 0.15
+ },
+ {
+  "label": "wi0.15_lr0.5_pk0.04",
+  "WINDOW_INFLUENCE": 0.15,
+  "LR": 0.5,
+  "PENALTY_K": 0.04
+ },
+ {
+  "label": "wi0.15_lr0.5_pk0.08",
+  "WINDOW_INFLUENCE": 0.15,
+  "LR": 0.5,
+  "PENALTY_K": 0.08
+ },
+ {
+  "label": "wi0.15_lr0.5_pk0.15",
+  "WINDOW_INFLUENCE": 0.15,
+  "LR": 0.5,
+  "PENALTY_K": 0.15
+ },
+ {
+  "label": "wi0.15_lr0.7_pk0.04",
+  "WINDOW_INFLUENCE": 0.15,
+  "LR": 0.7,
+  "PENALTY_K": 0.04
+ },
+ {
+  "label": "wi0.15_lr0.7_pk0.08",
+  "WINDOW_INFLUENCE": 0.15,
+  "LR": 0.7,
+  "PENALTY_K": 0.08
+ },
+ {
+  "label": "wi0.15_lr0.7_pk0.15",
+  "WINDOW_INFLUENCE": 0.15,
+  "LR": 0.7,
+  "PENALTY_K": 0.15
+ },
+ {
+  "label": "wi0.25_lr0.3_pk0.04",
+  "WINDOW_INFLUENCE": 0.25,
+  "LR": 0.3,
+  "PENALTY_K": 0.04
+ },
+ {
+  "label": "wi0.25_lr0.3_pk0.08",
+  "WINDOW_INFLUENCE": 0.25,
+  "LR": 0.3,
+  "PENALTY_K": 0.08
+ },
+ {
+  "label": "wi0.25_lr0.3_pk0.15",
+  "WINDOW_INFLUENCE": 0.25,
+  "LR": 0.3,
+  "PENALTY_K": 0.15
+ },
+ {
+  "label": "wi0.25_lr0.5_pk0.04",
+  "WINDOW_INFLUENCE": 0.25,
+  "LR": 0.5,
+  "PENALTY_K": 0.04
+ },
+ {
+  "label": "wi0.25_lr0.5_pk0.08",
+  "WINDOW_INFLUENCE": 0.25,
+  "LR": 0.5,
+  "PENALTY_K": 0.08
+ },
+ {
+  "label": "wi0.25_lr0.5_pk0.15",
+  "WINDOW_INFLUENCE": 0.25,
+  "LR": 0.5,
+  "PENALTY_K": 0.15
+ },
+ {
+  "label": "wi0.25_lr0.7_pk0.04",
+  "WINDOW_INFLUENCE": 0.25,
+  "LR": 0.7,
+  "PENALTY_K": 0.04
+ },
+ {
+  "label": "wi0.25_lr0.7_pk0.08",
+  "WINDOW_INFLUENCE": 0.25,
+  "LR": 0.7,
+  "PENALTY_K": 0.08
+ },
+ {
+  "label": "wi0.25_lr0.7_pk0.15",
+  "WINDOW_INFLUENCE": 0.25,
+  "LR": 0.7,
+  "PENALTY_K": 0.15
+ },
+ {
+  "label": "wi0.35_lr0.3_pk0.04",
+  "WINDOW_INFLUENCE": 0.35,
+  "LR": 0.3,
+  "PENALTY_K": 0.04
+ },
+ {
+  "label": "wi0.35_lr0.3_pk0.08",
+  "WINDOW_INFLUENCE": 0.35,
+  "LR": 0.3,
+  "PENALTY_K": 0.08
+ },
+ {
+  "label": "wi0.35_lr0.3_pk0.15",
+  "WINDOW_INFLUENCE": 0.35,
+  "LR": 0.3,
+  "PENALTY_K": 0.15
+ },
+ {
+  "label": "wi0.35_lr0.5_pk0.04",
+  "WINDOW_INFLUENCE": 0.35,
+  "LR": 0.5,
+  "PENALTY_K": 0.04
+ },
+ {
+  "label": "wi0.35_lr0.5_pk0.08",
+  "WINDOW_INFLUENCE": 0.35,
+  "LR": 0.5,
+  "PENALTY_K": 0.08
+ },
+ {
+  "label": "wi0.35_lr0.5_pk0.15",
+  "WINDOW_INFLUENCE": 0.35,
+  "LR": 0.5,
+  "PENALTY_K": 0.15
+ },
+ {
+  "label": "wi0.35_lr0.7_pk0.04",
+  "WINDOW_INFLUENCE": 0.35,
+  "LR": 0.7,
+  "PENALTY_K": 0.04
+ },
+ {
+  "label": "wi0.35_lr0.7_pk0.08",
+  "WINDOW_INFLUENCE": 0.35,
+  "LR": 0.7,
+  "PENALTY_K": 0.08
+ },
+ {
+  "label": "wi0.35_lr0.7_pk0.15",
+  "WINDOW_INFLUENCE": 0.35,
+  "LR": 0.7,
+  "PENALTY_K": 0.15
+ },
+ {
+  "label": "wi0.42_lr0.3_pk0.04",
+  "WINDOW_INFLUENCE": 0.42,
+  "LR": 0.3,
+  "PENALTY_K": 0.04
+ },
+ {
+  "label": "wi0.42_lr0.3_pk0.15",
+  "WINDOW_INFLUENCE": 0.42,
+  "LR": 0.3,
+  "PENALTY_K": 0.15
+ },
+ {
+  "label": "wi0.42_lr0.5_pk0.04",
+  "WINDOW_INFLUENCE": 0.42,
+  "LR": 0.5,
+  "PENALTY_K": 0.04
+ },
+ {
+  "label": "wi0.42_lr0.5_pk0.08",
+  "WINDOW_INFLUENCE": 0.42,
+  "LR": 0.5,
+  "PENALTY_K": 0.08
+ },
+ {
+  "label": "wi0.42_lr0.5_pk0.15",
+  "WINDOW_INFLUENCE": 0.42,
+  "LR": 0.5,
+  "PENALTY_K": 0.15
+ },
+ {
+  "label": "wi0.42_lr0.7_pk0.04",
+  "WINDOW_INFLUENCE": 0.42,
+  "LR": 0.7,
+  "PENALTY_K": 0.04
+ },
+ {
+  "label": "wi0.42_lr0.7_pk0.08",
+  "WINDOW_INFLUENCE": 0.42,
+  "LR": 0.7,
+  "PENALTY_K": 0.08
+ },
+ {
+  "label": "wi0.42_lr0.7_pk0.15",
+  "WINDOW_INFLUENCE": 0.42,
+  "LR": 0.7,
+  "PENALTY_K": 0.15
+ },
+ {
+  "label": "scorematched_wi0.23_lr0.73_pk0.08",
+  "WINDOW_INFLUENCE": 0.23,
+  "LR": 0.73,
+  "PENALTY_K": 0.08
+ }
+]
