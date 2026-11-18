@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hift-research.local/experiments/schema.json",
+  "title": "HiFT immutable research artifact manifests",
+  "description": "Structural validation only; a schema pass does not certify official assets, leakage freedom, model-key compatibility, or benchmark reproduction. Runtime dataset validation adds frame/GT alignment and hash checks.",
+  "oneOf": [
+    {"$ref": "#/$defs/dataset"},
+    {"$ref": "#/$defs/checkpoint"},
+    {"$ref": "#/$defs/evaluation"},
+    {"$ref": "#/$defs/inferenceRun"},
+    {"$ref": "#/$defs/syntheticExecution"}
+  ],
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "datasetName": {"enum": ["UAV123", "UAV123@10fps", "UAV20L", "DTB70"]},
+    "invalidPolicy": {"enum": ["error", "count_as_failure"]},
+    "box": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "number"}},
+    "annotationBox": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": ["number", "null"]}},
+    "fileHash": {
+      "type": "object", "required": ["path", "sha256"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/hash"}}
+    },
+    "dataset": {
+      "type": "object",
+      "required": ["schema_version", "kind", "dataset", "root", "protocol", "upstream_sha", "completeness", "invalid_policy", "frame_content_identity", "official_membership_verified", "sequences"],
+      "properties": {
+        "schema_version": {"const": 1}, "kind": {"const": "dataset"},
+        "dataset": {"$ref": "#/$defs/datasetName"}, "root": {"type": "string", "minLength": 1},
+        "protocol": {"const": "ope_all_frames_sequence_macro"},
+        "upstream_sha": {"const": "992aa7c1605360d607af84cb804b93cd8ee81caf"},
+        "completeness": {"enum": ["partial", "expected_count_only"]},
+        "official_membership_verified": {"const": false},
+        "expected_sequence_count": {"enum": [20, 70, 123]},
+        "invalid_policy": {"$ref": "#/$defs/invalidPolicy"},
+        "annotation_coordinate_origin": {"enum": [0, 1, null]},
+        "frame_content_identity": {"enum": ["sha256", "paths_and_sizes_only"]},
+        "annotation_sha256": {"type": "object", "additionalProperties": {"$ref": "#/$defs/hash"}},
+        "sequences": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "required": ["name", "frame_paths", "ground_truth", "init_box", "frame_sizes"],
+            "properties": {
+              "name": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.@-]*$"},
+              "frame_paths": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+              "ground_truth": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/annotationBox"}},
+              "init_box": {"$ref": "#/$defs/box"},
+              "frame_sizes": {"type": "array", "items": {"type": "integer", "minimum": 1}},
+              "frame_sha256": {"type": "array", "items": {"$ref": "#/$defs/hash"}},
+              "invalid_ground_truth_frames": {"type": "integer", "minimum": 0}
+            }
+          }
+        }
+      }
+    },
+    "checkpoint": {
+      "type": "object", "required": ["schema_version", "kind", "path", "source", "sha256", "size_bytes", "state_dict_validated", "official_identity_verified"],
+      "properties": {
+        "schema_version": {"const": 1}, "kind": {"const": "checkpoint"},
+        "path": {"type": "string"}, "source": {"type": "string"}, "sha256": {"$ref": "#/$defs/hash"},
+        "size_bytes": {"type": "integer", "minimum": 1},
+        "state_dict_validated": {"const": false}, "official_identity_verified": {"const": false},
+        "warning": {"type": "string"}
+      }
+    },
+    "metricSummary": {
+      "type": "object", "required": ["aggregation", "sequence_count", "frame_count", "success_auc", "precision_at_20px", "invalid_policy"],
+      "properties": {
+        "aggregation": {"const": "sequence_macro"}, "sequence_count": {"type": "integer", "minimum": 1},
+        "frame_count": {"type": "integer", "minimum": 1},
+        "success_auc": {"type": "number", "minimum": 0, "maximum": 1},
+        "precision_at_20px": {"type": "number", "minimum": 0, "maximum": 1},
+        "normalized_precision_at_0_20": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "invalid_policy": {"$ref": "#/$defs/invalidPolicy"}
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "required": ["schema_version", "kind", "evidence", "created_utc", "dataset", "dataset_completeness", "dataset_manifest", "prediction_inputs", "upstream_sha", "protocol", "success_thresholds", "success_comparison", "success_auc_convention", "initialization_frame_included", "invalid_policy", "normalized_precision_applicability", "aggregate", "sequences", "software", "device", "seed", "git", "evaluator_source_sha256", "runtime_seconds", "limitations"],
+      "properties": {
+        "schema_version": {"const": 1}, "kind": {"const": "evaluation"},
+        "evidence": {"const": "measured_predictions_not_checkpoint_reproduction"},
+        "created_utc": {"type": "string", "format": "date-time"}, "dataset": {"$ref": "#/$defs/datasetName"},
+        "dataset_completeness": {"enum": ["partial", "expected_count_only"]},
+        "dataset_manifest": {"$ref": "#/$defs/fileHash"},
+        "prediction_inputs": {"type": "object", "minProperties": 1, "additionalProperties": {"$ref": "#/$defs/fileHash"}},
+        "inference_run_manifest": {"$ref": "#/$defs/fileHash"},
+        "prediction_coordinate_origin": {"enum": ["annotation_native", "zero"]},
+        "upstream_sha": {"const": "992aa7c1605360d607af84cb804b93cd8ee81caf"},
+        "protocol": {"const": "ope_all_frames_sequence_macro"},
+        "success_thresholds": {"type": "array", "minItems": 21, "maxItems": 21, "items": {"type": "number"}},
+        "success_comparison": {"const": ">"},
+        "success_auc_convention": {"const": "arithmetic_mean_of_21_success_ordinates_not_trapezoid"},
+        "precision_comparison": {"const": "<="}, "initialization_frame_included": {"const": true},
+        "invalid_policy": {"$ref": "#/$defs/invalidPolicy"},
+        "normalized_precision_applicability": {"enum": ["not_requested", "supplemental_diagnostic"]},
+        "aggregate": {"$ref": "#/$defs/metricSummary"}, "sequences": {"type": "object", "minProperties": 1},
+        "device": {"const": "cpu"}, "seed": {"const": 0},
+        "software": {"type": "object", "required": ["python", "numpy", "platform"]},
+        "git": {"type": "object"},
+        "evaluator_source_sha256": {"type": "object", "additionalProperties": {"$ref": "#/$defs/hash"}},
+        "runtime_seconds": {"type": "number", "minimum": 0}, "limitations": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "inferenceRun": {
+      "type": "object",
+      "required": ["schema_version", "kind", "experiment_id", "baseline", "status", "source", "environment", "configuration", "config_sha256", "upstream_config_sha256", "checkpoint", "sequence", "seed", "parameter_count", "metrics", "limitations"],
+      "properties": {
+        "schema_version": {"const": 1}, "kind": {"const": "inference_run"}, "experiment_id": {"type": "string", "minLength": 1},
+        "baseline": {"enum": ["B0", "B1-score", "B1", "B2", "R1"]},
+        "status": {"enum": ["running", "completed", "failed"]},
+        "source": {"type": "object", "required": ["git_commit", "upstream_commit", "source_tree_sha256", "source_files_sha256", "dirty_diff_sha256", "git_status"]},
+        "environment": {"type": "object", "required": ["utc", "python", "platform", "torch", "cuda", "gpu"]},
+        "configuration": {"type": "object"}, "config_sha256": {"$ref": "#/$defs/hash"},
+        "upstream_config_sha256": {"$ref": "#/$defs/hash"}, "checkpoint": {"$ref": "#/$defs/fileHash"},
+        "sequence": {"type": "object", "required": ["name", "dataset", "manifest_sha256", "frames", "initialization_convention"],
+          "properties": {"frames": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/fileHash"}}}},
+        "seed": {"type": "integer"}, "parameter_count": {"type": "integer", "minimum": 1},
+        "metrics": {"type": "object"}, "limitations": {"type": "array", "items": {"type": "string"}}, "error": {"type": "string"}
+      }
+    },
+    "syntheticExecution": {
+      "type": "object", "required": ["kind"],
+      "properties": {"kind": {"const": "synthetic_GPU_execution_not_benchmark"}},
+      "description": "Lead-owned synthetic GPU execution diagnostics. Never a benchmark or speed/accuracy reproduction claim. Detailed GPU schema is not imposed by CPU evaluator."
+    }
+  }
+}

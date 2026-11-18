@@ -1,0 +1,13 @@
+a. similarity to frame 1                ROC AUC 0.737 [0.688, 0.784]   sampled lost 5066 found 8619 in 180 sequences
+a. similarity minus sequence median     ROC AUC 0.611 [0.587, 0.638]   sampled lost 5066 found 8619 in 180 sequences
+   mean sim lost 0.467 found 0.597; median lost 0.458 found 0.594
+b. some sampled frame below median    stretch starts 909: preceded 624 (0.686); random starts mean 0.450 [0.421, 0.479] ; P(random >= observed) 0.000
+b. crossing below median              stretch starts 909: preceded 322 (0.354); random starts mean 0.261 [0.235, 0.286] ; P(random >= observed) 0.000
+c. sampled lost frames 5066; sim in the top tercile (pooled cut 0.616): 676 (0.133); within-sequence top tercile (sequences with >= 3 samples): 1221 of 5066 (0.241); expected 0.333 if no relation
+d. Spearman(min sim, sequence AUC) 0.317 [0.173, 0.451] over 180 sequences (>= 3 samples)
+wrote illumination/E17_roc_auc.csv
+wrote illumination/E17_stretch_precedence.csv
+wrote illumination/E17_high_sim_lost.csv
+wrote illumination/E17_per_seq.csv
+wrote illumination/E17_spearman.csv
+wrote E17_template_sim.png

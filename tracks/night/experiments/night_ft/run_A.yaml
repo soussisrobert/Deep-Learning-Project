@@ -1,0 +1,6 @@
+# Run A: night data only (no random enhancement, no negative pairs)
+DATASET:
+    NEG: 0.0
+    NIGHT:
+        ENH_P: 0.0
+        HARDNEG: 0.0

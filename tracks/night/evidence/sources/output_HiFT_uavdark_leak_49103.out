@@ -1,0 +1,21 @@
+UAVDark135: 135 sequence folders, 125466 frames
+query frames 2578
+frames matching NAT: 0/2578; sequences with a match: 0/135
+matching sequences: []
+sequences without any match: ['basketballplayer1', 'basketballplayer2', 'basketballplayer3', 'bike1', 'bike10', 'bike11', 'bike2', 'bike3', 'bike4', 'bike5', 'bike6', 'bike7', 'bike8', 'bike9', 'boat1', 'boat2', 'building1', 'building2', 'bus1', 'bus2', 'bus3', 'car1', 'car10', 'car11', 'car12', 'car13', 'car14', 'car15', 'car16', 'car17', 'car18', 'car19', 'car2', 'car3', 'car4', 'car5', 'car6', 'car7', 'car8', 'car9', 'car_l1', 'car_l2', 'car_l3', 'car_l4', 'car_l5', 'car_l6', 'car_l7', 'dancing1', 'dancing2', 'girl1', 'girl2', 'girl3', 'girl4', 'girl5', 'girl6_1', 'girl6_2', 'girl7', 'group1', 'group2_1', 'group2_2', 'group3', 'group4_1', 'group4_2', 'group5', 'group6', 'group7', 'group8', 'group9_1', 'group9_2', 'house', 'jeep', 'jogging_man', 'minibus1', 'minibus2', 'motorbike1', 'motorbike2', 'motorbike3', 'motorbike4', 'motorbike5', 'pedestrian1', 'pedestrian10', 'pedestrian2', 'pedestrian3', 'pedestrian4', 'pedestrian5_1', 'pedestrian5_2', 'pedestrian5_3', 'pedestrian6', 'pedestrian7_1', 'pedestrian7_2', 'pedestrian7_3', 'pedestrian8', 'pedestrian9', 'pedestrian_l', 'person1', 'person10_1', 'person10_2', 'person11', 'person12_1', 'person12_2', 'person12_3', 'person13', 'person14', 'person15', 'person16_1', 'person16_2', 'person17', 'person18', 'person19', 'person2', 'person3_1', 'person3_2', 'person3_3', 'person4', 'person5', 'person6', 'person7', 'person8', 'person9', 'running', 'running_girl', 'running_man', 'signpost1', 'signpost2', 'signpost3', 'signpost4', 'signpost5', 'signpost6', 'tennisplayer', 'tricycle', 'truck1', 'truck2', 'truck3', 'valleyballplayer1', 'valleyballplayer2']
+highest lowres corr among non-matches: 0.914
+within UAVDark135: 14 sequence pairs share footage
+   bike1 ~ person1 (5 frame pairs, max hp 0.943)
+   bike7 ~ car5 (1 frame pairs, max hp 0.691)
+   car12 ~ car13 (1 frame pairs, max hp 0.678)
+   car14 ~ truck1 (2 frame pairs, max hp 0.700)
+   dancing1 ~ dancing2 (4 frame pairs, max hp 0.998)
+   group2_2 ~ group3 (2 frame pairs, max hp 0.979)
+   person10_1 ~ person10_2 (1 frame pairs, max hp 0.973)
+   person10_1 ~ valleyballplayer2 (8 frame pairs, max hp 0.951)
+   person10_2 ~ valleyballplayer2 (4 frame pairs, max hp 0.864)
+   person16_1 ~ person16_2 (1 frame pairs, max hp 0.966)
+   person3_1 ~ person3_2 (1 frame pairs, max hp 0.967)
+   person3_2 ~ person3_3 (1 frame pairs, max hp 0.561)
+   person8 ~ valleyballplayer1 (16 frame pairs, max hp 0.932)
+   signpost5 ~ truck3 (1 frame pairs, max hp 0.884)

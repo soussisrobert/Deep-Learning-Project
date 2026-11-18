@@ -1,0 +1,14 @@
+--- a/pysot/models/utile/tran.py
++++ b/pysot/models/utile/tran.py
+@@ -247,8 +247,9 @@
+         src = src + self.dropout1(src2)
+         src = self.norm1(src)
+         
+-        src=self.cross_attn(src.view(b,c,int(s**0.5),int(s**0.5))\
+-                             ,srcc.contiguous().view(b,c,int(s**0.5),int(s**0.5))).view(b,c,-1).permute(2, 0, 1)
++        spatial_src = src.permute(1, 2, 0).contiguous().view(b, c, int(s**0.5), int(s**0.5))
++        spatial_srcc = srcc.permute(1, 2, 0).contiguous().view(b, c, int(s**0.5), int(s**0.5))
++        src = self.cross_attn(spatial_src, spatial_srcc).view(b,c,-1).permute(2, 0, 1)
+ 
+         src2 = self.linear2(self.dropout(self.activation(self.linear1(src))))
+         src = src + self.dropout2(src2)

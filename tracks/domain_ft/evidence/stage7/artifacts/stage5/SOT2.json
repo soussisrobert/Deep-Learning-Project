@@ -1,0 +1,22 @@
+{
+  "schema": "hift-hf-zip-member-acquisition-v1",
+  "repo": "huseyincavus/visdrone2019-sot",
+  "include": [
+    "VisDrone2019-SOT-train_part2/"
+  ],
+  "integrity": "per-member CRC-32 verified by zipfile while streaming; Hub LFS oid recorded",
+  "started_utc": "2026-11-03T04:42:58.509706+00:00",
+  "archives": {
+    "visdrone2019-sot.zip": {
+      "hub_size": 72665458280,
+      "hub_lfs_sha256": "1dbbcdbe7eb4d9d32517b514a76b1487f4a811fa90258dd5182af78d0982c182",
+      "extracted_files": 40708,
+      "extracted_bytes": 13555948452,
+      "skipped_members": 181536,
+      "resumed_verified": 0,
+      "range_requests": 813,
+      "seconds": 1550.9960651397705
+    }
+  },
+  "finished_utc": "2026-11-03T05:08:50.096036+00:00"
+}

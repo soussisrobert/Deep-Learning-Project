@@ -1,0 +1,14 @@
+# Run D (control): same schedule and optimiser, daytime data only: UAV123 undarkened + UAVDT daylight tracks (night tracks dropped),
+# no darkening, no random enhancement, no negatives, no UAVDark135 in training. 50 / 50 of the pairs.
+DATASET:
+    NAMES:
+    - 'UAVDT'
+    - 'UAV123'
+    MIX: [0.5, 0.5]
+    NEG: 0.0
+    UAVDT:
+        WEATHER: 'daylight'
+    NIGHT:
+        DARKEN: False
+        ENH_P: 0.0
+        HARDNEG: 0.0

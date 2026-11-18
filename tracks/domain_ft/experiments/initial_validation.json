@@ -1,0 +1,479 @@
+{
+  "schema_version": 1,
+  "kind": "initialization_validation_record",
+  "evidence": "correctness_and_synthetic_execution_ONLY_not_benchmark",
+  "tested_final_code_commit": "9c9586635a9201094c9f155d5729398bf241d992",
+  "test_command": ".venv/Scripts/python.exe -m pytest -q",
+  "tests": {
+    "passed": 108,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 5.01
+  },
+  "setup_command_verified": "bash scripts/setup_env.sh",
+  "dependency_check": "python -m pip check: No broken requirements found",
+  "upstream_patch_check": "all four patches pass git apply --check; none applied",
+  "manifest_schema_validation": "Draft202012Validator passed for all four embedded original manifests",
+  "hardware_snapshot": "reports/environment.json",
+  "dependency_lock": "requirements/lock-windows-py313-cu128.txt",
+  "records": [
+    {
+      "original_path": "artifacts/runs/INIT-GPU-B0-001/manifest.json",
+      "original_sha256": "67152dc211d72da5486395208a4c9d9ee10050eaf419cee9d0de5c274b157656",
+      "manifest": {
+        "schema_version": 1,
+        "experiment_id": "INIT-GPU-B0-001",
+        "kind": "synthetic_GPU_execution_not_benchmark",
+        "baseline": "B0",
+        "status": "failed",
+        "stage": "restricted_checkpoint_deserialization",
+        "checkpoint_sha256": "8c697d2b6d2d7aa36e8d035c89e6897b3b5733b94abe56509420329bc4ba3101",
+        "error": "weights_only=True rejected numpy.core.multiarray.scalar in legacy optimizer metadata. No unrestricted pickle fallback used.",
+        "next_run": "INIT-GPU-B0-002",
+        "correction": "Explicit local safe_globals allowlist limited to NumPy scalar constructor, numpy.dtype, Float64DType; no model computation change."
+      }
+    },
+    {
+      "original_path": "artifacts/runs/INIT-GPU-B0-003/manifest.json",
+      "original_sha256": "6a9f62404227901d5664778f26b9a5eb479b08656c478ac9ceaece6cae7a211d",
+      "manifest": {
+        "schema_version": 1,
+        "experiment_id": "INIT-GPU-B0-003",
+        "kind": "synthetic_GPU_execution_not_benchmark",
+        "baseline": "B0",
+        "status": "completed",
+        "source": {
+          "git_commit": "aa05ff769535f51ba063d54d8261cc570389da0c",
+          "git_status": "",
+          "source_files_sha256": {
+            ".cursor/rules/research-integrity.mdc": "aeff82d0f2ab02322e78d8a4c00e6628289c3e9f4a8a0e3af0e4838c0e9283f0",
+            ".gitattributes": "538ae1a96cae56cc21afa2840b184276ed6c421f2b8d3c2b0af2ad359f989586",
+            ".gitignore": "47f27020c5459be9b9cf7dd2ad8b482e2e68be0e976819674a511dcb33e7fdb3",
+            ".gitmodules": "c3076cad73305ab686a976084ee63d2a20ab20ca01082f205079fb7958182f45",
+            "AGENTS.md": "7841383168457f8249d6ed623142353426a5a78a835c0d79b2dd9a204878829c",
+            "README.md": "8c22b6a1d93316f20434c5aa60f5ceb36ddb2ba4bbac54a885764e577dc58eab",
+            "artifacts/README.md": "7642f229396b59aa72353a96c8d2880e46698240c07f8a9fc236218c6355fa28",
+            "configs/B0.json": "d6002742a8d811567a02c0329b78898c42dbeb3636e21ace51eba32701686873",
+            "configs/B1-score.json": "7755eeb8f3dfd437a4711b0ec2aa96ed98db1cafddb973dcdeb01c27c33e233f",
+            "configs/B2.json": "97d1624a823103b7010992e4a84af099986aa1458b2fabeee7a2e93a9d3b3f53",
+            "configs/R1.json": "122d5a6496ecac9850cda31e83b62662df5819d7fa7653a24326d5e03352a122",
+            "docs/datasets.md": "549169db0d39a03718bd9fe72ed8f96448e1c8392afdcc0795918d25aaa01335",
+            "docs/methodology.md": "7feafdaaef860a730ad28e75cf25243a5502300c7840596beca53f62f6992d1e",
+            "docs/reproduction.md": "0bdf499c5120aa6979d85ba4de430a780ddaa53ab7ae28805aefe663568403a9",
+            "docs/research_hypothesis.md": "c2913e2037420b2fe959bec4e9b1a5bc49952f26ae727f6ac039e743d68c4303",
+            "experiments/registry.json": "7baf81a86e64d14f6ed4816317c343fa752752d969314dcfa76fd1c157293aa1",
+            "experiments/schema.json": "37dee6058a4e3fa5eadffb2dce7a6356f6c46849692960c9ed1bcfb4bb0df192",
+            "patches/0001-transformer-layout-b2.patch": "34ca9ea7d1856633245d781017f2ed11118af9aaa9a35693ff1a06556f93e07f",
+            "patches/0002-negative-pair-supervision-b2.patch": "2c92e7db2cb88534a5984588da31c93ee8c5eac8fbce791d9d55a35eaccff408",
+            "patches/0003-reject-unsupported-distributed-launch.patch": "b83583b59046aa896ea2497fb7a2296af0ab6cd3b76454ec8048f2e84d1ded56",
+            "patches/0004-singleton-class-selector-b2.patch": "9e1d1b8e947bcbffd74f3212edc0d57f765445fd2766ebb07d298a03852cc96e",
+            "patches/README.md": "c6d130c44b536fea8255107eef110532e64fd148253f1026aa5cbc5c5995bbaf",
+            "patches/build_source_patches.py": "3b0de2989101615ca2149d52df7e310610941b8f31d3e8f8f63086ed75b51046",
+            "pyproject.toml": "814dfdba7748bc8b21d126bba02e0868b868b9ec07bccdb45f89b13f94bf79a6",
+            "reports/environment.json": "4ac85c44f99deec3de13ddeef5656780ad167f8045f32eb3c380a7408932e763",
+            "reports/evaluation_audit.md": "94513d285009164215bb253c8e8aab1068375323e109ba1ca4afb4cfe61230a9",
+            "reports/inference_geometry_audit.md": "135df8e4c9f40a574db3342f736ec907de8e0c4a74b8cb613d8b5ef26b39466d",
+            "reports/initial_progress.md": "1b89e04eae752d080b5c99c7fa4ed1b5440e466a7f69afaa9b4c98c9e84a15a5",
+            "reports/literature_review.md": "dabfdb6d8c88e6d658d87681a8125cf2577751a1903809045c565d1e9318d8c5",
+            "reports/source_audit.md": "dc6ee99270300c9eb2249abc040f1533a74fa430d542198dd459103b5a70a290",
+            "requirements/base.txt": "5448521c534302842635a96c1138031be4b8e5814524c8aa14a139384ab64d48",
+            "requirements/lock-windows-py313-cu128.txt": "0d4956e381aa49eb96ffa0e4915337c3003d627c02884c4c5272e42449ebb809",
+            "scripts/checkout_upstream.sh": "5450d89e169e00364ae912e103b970db5ca58d5f1bccfd8fcf631e31384adfb8",
+            "scripts/diagnose_environment.py": "5d98fc2452832581b01751570e9bda58b4a769f2dd2cdb559fc325c37b5a79c7",
+            "scripts/evaluate.py": "766e4f42f8b1a2552ca8b29e8b4b29f825a2fd8f586ddeefd2440b04e28aba21",
+            "scripts/fetch_official_checkpoint.py": "f71e2f4f559ba734318b5514948bdab24f4dd203d630616e4d528eaf1d678f0c",
+            "scripts/import_assets.py": "3e1cc6d4af55fbe3be51761e8723814b3a06002ac9adc1ea96bbcda57303ea6d",
+            "scripts/run_sequence.py": "23f34e9e0fb34f824bb114ac80972de689f9188b1b08a519486b3e0013791a2a",
+            "scripts/setup_env.sh": "c6fa6742a2f08c79b1d669bbf5614f7d196aadbb02c5843f7b22a68a21e9b03c",
+            "scripts/smoke_inference.py": "6f18bdaeeedb2dbdec5fc1dbda970ffd8480002914bbc7d3a1bf504cf85363b3",
+            "scripts/smoke_pipeline.py": "3cd40a0f41e46a4369bf1918358cb8bcf56b79202fb8ff47fd408e1034dfd957",
+            "src/hift_research/__init__.py": "b31dcae30d9f37b081e4906b3e090a43a159cde9cc535a586a38011ae27c331a",
+            "src/hift_research/corrections/__init__.py": "79f4b07abb82c56d216da9564f76b3346e751d77ef5f8c56d6e0f7407a67392a",
+            "src/hift_research/corrections/classification_loss.py": "5f5a9cebd33af0f35b7e3915f3810e56fbb9c1ede49f0aebba7f018566b8a989",
+            "src/hift_research/corrections/distributed_guard.py": "aad3ef948c3cd2dcf6090c51da9ae4507fac3beb77c586e82b17ce87b3960c0b",
+            "src/hift_research/corrections/pair_targets.py": "8ba19427e90540d89c45be2aadc5f2c18b66834033698054ed9f652aa3865456",
+            "src/hift_research/corrections/tensor_layout.py": "697ca7e6829bdee58c694649fbe205b038a22139e0527a282a9f310326fc8f3a",
+            "src/hift_research/evaluation/__init__.py": "d3ffbc094a62389961f5c55afc15e41cc3714f9fe2bd8f7faf294b6c82dd5ad6",
+            "src/hift_research/evaluation/assets.py": "cba587b0ca8dc7b83bf88c66083c474b17586ad483f524001b08da16f3b9669d",
+            "src/hift_research/evaluation/metrics.py": "53216b126ae8dcc57cd9831bb24226bb80e1f21ea7c80f256026086a55c747f2",
+            "src/hift_research/geometry.py": "d0a8ec77410d2c5ded37dd482534d30b5fe316d01b1a863756b36298011194bb",
+            "src/hift_research/inference.py": "46f7bc13ad7ef684b4d634ea9a3a6da00ccc65ad56048f50ca08b4b35eb38237",
+            "src/hift_research/provenance.py": "b0828a0fb40679519b71410f4cb3229d86d9d32bedf853c80c148b9d17cd85c8",
+            "tests/test_evaluation.py": "3da8b068a6c61abb9fcef5b0eddf7909c3421b9882f62cd1d902dcbb026e28ba",
+            "tests/test_geometry_scores.py": "567a661f6c504f2a5c2975b92bd1d7f2c64d02f8e67ae449bb8e2af6b491c699",
+            "tests/test_inference_contract.py": "5135f147c442fbcb55104783f73f1fd79b83cfed010493d0adb201a09a38dbe6",
+            "tests/test_project.py": "dc1fda89eb25b6776766eebf842474a1bb28157cc23d3319490f8f3a38dd6854",
+            "tests/test_source_audit.py": "f9b5c71ad4e18bb7ed407ccd0640c4005722b8a6c2ff312824463a879822f69c"
+          },
+          "source_tree_sha256": "e4f75b0349562b7ae8eeddf69cec52b95e0044b9efbcf2d922de7d97fd44dc4b",
+          "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "upstream_commit": "992aa7c1605360d607af84cb804b93cd8ee81caf"
+        },
+        "environment": {
+          "utc": "2026-10-23T10:48:20.528861+00:00",
+          "python": "3.13.0 (tags/v3.13.0:60403a5, Oct  7 2024, 09:38:07) [MSC v.1941 64 bit (AMD64)]",
+          "platform": "Windows-10-10.0.19044-SP0",
+          "torch": "2.10.0+cu128",
+          "cuda": "12.8",
+          "gpu": "NVIDIA GeForce RTX 5070 Ti"
+        },
+        "seed": 0,
+        "weights": "provided_checkpoint_strictly_loaded",
+        "checkpoint_sha256": "8c697d2b6d2d7aa36e8d035c89e6897b3b5733b94abe56509420329bc4ba3101",
+        "config_sha256": "41db70a6239e34780509c1da04c6daaa8f3efce014c362557514760efcefd956",
+        "timing_scope": "five warmed search model forwards only; excludes crop/postprocess/I/O; not tracking FPS",
+        "warmup": 2,
+        "repeats": 5,
+        "flops_macs": null,
+        "limitations": [
+          "modern torch numerical equivalence with original environment unverified",
+          "desktop GPU shared with GUI applications",
+          "synthetic input not benchmark performance"
+        ],
+        "checkpoint_load": "strict_model_keys_with_restricted_numpy_metadata_allowlist",
+        "output_shapes": {
+          "cls1": [
+            1,
+            2,
+            11,
+            11
+          ],
+          "cls2": [
+            1,
+            1,
+            11,
+            11
+          ],
+          "loc": [
+            1,
+            4,
+            11,
+            11
+          ]
+        },
+        "all_outputs_finite": true,
+        "official_checkpoint_hash_match": true,
+        "ranges": {
+          "cls1": [
+            -3.7729568481445312,
+            4.1045660972595215
+          ],
+          "cls2": [
+            -6.461746692657471,
+            -0.8403893113136292
+          ],
+          "loc": [
+            -0.03003677725791931,
+            0.5519927740097046
+          ]
+        },
+        "parameter_count": 11066312,
+        "peak_cuda_allocated_bytes": 74036736,
+        "peak_cuda_reserved_bytes": 90177536,
+        "synthetic_search_forward_mean_ms": 6.7407800001092255
+      }
+    },
+    {
+      "original_path": "artifacts/runs/INIT-PIPELINE-003/B0/manifest.json",
+      "original_sha256": "e57f4cc09cbebf5804b84651ce6d2cee1d7a8d36974c8cbc7e71a1553bb62744",
+      "manifest": {
+        "schema_version": 1,
+        "kind": "inference_run",
+        "experiment_id": "INIT-PIPELINE-003--B0",
+        "baseline": "B0",
+        "status": "completed",
+        "source": {
+          "git_commit": "9c9586635a9201094c9f155d5729398bf241d992",
+          "git_status": "",
+          "source_files_sha256": {
+            ".cursor/rules/research-integrity.mdc": "aeff82d0f2ab02322e78d8a4c00e6628289c3e9f4a8a0e3af0e4838c0e9283f0",
+            ".gitattributes": "538ae1a96cae56cc21afa2840b184276ed6c421f2b8d3c2b0af2ad359f989586",
+            ".gitignore": "47f27020c5459be9b9cf7dd2ad8b482e2e68be0e976819674a511dcb33e7fdb3",
+            ".gitmodules": "c3076cad73305ab686a976084ee63d2a20ab20ca01082f205079fb7958182f45",
+            "AGENTS.md": "7841383168457f8249d6ed623142353426a5a78a835c0d79b2dd9a204878829c",
+            "README.md": "8c22b6a1d93316f20434c5aa60f5ceb36ddb2ba4bbac54a885764e577dc58eab",
+            "artifacts/README.md": "7642f229396b59aa72353a96c8d2880e46698240c07f8a9fc236218c6355fa28",
+            "configs/B0.json": "d6002742a8d811567a02c0329b78898c42dbeb3636e21ace51eba32701686873",
+            "configs/B1-score.json": "7755eeb8f3dfd437a4711b0ec2aa96ed98db1cafddb973dcdeb01c27c33e233f",
+            "configs/B2.json": "97d1624a823103b7010992e4a84af099986aa1458b2fabeee7a2e93a9d3b3f53",
+            "configs/R1.json": "122d5a6496ecac9850cda31e83b62662df5819d7fa7653a24326d5e03352a122",
+            "docs/datasets.md": "549169db0d39a03718bd9fe72ed8f96448e1c8392afdcc0795918d25aaa01335",
+            "docs/methodology.md": "7feafdaaef860a730ad28e75cf25243a5502300c7840596beca53f62f6992d1e",
+            "docs/reproduction.md": "0bdf499c5120aa6979d85ba4de430a780ddaa53ab7ae28805aefe663568403a9",
+            "docs/research_hypothesis.md": "c2913e2037420b2fe959bec4e9b1a5bc49952f26ae727f6ac039e743d68c4303",
+            "experiments/registry.json": "5000d0c17d93fd87274a1b0737786a7d600fc22326121074fbe90db64df8eb70",
+            "experiments/schema.json": "37dee6058a4e3fa5eadffb2dce7a6356f6c46849692960c9ed1bcfb4bb0df192",
+            "patches/0001-transformer-layout-b2.patch": "34ca9ea7d1856633245d781017f2ed11118af9aaa9a35693ff1a06556f93e07f",
+            "patches/0002-negative-pair-supervision-b2.patch": "2c92e7db2cb88534a5984588da31c93ee8c5eac8fbce791d9d55a35eaccff408",
+            "patches/0003-reject-unsupported-distributed-launch.patch": "b83583b59046aa896ea2497fb7a2296af0ab6cd3b76454ec8048f2e84d1ded56",
+            "patches/0004-singleton-class-selector-b2.patch": "9e1d1b8e947bcbffd74f3212edc0d57f765445fd2766ebb07d298a03852cc96e",
+            "patches/README.md": "c6d130c44b536fea8255107eef110532e64fd148253f1026aa5cbc5c5995bbaf",
+            "patches/build_source_patches.py": "3b0de2989101615ca2149d52df7e310610941b8f31d3e8f8f63086ed75b51046",
+            "pyproject.toml": "814dfdba7748bc8b21d126bba02e0868b868b9ec07bccdb45f89b13f94bf79a6",
+            "reports/environment.json": "4ac85c44f99deec3de13ddeef5656780ad167f8045f32eb3c380a7408932e763",
+            "reports/evaluation_audit.md": "94513d285009164215bb253c8e8aab1068375323e109ba1ca4afb4cfe61230a9",
+            "reports/inference_geometry_audit.md": "135df8e4c9f40a574db3342f736ec907de8e0c4a74b8cb613d8b5ef26b39466d",
+            "reports/initial_progress.md": "1b89e04eae752d080b5c99c7fa4ed1b5440e466a7f69afaa9b4c98c9e84a15a5",
+            "reports/literature_review.md": "dabfdb6d8c88e6d658d87681a8125cf2577751a1903809045c565d1e9318d8c5",
+            "reports/source_audit.md": "dc6ee99270300c9eb2249abc040f1533a74fa430d542198dd459103b5a70a290",
+            "requirements/base.txt": "5448521c534302842635a96c1138031be4b8e5814524c8aa14a139384ab64d48",
+            "requirements/lock-windows-py313-cu128.txt": "0d4956e381aa49eb96ffa0e4915337c3003d627c02884c4c5272e42449ebb809",
+            "scripts/checkout_upstream.sh": "5450d89e169e00364ae912e103b970db5ca58d5f1bccfd8fcf631e31384adfb8",
+            "scripts/diagnose_environment.py": "5d98fc2452832581b01751570e9bda58b4a769f2dd2cdb559fc325c37b5a79c7",
+            "scripts/evaluate.py": "766e4f42f8b1a2552ca8b29e8b4b29f825a2fd8f586ddeefd2440b04e28aba21",
+            "scripts/fetch_official_checkpoint.py": "f71e2f4f559ba734318b5514948bdab24f4dd203d630616e4d528eaf1d678f0c",
+            "scripts/import_assets.py": "3e1cc6d4af55fbe3be51761e8723814b3a06002ac9adc1ea96bbcda57303ea6d",
+            "scripts/run_sequence.py": "82256545f69f12d0d0fcc45fcfb841a4e535a7e63f1b129310f8e0bd4fb12f61",
+            "scripts/setup_env.sh": "c6fa6742a2f08c79b1d669bbf5614f7d196aadbb02c5843f7b22a68a21e9b03c",
+            "scripts/smoke_inference.py": "6f18bdaeeedb2dbdec5fc1dbda970ffd8480002914bbc7d3a1bf504cf85363b3",
+            "scripts/smoke_pipeline.py": "ae1ad56c025894368d615d2f388e22334c67ff839204b3be675d5265b6ffafda",
+            "src/hift_research/__init__.py": "b31dcae30d9f37b081e4906b3e090a43a159cde9cc535a586a38011ae27c331a",
+            "src/hift_research/corrections/__init__.py": "79f4b07abb82c56d216da9564f76b3346e751d77ef5f8c56d6e0f7407a67392a",
+            "src/hift_research/corrections/classification_loss.py": "5f5a9cebd33af0f35b7e3915f3810e56fbb9c1ede49f0aebba7f018566b8a989",
+            "src/hift_research/corrections/distributed_guard.py": "aad3ef948c3cd2dcf6090c51da9ae4507fac3beb77c586e82b17ce87b3960c0b",
+            "src/hift_research/corrections/pair_targets.py": "8ba19427e90540d89c45be2aadc5f2c18b66834033698054ed9f652aa3865456",
+            "src/hift_research/corrections/tensor_layout.py": "697ca7e6829bdee58c694649fbe205b038a22139e0527a282a9f310326fc8f3a",
+            "src/hift_research/evaluation/__init__.py": "d3ffbc094a62389961f5c55afc15e41cc3714f9fe2bd8f7faf294b6c82dd5ad6",
+            "src/hift_research/evaluation/assets.py": "cba587b0ca8dc7b83bf88c66083c474b17586ad483f524001b08da16f3b9669d",
+            "src/hift_research/evaluation/metrics.py": "53216b126ae8dcc57cd9831bb24226bb80e1f21ea7c80f256026086a55c747f2",
+            "src/hift_research/geometry.py": "d0a8ec77410d2c5ded37dd482534d30b5fe316d01b1a863756b36298011194bb",
+            "src/hift_research/inference.py": "46f7bc13ad7ef684b4d634ea9a3a6da00ccc65ad56048f50ca08b4b35eb38237",
+            "src/hift_research/provenance.py": "b0828a0fb40679519b71410f4cb3229d86d9d32bedf853c80c148b9d17cd85c8",
+            "tests/test_evaluation.py": "3da8b068a6c61abb9fcef5b0eddf7909c3421b9882f62cd1d902dcbb026e28ba",
+            "tests/test_geometry_scores.py": "567a661f6c504f2a5c2975b92bd1d7f2c64d02f8e67ae449bb8e2af6b491c699",
+            "tests/test_inference_contract.py": "5135f147c442fbcb55104783f73f1fd79b83cfed010493d0adb201a09a38dbe6",
+            "tests/test_project.py": "dc1fda89eb25b6776766eebf842474a1bb28157cc23d3319490f8f3a38dd6854",
+            "tests/test_source_audit.py": "f9b5c71ad4e18bb7ed407ccd0640c4005722b8a6c2ff312824463a879822f69c"
+          },
+          "source_tree_sha256": "176651ae0d769fb6f58ac3b915471f2f33ebc90db108c04599b5e9a27d2b320c",
+          "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "upstream_commit": "992aa7c1605360d607af84cb804b93cd8ee81caf"
+        },
+        "environment": {
+          "utc": "2026-10-23T10:49:41.909101+00:00",
+          "python": "3.13.0 (tags/v3.13.0:60403a5, Oct  7 2024, 09:38:07) [MSC v.1941 64 bit (AMD64)]",
+          "platform": "Windows-10-10.0.19044-SP0",
+          "torch": "2.10.0+cu128",
+          "cuda": "12.8",
+          "gpu": "NVIDIA GeForce RTX 5070 Ti"
+        },
+        "configuration": {
+          "identity": "B0",
+          "status": "inference_path_prepared_not_reproduced",
+          "upstream_commit": "992aa7c1605360d607af84cb804b93cd8ee81caf",
+          "upstream_config": "third_party/HiFT/experiments/config.yaml",
+          "checkpoint": "artifacts/checkpoints/general_model.pth",
+          "checkpoint_sha256": "8c697d2b6d2d7aa36e8d035c89e6897b3b5733b94abe56509420329bc4ba3101",
+          "corrections": [],
+          "compatibility": [
+            "weights_only_CPU_deserialization_then_strict_key_load",
+            "external_runner_without_upstream_toolkit_compilation"
+          ],
+          "seed": 0
+        },
+        "config_sha256": "d6002742a8d811567a02c0329b78898c42dbeb3636e21ace51eba32701686873",
+        "upstream_config_sha256": "41db70a6239e34780509c1da04c6daaa8f3efce014c362557514760efcefd956",
+        "checkpoint": {
+          "path": "F:\\Code\\HiFT\\artifacts\\checkpoints\\general_model.pth",
+          "sha256": "8c697d2b6d2d7aa36e8d035c89e6897b3b5733b94abe56509420329bc4ba3101"
+        },
+        "sequence": {
+          "name": "synthetic",
+          "dataset": "synthetic_NOT_a_benchmark",
+          "manifest_sha256": "0ddcabe42ef38ab9aa99c869671c864623b3732e608fbe153edacc8125783bc6",
+          "initialization_convention": "explicit_tracker_ready_bbox",
+          "frames": [
+            {
+              "path": "F:\\Code\\HiFT\\artifacts\\runs\\INIT-PIPELINE-003\\0000.png",
+              "sha256": "1cb2996cab07c5786f244790779cbcdafbbf05f188f2825983b438179877cc12"
+            },
+            {
+              "path": "F:\\Code\\HiFT\\artifacts\\runs\\INIT-PIPELINE-003\\0001.png",
+              "sha256": "12be8dc38e3d750206174f581974ca5deec372c445b692c95bc8c34badf4464e"
+            },
+            {
+              "path": "F:\\Code\\HiFT\\artifacts\\runs\\INIT-PIPELINE-003\\0002.png",
+              "sha256": "326438a95e5aa8e9f43e0e662c73dafdf6813e6b6417b553b231f49d2f5b8e8a"
+            }
+          ]
+        },
+        "seed": 0,
+        "parameter_count": 11066312,
+        "metrics": {
+          "tracking_fps": 13.873849251339832,
+          "end_to_end_fps": 13.711393000156948,
+          "tracking_latency_ms_mean": 72.0780499977991,
+          "end_to_end_latency_ms_mean": 72.93205001042224,
+          "init_latency_ms": 146.98109996970743,
+          "peak_cuda_allocated_bytes": 74033152,
+          "peak_cuda_reserved_bytes": 90177536,
+          "flops_macs": null
+        },
+        "limitations": [
+          "modern torch numerical equivalence to 2021 environment unverified",
+          "single local GPU shared with desktop applications",
+          "initialization included in saved predictions; no warmup excluded from sequence runtime",
+          "source_support fields use previous prediction, not ground truth or measured image detail"
+        ],
+        "prediction_sha256": "602b349c4cf08f579275f24d04b6fbc0ef7e71afe957ea3de1a72d7c71f00249",
+        "frames_completed": 3
+      }
+    },
+    {
+      "original_path": "artifacts/runs/INIT-PIPELINE-003/B1-score/manifest.json",
+      "original_sha256": "c4f464fafbe398e1ef7c1d2568fc0bab50438875d6390ac39c5d6209bfe1b693",
+      "manifest": {
+        "schema_version": 1,
+        "kind": "inference_run",
+        "experiment_id": "INIT-PIPELINE-003--B1-score",
+        "baseline": "B1-score",
+        "status": "completed",
+        "source": {
+          "git_commit": "9c9586635a9201094c9f155d5729398bf241d992",
+          "git_status": "",
+          "source_files_sha256": {
+            ".cursor/rules/research-integrity.mdc": "aeff82d0f2ab02322e78d8a4c00e6628289c3e9f4a8a0e3af0e4838c0e9283f0",
+            ".gitattributes": "538ae1a96cae56cc21afa2840b184276ed6c421f2b8d3c2b0af2ad359f989586",
+            ".gitignore": "47f27020c5459be9b9cf7dd2ad8b482e2e68be0e976819674a511dcb33e7fdb3",
+            ".gitmodules": "c3076cad73305ab686a976084ee63d2a20ab20ca01082f205079fb7958182f45",
+            "AGENTS.md": "7841383168457f8249d6ed623142353426a5a78a835c0d79b2dd9a204878829c",
+            "README.md": "8c22b6a1d93316f20434c5aa60f5ceb36ddb2ba4bbac54a885764e577dc58eab",
+            "artifacts/README.md": "7642f229396b59aa72353a96c8d2880e46698240c07f8a9fc236218c6355fa28",
+            "configs/B0.json": "d6002742a8d811567a02c0329b78898c42dbeb3636e21ace51eba32701686873",
+            "configs/B1-score.json": "7755eeb8f3dfd437a4711b0ec2aa96ed98db1cafddb973dcdeb01c27c33e233f",
+            "configs/B2.json": "97d1624a823103b7010992e4a84af099986aa1458b2fabeee7a2e93a9d3b3f53",
+            "configs/R1.json": "122d5a6496ecac9850cda31e83b62662df5819d7fa7653a24326d5e03352a122",
+            "docs/datasets.md": "549169db0d39a03718bd9fe72ed8f96448e1c8392afdcc0795918d25aaa01335",
+            "docs/methodology.md": "7feafdaaef860a730ad28e75cf25243a5502300c7840596beca53f62f6992d1e",
+            "docs/reproduction.md": "0bdf499c5120aa6979d85ba4de430a780ddaa53ab7ae28805aefe663568403a9",
+            "docs/research_hypothesis.md": "c2913e2037420b2fe959bec4e9b1a5bc49952f26ae727f6ac039e743d68c4303",
+            "experiments/registry.json": "5000d0c17d93fd87274a1b0737786a7d600fc22326121074fbe90db64df8eb70",
+            "experiments/schema.json": "37dee6058a4e3fa5eadffb2dce7a6356f6c46849692960c9ed1bcfb4bb0df192",
+            "patches/0001-transformer-layout-b2.patch": "34ca9ea7d1856633245d781017f2ed11118af9aaa9a35693ff1a06556f93e07f",
+            "patches/0002-negative-pair-supervision-b2.patch": "2c92e7db2cb88534a5984588da31c93ee8c5eac8fbce791d9d55a35eaccff408",
+            "patches/0003-reject-unsupported-distributed-launch.patch": "b83583b59046aa896ea2497fb7a2296af0ab6cd3b76454ec8048f2e84d1ded56",
+            "patches/0004-singleton-class-selector-b2.patch": "9e1d1b8e947bcbffd74f3212edc0d57f765445fd2766ebb07d298a03852cc96e",
+            "patches/README.md": "c6d130c44b536fea8255107eef110532e64fd148253f1026aa5cbc5c5995bbaf",
+            "patches/build_source_patches.py": "3b0de2989101615ca2149d52df7e310610941b8f31d3e8f8f63086ed75b51046",
+            "pyproject.toml": "814dfdba7748bc8b21d126bba02e0868b868b9ec07bccdb45f89b13f94bf79a6",
+            "reports/environment.json": "4ac85c44f99deec3de13ddeef5656780ad167f8045f32eb3c380a7408932e763",
+            "reports/evaluation_audit.md": "94513d285009164215bb253c8e8aab1068375323e109ba1ca4afb4cfe61230a9",
+            "reports/inference_geometry_audit.md": "135df8e4c9f40a574db3342f736ec907de8e0c4a74b8cb613d8b5ef26b39466d",
+            "reports/initial_progress.md": "1b89e04eae752d080b5c99c7fa4ed1b5440e466a7f69afaa9b4c98c9e84a15a5",
+            "reports/literature_review.md": "dabfdb6d8c88e6d658d87681a8125cf2577751a1903809045c565d1e9318d8c5",
+            "reports/source_audit.md": "dc6ee99270300c9eb2249abc040f1533a74fa430d542198dd459103b5a70a290",
+            "requirements/base.txt": "5448521c534302842635a96c1138031be4b8e5814524c8aa14a139384ab64d48",
+            "requirements/lock-windows-py313-cu128.txt": "0d4956e381aa49eb96ffa0e4915337c3003d627c02884c4c5272e42449ebb809",
+            "scripts/checkout_upstream.sh": "5450d89e169e00364ae912e103b970db5ca58d5f1bccfd8fcf631e31384adfb8",
+            "scripts/diagnose_environment.py": "5d98fc2452832581b01751570e9bda58b4a769f2dd2cdb559fc325c37b5a79c7",
+            "scripts/evaluate.py": "766e4f42f8b1a2552ca8b29e8b4b29f825a2fd8f586ddeefd2440b04e28aba21",
+            "scripts/fetch_official_checkpoint.py": "f71e2f4f559ba734318b5514948bdab24f4dd203d630616e4d528eaf1d678f0c",
+            "scripts/import_assets.py": "3e1cc6d4af55fbe3be51761e8723814b3a06002ac9adc1ea96bbcda57303ea6d",
+            "scripts/run_sequence.py": "82256545f69f12d0d0fcc45fcfb841a4e535a7e63f1b129310f8e0bd4fb12f61",
+            "scripts/setup_env.sh": "c6fa6742a2f08c79b1d669bbf5614f7d196aadbb02c5843f7b22a68a21e9b03c",
+            "scripts/smoke_inference.py": "6f18bdaeeedb2dbdec5fc1dbda970ffd8480002914bbc7d3a1bf504cf85363b3",
+            "scripts/smoke_pipeline.py": "ae1ad56c025894368d615d2f388e22334c67ff839204b3be675d5265b6ffafda",
+            "src/hift_research/__init__.py": "b31dcae30d9f37b081e4906b3e090a43a159cde9cc535a586a38011ae27c331a",
+            "src/hift_research/corrections/__init__.py": "79f4b07abb82c56d216da9564f76b3346e751d77ef5f8c56d6e0f7407a67392a",
+            "src/hift_research/corrections/classification_loss.py": "5f5a9cebd33af0f35b7e3915f3810e56fbb9c1ede49f0aebba7f018566b8a989",
+            "src/hift_research/corrections/distributed_guard.py": "aad3ef948c3cd2dcf6090c51da9ae4507fac3beb77c586e82b17ce87b3960c0b",
+            "src/hift_research/corrections/pair_targets.py": "8ba19427e90540d89c45be2aadc5f2c18b66834033698054ed9f652aa3865456",
+            "src/hift_research/corrections/tensor_layout.py": "697ca7e6829bdee58c694649fbe205b038a22139e0527a282a9f310326fc8f3a",
+            "src/hift_research/evaluation/__init__.py": "d3ffbc094a62389961f5c55afc15e41cc3714f9fe2bd8f7faf294b6c82dd5ad6",
+            "src/hift_research/evaluation/assets.py": "cba587b0ca8dc7b83bf88c66083c474b17586ad483f524001b08da16f3b9669d",
+            "src/hift_research/evaluation/metrics.py": "53216b126ae8dcc57cd9831bb24226bb80e1f21ea7c80f256026086a55c747f2",
+            "src/hift_research/geometry.py": "d0a8ec77410d2c5ded37dd482534d30b5fe316d01b1a863756b36298011194bb",
+            "src/hift_research/inference.py": "46f7bc13ad7ef684b4d634ea9a3a6da00ccc65ad56048f50ca08b4b35eb38237",
+            "src/hift_research/provenance.py": "b0828a0fb40679519b71410f4cb3229d86d9d32bedf853c80c148b9d17cd85c8",
+            "tests/test_evaluation.py": "3da8b068a6c61abb9fcef5b0eddf7909c3421b9882f62cd1d902dcbb026e28ba",
+            "tests/test_geometry_scores.py": "567a661f6c504f2a5c2975b92bd1d7f2c64d02f8e67ae449bb8e2af6b491c699",
+            "tests/test_inference_contract.py": "5135f147c442fbcb55104783f73f1fd79b83cfed010493d0adb201a09a38dbe6",
+            "tests/test_project.py": "dc1fda89eb25b6776766eebf842474a1bb28157cc23d3319490f8f3a38dd6854",
+            "tests/test_source_audit.py": "f9b5c71ad4e18bb7ed407ccd0640c4005722b8a6c2ff312824463a879822f69c"
+          },
+          "source_tree_sha256": "176651ae0d769fb6f58ac3b915471f2f33ebc90db108c04599b5e9a27d2b320c",
+          "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "upstream_commit": "992aa7c1605360d607af84cb804b93cd8ee81caf"
+        },
+        "environment": {
+          "utc": "2026-10-23T10:49:45.573700+00:00",
+          "python": "3.13.0 (tags/v3.13.0:60403a5, Oct  7 2024, 09:38:07) [MSC v.1941 64 bit (AMD64)]",
+          "platform": "Windows-10-10.0.19044-SP0",
+          "torch": "2.10.0+cu128",
+          "cuda": "12.8",
+          "gpu": "NVIDIA GeForce RTX 5070 Ti"
+        },
+        "configuration": {
+          "identity": "B1-score",
+          "status": "mathematical_correction_not_benchmark_validated",
+          "parent": "B0",
+          "upstream_commit": "992aa7c1605360d607af84cb804b93cd8ee81caf",
+          "upstream_config": "third_party/HiFT/experiments/config.yaml",
+          "checkpoint": "artifacts/checkpoints/general_model.pth",
+          "checkpoint_sha256": "8c697d2b6d2d7aa36e8d035c89e6897b3b5733b94abe56509420329bc4ba3101",
+          "corrections": [
+            "sigmoid_BCE_classification_branch_at_inference"
+          ],
+          "preserved": [
+            "original_transformer_layout",
+            "minimum_box_size_10",
+            "all_crop_and_penalty_rules"
+          ],
+          "seed": 0
+        },
+        "config_sha256": "7755eeb8f3dfd437a4711b0ec2aa96ed98db1cafddb973dcdeb01c27c33e233f",
+        "upstream_config_sha256": "41db70a6239e34780509c1da04c6daaa8f3efce014c362557514760efcefd956",
+        "checkpoint": {
+          "path": "F:\\Code\\HiFT\\artifacts\\checkpoints\\general_model.pth",
+          "sha256": "8c697d2b6d2d7aa36e8d035c89e6897b3b5733b94abe56509420329bc4ba3101"
+        },
+        "sequence": {
+          "name": "synthetic",
+          "dataset": "synthetic_NOT_a_benchmark",
+          "manifest_sha256": "0ddcabe42ef38ab9aa99c869671c864623b3732e608fbe153edacc8125783bc6",
+          "initialization_convention": "explicit_tracker_ready_bbox",
+          "frames": [
+            {
+              "path": "F:\\Code\\HiFT\\artifacts\\runs\\INIT-PIPELINE-003\\0000.png",
+              "sha256": "1cb2996cab07c5786f244790779cbcdafbbf05f188f2825983b438179877cc12"
+            },
+            {
+              "path": "F:\\Code\\HiFT\\artifacts\\runs\\INIT-PIPELINE-003\\0001.png",
+              "sha256": "12be8dc38e3d750206174f581974ca5deec372c445b692c95bc8c34badf4464e"
+            },
+            {
+              "path": "F:\\Code\\HiFT\\artifacts\\runs\\INIT-PIPELINE-003\\0002.png",
+              "sha256": "326438a95e5aa8e9f43e0e662c73dafdf6813e6b6417b553b231f49d2f5b8e8a"
+            }
+          ]
+        },
+        "seed": 0,
+        "parameter_count": 11066312,
+        "metrics": {
+          "tracking_fps": 13.145795419283553,
+          "end_to_end_fps": 12.997064617461431,
+          "tracking_latency_ms_mean": 76.06994998059236,
+          "end_to_end_latency_ms_mean": 76.94044997333549,
+          "init_latency_ms": 154.99520004959777,
+          "peak_cuda_allocated_bytes": 74033152,
+          "peak_cuda_reserved_bytes": 90177536,
+          "flops_macs": null
+        },
+        "limitations": [
+          "modern torch numerical equivalence to 2021 environment unverified",
+          "single local GPU shared with desktop applications",
+          "initialization included in saved predictions; no warmup excluded from sequence runtime",
+          "source_support fields use previous prediction, not ground truth or measured image detail"
+        ],
+        "prediction_sha256": "6cc86d44f898b4390ede86c1cbbb5de6c3be7038ab8a19bba86ade5428ee5761",
+        "frames_completed": 3
+      }
+    }
+  ],
+  "limitations": [
+    "No real benchmark data or accuracy metrics",
+    "Synthetic timings have too few frames for speed comparisons",
+    "No training or historical framework numerical equivalence established",
+    "Full frame pixels/weights remain local artifacts; hashes and deterministic generation instructions are preserved"
+  ]
+}

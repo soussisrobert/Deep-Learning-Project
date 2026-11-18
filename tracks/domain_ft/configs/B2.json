@@ -1,0 +1,12 @@
+{
+  "identity": "B2",
+  "status": "synthetic_graph_feasible_real_data_recipe_not_ready",
+  "parent": "B1-score",
+  "planned_corrections": ["sequence_image_layout", "identity_checked_negative_pair_targets", "empty_positive_support", "singleton_class_selection", "mask_before_nonlinearity", "dynamic_batch_device_decode"],
+  "synthetic_feasibility_report": "reports/wave2_training.md",
+  "real_data_sampler_validated": false,
+  "optimizer_schedule_resume_validated": false,
+  "checkpoint": null,
+  "training_recipe": "not_yet_frozen",
+  "launch_allowed": false
+}

@@ -1,0 +1,96 @@
+{
+  "DEV_at_updates": {
+    "0": null,
+    "100": null,
+    "25": null,
+    "50": null
+  },
+  "W5_A": "PARTIAL_NOT_EXECUTED",
+  "W5_B": "NOT_MEASURED",
+  "W5_C": "HOLD_NO_NEW_TRACKING_OR_R1_EVIDENCE",
+  "accepted": 0,
+  "accepted_NPZ_archives_rehashed": 1151,
+  "additional_conservative_snapshot_count": 187,
+  "approved_grant_created": false,
+  "blockers": {
+    "W5-B1": "No inclusive external900second/expiry watchdog or durable cumulative failed-work ledger in frozen CLI",
+    "W5-B2": "No enforced one-use experiment/command/output/source-closure grant binding or actual GPU lease in frozen CLI",
+    "W5-B3": "No host-memory guard; CUDA memory checked after update; finite gradients checked after whole window",
+    "W5-B4": "Malformed/nonfinite/mask failures can be ordinary rejected samples rather than fatal contract violations",
+    "W5-B5": "No live frozen-backbone/BN/parameter-scope or full source-drift invariant checks",
+    "W5-B6": "No durable per-component/per-class/denominator/host-memory/failure-last-checkpoint telemetry",
+    "W5-B7": "Physical GPU/host headroom must be rechecked and made safe; no unrelated processes may be killed by this preparation"
+  },
+  "checkpoint_sha256": null,
+  "config_sha256": "420de51fc52136043cb05d30a1a203f6abc862de6a80aef60dec0f9b7a5bae6e",
+  "critical_source_files_verified": 29,
+  "effective_updates": 0,
+  "execution_ready": false,
+  "experiment_id": "B2-W5-RELIABILITY-20261024-001",
+  "gradient_trace": null,
+  "human_approved": false,
+  "initial_parameters_sha256": "52e80c8edd422bf78e0aa09ef1b9bba998f4b91ea3842863fa1c0d2225d20130",
+  "integrated_tests": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 457
+  },
+  "inventory_sha256": "3ff399383ebaa6d57a47a602714bdf3c8f91aaa683d94fd661ae301e11fd190f",
+  "new_preparation_tests": 18,
+  "next_experiment": "same100update1600slot900secondB2pilotONLYafterguardvalidationANDfreshfreezeANDexacthumanapproval",
+  "pilot_peak_memory": null,
+  "pilot_runtime_seconds": null,
+  "prior_references_verified": 26,
+  "proposed_expiry_utc": "2026-10-24T16:00:00+00:00",
+  "protected_historical_files_verified": 140,
+  "real_backward_calls": 0,
+  "real_optimizer_steps": 0,
+  "real_training_attempts": 0,
+  "references": {
+    "availability": {
+      "path": "artifacts/wave5-preparation/PHASE-A-001/host-availability.json",
+      "sha256": "167ebce70ebb1d1cd43e2339fb302b6914842ddb5ec5605cea0b4dff813d1764"
+    },
+    "baseline_tests": {
+      "path": "artifacts/wave5-preparation/PHASE-A-001/tests.xml",
+      "sha256": "aa1b0e120ddadcca6c7a4ee5b35c32145d9396354d31721a3cbe5149c90658d2"
+    },
+    "baseline_verification": {
+      "path": "artifacts/wave5-preparation/PHASE-A-001/wave4-verification.json",
+      "sha256": "fe8bdf99e62bc6d20482974e142d0e94ab59840dc19efe91a4000e72d743b2c4"
+    },
+    "final_preservation": {
+      "path": "artifacts/wave5-preparation/FINAL-VERIFICATION-001.json",
+      "sha256": "39b2165c4730c0cbcf8eff1ed4d33ebc8c8879811b4f13b2570ee309d42636cb"
+    },
+    "final_tests": {
+      "path": "artifacts/wave5-preparation/FINAL-TEST-001.xml",
+      "sha256": "bfa7af874b40bcca0941fb5443dfe8e6ca31868f6819dc231ceff3ae329bb9eb"
+    },
+    "inventory": {
+      "path": "artifacts/wave5-preparation/PROPOSAL-001/inventory.json",
+      "sha256": "3ff399383ebaa6d57a47a602714bdf3c8f91aaa683d94fd661ae301e11fd190f"
+    },
+    "preparation_receipt": {
+      "path": "artifacts/wave5-preparation/PROPOSAL-001/receipt.json",
+      "sha256": "2616399d23cfd03bec5db5cf24b08a36f66b783ac6dc7b66d4b2f01c118acbad"
+    },
+    "unapproved_proposal": {
+      "path": "artifacts/wave5-preparation/PROPOSAL-001/UNAPPROVED-PROPOSAL.json",
+      "sha256": "2a395299db922658678a0f07eeca1b6bfeb9b66414fb3093132be8ed2b662dc9"
+    }
+  },
+  "rejected": 0,
+  "runtime_guard_adapter_implemented": false,
+  "schema": "hift-wave5-preparation-only-v1",
+  "scientific_scope": "preparation/inventory/audit only, not an executed pilot or approval receipt",
+  "source_GT_files_rehashed": 4,
+  "source_frames_rehashed": 160,
+  "source_seqinfo_files_rehashed": 4,
+  "status": "BLOCKED_NOT_READY_FOR_EXECUTION_APPROVAL",
+  "tested_wave4_implementation": "9de50b88e8e048a85370529ed02af04061d67ea0",
+  "training_loss": null,
+  "wave4_references_verified": 33,
+  "wave4_start_HEAD": "b8b92a7c1a1420925dc4b243c09babac3381b66b"
+}

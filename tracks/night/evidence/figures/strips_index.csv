@@ -1,0 +1,6 @@
+kind,video,frames,auc_gain,differing_run_start,differing_run_length,frames_shown,file
+gain1,N02057,601,0.683385,248,353,248 365 483 600,strip_gain1_N02057.png
+gain2,N04016,1317,0.663268,7,1310,7 443 880 1316,strip_gain2_N04016.png
+gain3,N04006,336,0.632795,28,308,28 130 233 335,strip_gain3_N04006.png
+median,N04023,551,0.013654,322,106,322 357 392 427,strip_median_N04023.png
+loss,N03014,254,-0.528496,34,220,34 107 180 253,strip_loss_N03014.png

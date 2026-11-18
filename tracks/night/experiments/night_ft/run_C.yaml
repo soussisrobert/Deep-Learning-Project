@@ -1,0 +1,6 @@
+# Run C: B + real negatives (NEG 0.2 of the pairs: search from a different video; HARDNEG 0.1 of the UAVDT pairs: distractor of the same class)
+DATASET:
+    NEG: 0.2
+    NIGHT:
+        ENH_P: 0.5
+        HARDNEG: 0.1

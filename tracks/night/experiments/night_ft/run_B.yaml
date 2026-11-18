@@ -1,0 +1,6 @@
+# Run B: A + random gamma enhancement (p = 0.5, one gamma in [0.4, 1.0] shared by template and search)
+DATASET:
+    NEG: 0.0
+    NIGHT:
+        ENH_P: 0.5
+        HARDNEG: 0.0

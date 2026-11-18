@@ -1,0 +1,69 @@
+--- a/pysot/datasets/anchortarget.py
++++ b/pysot/datasets/anchortarget.py
+@@ -31,2 +31,20 @@
+            
++        if isinstance(size, bool) or not isinstance(size, (int, np.integer)) or size < 1:
++            raise ValueError("size must be a positive integer")
++        if size != cfg.TRAIN.OUTPUTFEATURE_SIZE:
++            raise ValueError("size must equal configured OUTPUTFEATURE_SIZE")
++        if (isinstance(cfg.TRAIN.SEARCH_SIZE, bool) or not isinstance(cfg.TRAIN.SEARCH_SIZE, (int, np.integer))
++                or not np.isfinite([cfg.TRAIN.SEARCH_SIZE, cfg.TRAIN.LABEL_RANGE]).all()
++                or cfg.TRAIN.SEARCH_SIZE < 2 or cfg.TRAIN.LABEL_RANGE <= 0
++                or cfg.TRAIN.LABEL_RANGE > np.sqrt(np.finfo(float).max)/(4*size)):
++            raise ValueError("invalid search size or LABEL_RANGE")
++        target_check = np.array([bbox.x1, bbox.y1, bbox.x2, bbox.y2], dtype=float)
++        with np.errstate(over="ignore", invalid="ignore"):
++            extent = target_check[2:] - target_check[:2]
++        if (not np.isfinite(target_check).all() or not np.isfinite(extent).all() or np.any(extent <= 0)
++                or np.any(np.abs(target_check) > np.finfo(np.float32).max/4)):
++            raise ValueError("bbox must have finite positive extents representable by label encoding")
++        if (target_check[2] <= 0 or target_check[3] <= 0 or
++                target_check[0] >= cfg.TRAIN.SEARCH_SIZE or target_check[1] >= cfg.TRAIN.SEARCH_SIZE):
++            raise ValueError("positive bbox has no overlap with the search crop")
+         labelcls1=np.zeros((1,size,size))-1
+@@ -58,7 +76,11 @@
+         
+-        weightxff[np.where(weightxff<((w//2+h//2)*range/1.5)**2)]=1-((se-se.min())/(se.max()-se.min()+1e-4))
++        if se.size:
++            weightxff[np.where(weightxff<((w//2+h//2)*range/1.5)**2)]=1-((se-se.min())/(se.max()-se.min()+1e-4))
++            weightxff[np.where(weightxff>((w//2+h//2)*range/1.5)**2)]=0
++        else:
++            # Explicit B2 minimum-support heuristic, not recovered author intent.
++            weightxff.fill(0)
++            weightxff[0,(index2[1]+index2[3])//2,(index2[0]+index2[2])//2]=1
+         
+-        weightxff[np.where(weightxff>((w//2+h//2)*range/1.5)**2)]=0
+-        
+-        pos=np.where(weightxff.squeeze()>0.8)
++        pos=np.where(weightxff[0]>0.8)
+         num=len(pos[0])
+@@ -82,6 +104,10 @@
+         
+-        labelcls2[np.where(labelcls2<((w//2+h//2)*range/1.2)**2)]=1-((see-see.min())/(see.max()-see.min()+1e-4))
+-        weightcls3=np.zeros((1,size,size))
+-        weightcls3[np.where(labelcls2<((w//2+h//2)*range/1.2)**2)]=1
+-        labelcls2=labelcls2*weightcls3
++        if see.size:
++            labelcls2[np.where(labelcls2<((w//2+h//2)*range/1.2)**2)]=1-((see-see.min())/(see.max()-see.min()+1e-4))
++            weightcls3=np.zeros((1,size,size))
++            weightcls3[np.where(labelcls2<((w//2+h//2)*range/1.2)**2)]=1
++            labelcls2=labelcls2*weightcls3
++        else:
++            labelcls2.fill(0)
++            labelcls2[0,(index[1]+index[3])//2,(index[0]+index[2])//2]=1
+ 
+@@ -89,3 +115,8 @@
+         def con(x):
+-           return (np.exp(x)-np.exp(-x))/(np.exp(x)+np.exp(-x))  
++           with np.errstate(over="ignore", invalid="ignore"):
++               encoded=(np.exp(x)-np.exp(-x))/(np.exp(x)+np.exp(-x))
++           invalid=~np.isfinite(encoded)
++           if invalid.any():
++               encoded[invalid]=np.tanh(x[invalid])
++           return encoded  
+         def dcon(x):
+@@ -105,3 +136,3 @@
+         
+-        neg2=np.where(labelcls1.squeeze()==-1)
++        neg2=np.where(labelcls1[0]==-1)
+         neg2 = self.select(neg2, int(len(np.where(labelcls1==1)[0])*2.5))

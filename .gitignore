@@ -1,0 +1,17 @@
+# weights and datasets are never committed (see checkpoints/ and data/)
+*.pth
+*.pt
+*.onnx
+*.pkl
+!checkpoints/SHA256SUMS
+/test_dataset/
+/testing_dataset/
+/datasets/
+/runs/
+/logs/
+/env/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+.ipynb_checkpoints/

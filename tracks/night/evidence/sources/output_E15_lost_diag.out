@@ -1,0 +1,138 @@
+(  1) Video: basketballplayer2 Time:  10.6s Speed: 63.7fps
+(  2) Video: bike1        Time:   2.4s Speed: 110.7fps
+(  3) Video: bike11       Time:  17.4s Speed: 114.0fps
+(  4) Video: building1    Time:  32.4s Speed: 28.8fps
+(  5) Video: bus1         Time:  12.6s Speed: 67.7fps
+(  6) Video: girl2        Time:   5.8s Speed: 95.4fps
+(  7) Video: girl7        Time:  13.8s Speed: 95.7fps
+(  8) Video: group9_1     Time:   7.0s Speed: 119.1fps
+(  9) Video: group9_2     Time:   6.1s Speed: 118.8fps
+( 10) Video: minibus2     Time:   5.1s Speed: 84.2fps
+( 11) Video: motorbike3   Time:   2.8s Speed: 106.6fps
+( 12) Video: pedestrian6  Time:   7.5s Speed: 107.5fps
+( 13) Video: person1      Time:  11.0s Speed: 117.1fps
+( 14) Video: person13     Time:   6.8s Speed: 51.3fps
+( 15) Video: person19     Time:   6.6s Speed: 99.4fps
+( 16) Video: truck2       Time:   7.5s Speed: 87.4fps
+(  1) Video: N01001       Time:  29.7s Speed: 114.0fps
+(  2) Video: N02001       Time:  15.1s Speed: 111.3fps
+(  3) Video: N02002       Time:  26.5s Speed: 119.0fps
+(  4) Video: N02003       Time:  11.5s Speed: 126.1fps
+(  5) Video: N02004       Time:  34.2s Speed: 102.8fps
+(  6) Video: N02005       Time:  12.2s Speed: 123.8fps
+(  7) Video: N03001       Time:  11.3s Speed: 125.8fps
+(  8) Video: N04001       Time:  50.6s Speed: 49.4fps
+(  9) Video: N04002       Time:  14.2s Speed: 125.5fps
+( 10) Video: N04003       Time:  18.7s Speed: 120.7fps
+( 11) Video: N04004       Time:  15.9s Speed: 121.8fps
+( 12) Video: N04005       Time:  13.7s Speed: 120.1fps
+( 13) Video: N04006       Time:  32.9s Speed: 96.9fps
+( 14) Video: N04007       Time:  19.3s Speed: 120.9fps
+( 15) Video: N04008       Time:  18.5s Speed: 122.8fps
+( 16) Video: N05001       Time:  20.1s Speed: 120.9fps
+( 17) Video: N08001       Time:  26.0s Speed: 80.8fps
+( 18) Video: N08002       Time:  21.6s Speed: 85.3fps
+( 19) Video: N08003       Time:  37.0s Speed: 49.8fps
+( 20) Video: N08004       Time:  85.5s Speed: 31.0fps
+( 21) Video: N08005       Time:  25.2s Speed: 106.1fps
+( 22) Video: N08006       Time:  21.5s Speed: 98.7fps
+( 23) Video: N09001       Time:  33.0s Speed: 117.0fps
+=== item 1: GT handling of the toolkit
+   toolkit/utils/statistics.py success_overlap: mask = (gt w > 0) & (gt h > 0), IoU = -1 where the mask is false (NaN > 0 is false), and the
+   success at every threshold divides by n_frame = ALL frames of the sequence (toolkit/evaluation/ope_benchmark.py; NATVideo has no "absent"
+   attribute, so no frame is dropped). Frames with an absent GT are therefore SCORED, as failures, in every tracker.
+
+##### NAT2021 (180 sequences, tracker boxes from results/NAT2021/first1.2_m_anchor)
+   frames without a usable GT: 3036 of 140815 (2.16%), in 56 sequences; mean success AUC of results/NAT2021/first1.2_p15_a0.2_180 recomputed here 0.4533
+   lost frames 50749: GT centre inside the search window 27282 (53.8%), outside 23467 (46.2%)
+   per sequence (sequences with lost frames: 137 of 180): mean share inside 0.658, median 0.783
+   lost stretches 909: length median 3, mean 55.8, 90th percentile 158, max 1288; unrecovered at sequence end 153 (16.8% of stretches, 61.3% of lost frames)
+   stretches whose first frame has the GT centre inside the window: 864 (95.0%); with the GT centre inside the window on some frame: 889 (97.8%)
+      length 1        stretches  329  lost frames    329  unrecovered    6
+      length 2        stretches  124  lost frames    248  unrecovered    6
+      length 3        stretches   37  lost frames    111  unrecovered    5
+      length 4-5      stretches   65  lost frames    295  unrecovered    3
+      length 6-10     stretches   87  lost frames    654  unrecovered   10
+      length 11-20    stretches   49  lost frames    734  unrecovered    8
+      length 21-50    stretches   61  lost frames   1998  unrecovered   21
+      length 51-100   stretches   35  lost frames   2587  unrecovered   16
+      length 101-200  stretches   37  lost frames   4966  unrecovered   22
+      length 201+     stretches   85  lost frames  38827  unrecovered   56
+   oracle success AUC (mean over 180 sequences), static replacement:
+      baseline (recomputed from results/first1.2_m_anchor) 0.4533   gain +0.0000 [+0.0000, +0.0000]
+      rough oracle, GT centre + tracker size           0.5200   gain +0.0667 [+0.0524, +0.0817]
+      rough oracle, GT box                             0.7130   gain +0.2598 [+0.2182, +0.3044]
+      full oracle, GT centre + tracker size            0.5292   gain +0.0759 [+0.0611, +0.0913]
+      full oracle, GT box                              0.7439   gain +0.2906 [+0.2477, +0.3372]
+      stretches 909, of which the rough oracle can recover (GT centre inside the window on some frame): 889
+   check: recomputed baseline AUC from results/NAT2021/first1.2_m_anchor (margin run) 0.4533 against results/NAT2021/first1.2_p15_a0.2_180 0.4533
+   separation on frames with >= 10 earlier logged frames and a usable GT: lost 50727 (on target 85072); sequences with such frames 180
+      peak    ROC AUC 0.841 [0.799, 0.875]  TPR at 5% FPR 0.426 [0.353, 0.504]  at 10% FPR 0.590 [0.511, 0.667]
+      margin  ROC AUC 0.827 [0.784, 0.862]  TPR at 5% FPR 0.390 [0.320, 0.461]  at 10% FPR 0.547 [0.475, 0.613]
+      ratio   ROC AUC 0.585 [0.548, 0.625]  TPR at 5% FPR 0.281 [0.238, 0.329]  at 10% FPR 0.361 [0.316, 0.411]
+
+##### NATUD135VAL (16 sequences, tracker boxes from results/NATUD135VAL/first1.2_m_anchor)
+   frames without a usable GT: 234 of 12638 (1.85%), in 5 sequences; mean success AUC of results/NATUD135VAL/first1.2_ag recomputed here 0.4934
+   lost frames 4724: GT centre inside the search window 3657 (77.4%), outside 1067 (22.6%)
+   per sequence (sequences with lost frames: 16 of 16): mean share inside 0.805, median 0.997
+   lost stretches 380: length median 2, mean 12.4, 90th percentile 15, max 687; unrecovered at sequence end 17 (4.5% of stretches, 57.7% of lost frames)
+   stretches whose first frame has the GT centre inside the window: 376 (98.9%); with the GT centre inside the window on some frame: 377 (99.2%)
+      length 1        stretches  167  lost frames    167  unrecovered    1
+      length 2        stretches   64  lost frames    128  unrecovered    1
+      length 3        stretches   32  lost frames     96  unrecovered    0
+      length 4-5      stretches   27  lost frames    120  unrecovered    2
+      length 6-10     stretches   34  lost frames    272  unrecovered    0
+      length 11-20    stretches   26  lost frames    358  unrecovered    0
+      length 21-50    stretches   17  lost frames    554  unrecovered    4
+      length 51-100   stretches    4  lost frames    287  unrecovered    2
+      length 101-200  stretches    5  lost frames    822  unrecovered    3
+      length 201+     stretches    4  lost frames   1920  unrecovered    4
+   oracle success AUC (mean over 16 sequences), static replacement:
+      baseline (recomputed from results/first1.2_m_anchor) 0.4934   gain +0.0000 [+0.0000, +0.0000]
+      rough oracle, GT centre + tracker size           0.5591   gain +0.0657 [+0.0336, +0.1027]
+      rough oracle, GT box                             0.7452   gain +0.2518 [+0.1558, +0.3554]
+      full oracle, GT centre + tracker size            0.5708   gain +0.0774 [+0.0425, +0.1148]
+      full oracle, GT box                              0.7631   gain +0.2697 [+0.1738, +0.3802]
+      stretches 380, of which the rough oracle can recover (GT centre inside the window on some frame): 377
+   check: recomputed baseline AUC from results/NATUD135VAL/first1.2_m_anchor (margin run) 0.4934 against results/NATUD135VAL/first1.2_ag 0.4934
+   separation on frames with >= 10 earlier logged frames and a usable GT: lost 4724 (on target 7504); sequences with such frames 16
+      peak    ROC AUC 0.723 [0.650, 0.800]  TPR at 5% FPR 0.231 [0.166, 0.348]  at 10% FPR 0.358 [0.267, 0.503]
+      margin  ROC AUC 0.717 [0.587, 0.813]  TPR at 5% FPR 0.238 [0.168, 0.387]  at 10% FPR 0.391 [0.269, 0.541]
+      ratio   ROC AUC 0.623 [0.555, 0.717]  TPR at 5% FPR 0.225 [0.156, 0.337]  at 10% FPR 0.330 [0.239, 0.456]
+
+##### NAT2021L (23 sequences, tracker boxes from results/NAT2021L/first1.2_m_anchor)
+   frames without a usable GT: 948 of 53564 (1.77%), in 9 sequences; mean success AUC of results/NAT2021L/first1.2_p15_a0.2_L recomputed here 0.3770
+   lost frames 25691: GT centre inside the search window 12587 (49.0%), outside 13104 (51.0%)
+   per sequence (sequences with lost frames: 20 of 23): mean share inside 0.579, median 0.568
+   lost stretches 328: length median 3, mean 78.3, 90th percentile 184, max 1920; unrecovered at sequence end 36 (11.0% of stretches, 52.1% of lost frames)
+   stretches whose first frame has the GT centre inside the window: 306 (93.3%); with the GT centre inside the window on some frame: 314 (95.7%)
+      length 1        stretches  118  lost frames    118  unrecovered    2
+      length 2        stretches   43  lost frames     86  unrecovered    1
+      length 3        stretches   18  lost frames     54  unrecovered    0
+      length 4-5      stretches   19  lost frames     87  unrecovered    1
+      length 6-10     stretches   35  lost frames    266  unrecovered    1
+      length 11-20    stretches   23  lost frames    357  unrecovered    2
+      length 21-50    stretches   23  lost frames    763  unrecovered    6
+      length 51-100   stretches    7  lost frames    540  unrecovered    2
+      length 101-200  stretches    9  lost frames   1227  unrecovered    4
+      length 201+     stretches   33  lost frames  22193  unrecovered   17
+   oracle success AUC (mean over 23 sequences), static replacement:
+      baseline (recomputed from results/first1.2_m_anchor) 0.3770   gain +0.0000 [+0.0000, +0.0000]
+      rough oracle, GT centre + tracker size           0.4527   gain +0.0757 [+0.0373, +0.1210]
+      rough oracle, GT box                             0.7295   gain +0.3525 [+0.2173, +0.4940]
+      full oracle, GT centre + tracker size            0.4690   gain +0.0920 [+0.0518, +0.1366]
+      full oracle, GT box                              0.7877   gain +0.4107 [+0.2722, +0.5576]
+      stretches 328, of which the rough oracle can recover (GT centre inside the window on some frame): 314
+   check: recomputed baseline AUC from results/NAT2021L/first1.2_m_anchor (margin run) 0.3770 against results/NAT2021L/first1.2_p15_a0.2_L 0.3770
+   separation on frames with >= 10 earlier logged frames and a usable GT: lost 25683 (on target 26680); sequences with such frames 23
+      peak    ROC AUC 0.817 [0.708, 0.915]  TPR at 5% FPR 0.435 [0.304, 0.637]  at 10% FPR 0.576 [0.421, 0.761]
+      margin  ROC AUC 0.809 [0.714, 0.897]  TPR at 5% FPR 0.403 [0.275, 0.594]  at 10% FPR 0.551 [0.406, 0.712]
+      ratio   ROC AUC 0.559 [0.492, 0.624]  TPR at 5% FPR 0.267 [0.216, 0.337]  at 10% FPR 0.335 [0.274, 0.410]
+wrote illumination/E15_per_seq_window.csv
+wrote illumination/E15_stretches.csv
+wrote illumination/E15_stretch_length_hist.csv
+wrote illumination/E15_oracle.csv
+wrote illumination/E15_separation.csv
+wrote illumination/E15_lost_diag.png
+
+done

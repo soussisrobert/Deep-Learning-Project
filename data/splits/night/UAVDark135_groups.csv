@@ -1,0 +1,113 @@
+group_members,frames,gray,split
+"motorbike1",737,4.2,train
+"signpost1",1074,4.5,test
+"person6",648,5.2,train
+"person17",600,5.2,train
+"car_l3",3087,5.5,test
+"person16_1 person16_2",2171,5.6,train
+"car_l2",2248,5.7,train
+"car_l5",2458,6.4,train
+"person19",656,6.6,val
+"person14",908,6.6,train
+"bike5",918,6.6,train
+"girl6_1 girl6_2",2629,6.7,train
+"car_l4",2558,7.2,train
+"girl7",1318,7.3,val
+"pedestrian3",745,7.3,test
+"person13",352,7.8,val
+"group6",669,7.8,train
+"car_l1",3234,7.8,train
+"car9",529,8.1,train
+"girl3",1731,8.1,test
+"person12_1 person12_2 person12_3",3044,8.2,train
+"girl2",550,8.2,val
+"signpost6",1515,8.2,train
+"car11",314,8.5,train
+"car_l7",4571,8.5,train
+"bike1 person1",1560,8.7,val
+"car_l6",3234,8.9,train
+"bike3",1138,9.0,train
+"signpost5 truck3",2186,9.2,train
+"car18",469,9.2,test
+"bus3",507,9.2,train
+"girl5",1034,9.4,train
+"bike4",577,9.4,train
+"person11",330,9.4,train
+"person15",1137,9.5,train
+"group8",1159,9.5,test
+"bike6",1623,9.6,train
+"person2",700,9.7,train
+"group1",1037,9.8,test
+"bus1",853,9.9,val
+"truck2",660,10.0,val
+"car1",461,10.1,train
+"car17",1307,10.2,train
+"car3",1419,10.2,test
+"motorbike2",244,10.2,train
+"person7",719,10.2,test
+"person5",621,10.3,train
+"group9_1 group9_2",1558,10.3,val
+"girl4",877,10.4,train
+"group2_1 group2_2 group3",2046,10.4,train
+"tricycle",710,10.5,train
+"motorbike4",365,10.6,train
+"group7",997,10.8,train
+"bike2",232,11.0,train
+"minibus1",288,11.5,train
+"group4_1 group4_2",1393,11.6,train
+"dancing1 dancing2",1680,12.0,train
+"person4",1294,12.0,train
+"running",404,12.0,train
+"car7",266,12.3,test
+"pedestrian_l",2045,12.3,train
+"car19",543,12.4,train
+"person9",265,12.4,test
+"group5",1050,12.5,test
+"person3_1 person3_2 person3_3",3178,12.5,train
+"pedestrian6",811,12.9,val
+"bike9",1206,13.0,train
+"minibus2",427,13.0,val
+"car16",216,13.1,train
+"car12 car13",1059,13.4,train
+"signpost4",1466,13.5,train
+"signpost2",2013,13.7,train
+"car15",802,13.7,train
+"jeep",586,13.8,train
+"pedestrian4",941,13.8,test
+"building1",935,13.9,val
+"car8",274,14.4,train
+"bike7 car5",632,15.0,test
+"bus2",1034,15.0,train
+"car4",226,15.2,train
+"pedestrian7_1 pedestrian7_2 pedestrian7_3",2806,15.2,train
+"motorbike3",301,15.3,val
+"car6",270,15.4,train
+"girl1",285,16.3,train
+"pedestrian9",1236,16.3,train
+"signpost3",1310,16.6,train
+"car14 truck1",886,16.8,test
+"person18",1302,17.1,train
+"motorbike5",528,17.3,test
+"pedestrian8",1256,18.0,train
+"boat1",290,18.2,test
+"bike11",1981,18.7,val
+"boat2",1160,19.9,train
+"person8 valleyballplayer1",1685,19.9,train
+"pedestrian2",797,20.3,test
+"bike10",898,20.6,test
+"house",958,21.4,train
+"running_girl",806,23.3,train
+"pedestrian10",306,25.4,train
+"car2",329,26.3,train
+"bike8",594,29.1,test
+"building2",318,29.7,train
+"jogging_man",841,30.5,train
+"running_man",655,30.8,train
+"pedestrian5_1 pedestrian5_2 pedestrian5_3",2248,31.9,train
+"car10",430,39.1,train
+"pedestrian1",278,39.8,test
+"person10_1 person10_2 valleyballplayer2",3570,40.2,train
+"basketballplayer1",1009,53.5,train
+"basketballplayer3",1180,79.4,train
+"basketballplayer2",676,79.8,val
+"tennisplayer",219,84.4,train

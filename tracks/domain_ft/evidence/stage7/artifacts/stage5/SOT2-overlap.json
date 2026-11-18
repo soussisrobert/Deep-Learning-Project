@@ -1,0 +1,17 @@
+{
+ "method": "sha256 of file bytes; exact copies only",
+ "train_frames": 40622,
+ "train_unique": 40617,
+ "eval": {
+  "V1": {
+   "frames": 7046,
+   "duplicate_train_frames": 0,
+   "examples": {}
+  },
+  "V2": {
+   "frames": 2846,
+   "duplicate_train_frames": 0,
+   "examples": {}
+  }
+ }
+}

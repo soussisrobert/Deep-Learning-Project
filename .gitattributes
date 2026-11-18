@@ -1,0 +1,4 @@
+# Evidence files are hash-bound: never convert line endings.
+tracks/domain_ft/evidence/** -text
+tracks/night/evidence/** -text
+results/** -text
