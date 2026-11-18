@@ -1,0 +1,777 @@
+[
+ {
+  "key": "night.NAT2021.original",
+  "paper": "0.372",
+  "dp": 3,
+  "where": "Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021.gamma",
+  "paper": "0.417",
+  "dp": 3,
+  "where": "Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021.gamma_anchor",
+  "paper": "0.453",
+  "dp": 3,
+  "where": "Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021L.original",
+  "paper": "0.299",
+  "dp": 3,
+  "where": "Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021L.gamma",
+  "paper": "0.316",
+  "dp": 3,
+  "where": "Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021L.gamma_anchor",
+  "paper": "0.377",
+  "dp": 3,
+  "where": "Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_pooled39.original",
+  "paper": "0.380",
+  "dp": 3,
+  "where": "Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_pooled39.gamma",
+  "paper": "0.451",
+  "dp": 3,
+  "where": "Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_pooled39.gamma_anchor",
+  "paper": "0.464",
+  "dp": 3,
+  "where": "Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_test.original",
+  "paper": "0.352",
+  "dp": 3,
+  "where": "Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_test.gamma",
+  "paper": "0.434",
+  "dp": 3,
+  "where": "Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_val.original",
+  "paper": "0.422",
+  "dp": 3,
+  "where": "Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_val.gamma",
+  "paper": "0.475",
+  "dp": 3,
+  "where": "Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021.gamma-original.delta",
+  "paper": "0.045",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021.gamma-original.lo",
+  "paper": "0.022",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021.gamma-original.hi",
+  "paper": "0.068",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021.gamma_anchor-gamma.delta",
+  "paper": "0.036",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021.gamma_anchor-gamma.lo",
+  "paper": "0.017",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021.gamma_anchor-gamma.hi",
+  "paper": "0.056",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021.gamma_anchor-original.delta",
+  "paper": "0.081",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021.gamma_anchor-original.lo",
+  "paper": "0.055",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021.gamma_anchor-original.hi",
+  "paper": "0.108",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021L.gamma-original.delta",
+  "paper": "0.017",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021L.gamma-original.lo",
+  "paper": "-0.022",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021L.gamma-original.hi",
+  "paper": "0.058",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021L.gamma_anchor-gamma.delta",
+  "paper": "0.061",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021L.gamma_anchor-gamma.lo",
+  "paper": "-0.006",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021L.gamma_anchor-gamma.hi",
+  "paper": "0.132",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_pooled39.gamma-original.delta",
+  "paper": "0.071",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_pooled39.gamma-original.lo",
+  "paper": "0.028",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_pooled39.gamma-original.hi",
+  "paper": "0.116",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_pooled39.gamma_anchor-gamma.delta",
+  "paper": "0.013",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_pooled39.gamma_anchor-gamma.lo",
+  "paper": "-0.031",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_pooled39.gamma_anchor-gamma.hi",
+  "paper": "0.058",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_test.gamma-original.delta",
+  "paper": "0.083",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_test.gamma-original.lo",
+  "paper": "0.032",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_test.gamma-original.hi",
+  "paper": "0.142",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_val.gamma-original.delta",
+  "paper": "0.054",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_val.gamma-original.lo",
+  "paper": "-0.012",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.UAVDark135_val.gamma-original.hi",
+  "paper": "0.127",
+  "dp": 3,
+  "where": "Abstract / Night section / Figure 2"
+ },
+ {
+  "key": "night.NAT2021.n",
+  "paper": "180",
+  "dp": 0,
+  "where": "Table 1"
+ },
+ {
+  "key": "night.NAT2021L.n",
+  "paper": "23",
+  "dp": 0,
+  "where": "Table 1"
+ },
+ {
+  "key": "night.UAVDark135_test.n",
+  "paper": "23",
+  "dp": 0,
+  "where": "Table 1"
+ },
+ {
+  "key": "night.UAVDark135_val.n",
+  "paper": "16",
+  "dp": 0,
+  "where": "Table 1"
+ },
+ {
+  "key": "night.NAT2021.original.precision20",
+  "paper": "0.553",
+  "dp": 3,
+  "where": "Night section (published-baseline comparison)"
+ },
+ {
+  "key": "night.E15.stretches",
+  "paper": "909",
+  "dp": 0,
+  "where": "Why HiFT fails"
+ },
+ {
+  "key": "night.E15.start_in_window",
+  "paper": "864",
+  "dp": 0,
+  "where": "Why HiFT fails"
+ },
+ {
+  "key": "night.E15.lost_frames",
+  "paper": "50749",
+  "dp": 0,
+  "where": "Why HiFT fails"
+ },
+ {
+  "key": "night.E15.lost_frames_in_101plus",
+  "paper": "43793",
+  "dp": 0,
+  "where": "Why HiFT fails"
+ },
+ {
+  "key": "night.E15.share_101plus",
+  "paper": "86.3",
+  "dp": 1,
+  "where": "Abstract / Why HiFT fails",
+  "scale": 100
+ },
+ {
+  "key": "night.leak.matching_frames",
+  "paper": "0",
+  "dp": 0,
+  "where": "Night section"
+ },
+ {
+  "key": "night.leak.query_frames",
+  "paper": "2578",
+  "dp": 0,
+  "where": "Night section"
+ },
+ {
+  "key": "night.leak.linked_pairs",
+  "paper": "14",
+  "dp": 0,
+  "where": "Night section"
+ },
+ {
+  "key": "night.split.train",
+  "paper": "96",
+  "dp": 0,
+  "where": "Night section"
+ },
+ {
+  "key": "night.split.val",
+  "paper": "16",
+  "dp": 0,
+  "where": "Night section"
+ },
+ {
+  "key": "night.split.test",
+  "paper": "23",
+  "dp": 0,
+  "where": "Night section"
+ },
+ {
+  "key": "night.split.groups_straddling",
+  "paper": "0",
+  "dp": 0,
+  "where": "Night section (each linked group in one split)"
+ },
+ {
+  "key": "night.speed.speed_original_p1.seconds",
+  "paper": "176.5",
+  "dp": 1,
+  "where": "Night section (speed)"
+ },
+ {
+  "key": "night.speed.speed_original_p2.seconds",
+  "paper": "179.6",
+  "dp": 1,
+  "where": "Night section (speed)"
+ },
+ {
+  "key": "night.speed.speed_gamma_p1.seconds",
+  "paper": "186.7",
+  "dp": 1,
+  "where": "Night section (speed)"
+ },
+ {
+  "key": "night.speed.speed_gamma_p2.seconds",
+  "paper": "186.9",
+  "dp": 1,
+  "where": "Night section (speed)"
+ },
+ {
+  "key": "night.speed.speed_gamma_anchor_p1.seconds",
+  "paper": "186.9",
+  "dp": 1,
+  "where": "Night section (speed)"
+ },
+ {
+  "key": "night.speed.speed_gamma_anchor_p2.seconds",
+  "paper": "188.1",
+  "dp": 1,
+  "where": "Night section (speed)"
+ },
+ {
+  "key": "cpu.test40.fp32",
+  "paper": "0.5883",
+  "dp": 4,
+  "where": "CPU section / Table 2"
+ },
+ {
+  "key": "cpu.test40.int8",
+  "paper": "0.5808",
+  "dp": 4,
+  "where": "CPU section / Table 2"
+ },
+ {
+  "key": "cpu.test40.two_level.delta",
+  "paper": "-0.0074",
+  "dp": 4,
+  "where": "Abstract / CPU section / Table 2"
+ },
+ {
+  "key": "cpu.test40.two_level.lo",
+  "paper": "-0.019",
+  "dp": 3,
+  "where": "CPU section / Table 2"
+ },
+ {
+  "key": "cpu.test40.two_level.hi",
+  "paper": "-0.001",
+  "dp": 3,
+  "where": "CPU section / Table 2"
+ },
+ {
+  "key": "cpu.all123.n",
+  "paper": "123",
+  "dp": 0,
+  "where": "CPU section / Table 2"
+ },
+ {
+  "key": "cpu.all123.fp32",
+  "paper": "0.5865",
+  "dp": 4,
+  "where": "CPU section / Table 2"
+ },
+ {
+  "key": "cpu.all123.int8",
+  "paper": "0.5894",
+  "dp": 4,
+  "where": "CPU section / Table 2"
+ },
+ {
+  "key": "cpu.all123.delta",
+  "paper": "0.0030",
+  "dp": 4,
+  "where": "CPU section / Table 2"
+ },
+ {
+  "key": "cpu.all123.lo",
+  "paper": "-0.0054",
+  "dp": 4,
+  "where": "CPU section / Table 2"
+ },
+ {
+  "key": "cpu.all123.hi",
+  "paper": "0.0140",
+  "dp": 4,
+  "where": "CPU section / Table 2"
+ },
+ {
+  "key": "cpu.all121_excl_flips.delta",
+  "paper": "-0.0037",
+  "dp": 4,
+  "where": "CPU section / Table 2"
+ },
+ {
+  "key": "cpu.all121_excl_flips.lo",
+  "paper": "-0.0076",
+  "dp": 4,
+  "where": "CPU section / Table 2"
+ },
+ {
+  "key": "cpu.all121_excl_flips.hi",
+  "paper": "-0.0006",
+  "dp": 4,
+  "where": "CPU section / Table 2"
+ },
+ {
+  "key": "cpu.all123.within_0.02",
+  "paper": "114",
+  "dp": 0,
+  "where": "CPU section / Table 2"
+ },
+ {
+  "key": "cpu.loss.uav2",
+  "paper": "-0.155",
+  "dp": 3,
+  "where": "Abstract / CPU section / Table 2"
+ },
+ {
+  "key": "cpu.loss.car4_s",
+  "paper": "-0.110",
+  "dp": 3,
+  "where": "Abstract / CPU section / Table 2"
+ },
+ {
+  "key": "cpu.loss.group1_2",
+  "paper": "-0.073",
+  "dp": 3,
+  "where": "Abstract / CPU section / Table 2"
+ },
+ {
+  "key": "cpu.pgd.clean_gpu",
+  "paper": "0.5825",
+  "dp": 4,
+  "where": "Why HiFT fails"
+ },
+ {
+  "key": "cpu.pgd.attacked_gpu",
+  "paper": "0.0955",
+  "dp": 4,
+  "where": "Why HiFT fails"
+ },
+ {
+  "key": "cpu.pgd.delta",
+  "paper": "-0.4870",
+  "dp": 4,
+  "where": "Why HiFT fails"
+ },
+ {
+  "key": "cpu.pgd.lo",
+  "paper": "-0.5739",
+  "dp": 4,
+  "where": "Why HiFT fails"
+ },
+ {
+  "key": "cpu.pgd.hi",
+  "paper": "-0.3924",
+  "dp": 4,
+  "where": "Why HiFT fails"
+ },
+ {
+  "key": "cpu.warn.auroc",
+  "paper": "0.968",
+  "dp": 3,
+  "where": "Why HiFT fails"
+ },
+ {
+  "key": "cpu.warn.auroc.lo",
+  "paper": "0.938",
+  "dp": 3,
+  "where": "Why HiFT fails"
+ },
+ {
+  "key": "cpu.warn.auroc.hi",
+  "paper": "0.989",
+  "dp": 3,
+  "where": "Why HiFT fails"
+ },
+ {
+  "key": "cpu.warn.onsets",
+  "paper": "32",
+  "dp": 0,
+  "where": "Why HiFT fails"
+ },
+ {
+  "key": "cpu.warn.alarm_before_onset",
+  "paper": "10",
+  "dp": 0,
+  "where": "Why HiFT fails"
+ },
+ {
+  "key": "cpu.attack.alarm_share_pct",
+  "paper": "0.292",
+  "dp": 3,
+  "where": "Why HiFT fails"
+ },
+ {
+  "key": "cpu.timing.t4.fp32_net_ms",
+  "paper": "89.1",
+  "dp": 1,
+  "where": "Table 2 / CPU section"
+ },
+ {
+  "key": "cpu.timing.t4.int8bb-s1_net_ms",
+  "paper": "50.9",
+  "dp": 1,
+  "where": "Table 2 / CPU section"
+ },
+ {
+  "key": "cpu.timing.t4.fp32_step_ms",
+  "paper": "90.5",
+  "dp": 1,
+  "where": "Table 2 / CPU section"
+ },
+ {
+  "key": "cpu.timing.t4.int8bb-s1_step_ms",
+  "paper": "52.5",
+  "dp": 1,
+  "where": "Table 2 / CPU section"
+ },
+ {
+  "key": "cpu.timing.t4.fp32_backbone_ms",
+  "paper": "68.1",
+  "dp": 1,
+  "where": "Table 2 / CPU section"
+ },
+ {
+  "key": "cpu.timing.t4.int8bb-s1_backbone_ms",
+  "paper": "29.3",
+  "dp": 1,
+  "where": "Table 2 / CPU section"
+ },
+ {
+  "key": "cpu.timing.t4.fp32_head_ms",
+  "paper": "20.9",
+  "dp": 1,
+  "where": "Table 2 / CPU section"
+ },
+ {
+  "key": "cpu.timing.t4.int8bb-s1_head_ms",
+  "paper": "21.6",
+  "dp": 1,
+  "where": "Table 2 / CPU section"
+ },
+ {
+  "key": "cpu.timing.t4.speedup_net_ms",
+  "paper": "1.75",
+  "dp": 2,
+  "where": "Table 2 / CPU section"
+ },
+ {
+  "key": "cpu.timing.t4.speedup_net_ms.min",
+  "paper": "1.74",
+  "dp": 2,
+  "where": "Table 2 / CPU section"
+ },
+ {
+  "key": "cpu.timing.t4.speedup_net_ms.max",
+  "paper": "1.76",
+  "dp": 2,
+  "where": "Table 2 / CPU section"
+ },
+ {
+  "key": "cpu.timing.t4.speedup_step_ms",
+  "paper": "1.72",
+  "dp": 2,
+  "where": "Table 2 / CPU section"
+ },
+ {
+  "key": "cpu.timing.t4.speedup_step_ms.min",
+  "paper": "1.71",
+  "dp": 2,
+  "where": "Table 2 / CPU section"
+ },
+ {
+  "key": "cpu.timing.t4.speedup_step_ms.max",
+  "paper": "1.73",
+  "dp": 2,
+  "where": "Table 2 / CPU section"
+ },
+ {
+  "key": "cpu.timing.t1.speedup_net_ms",
+  "paper": "1.81",
+  "dp": 2,
+  "where": "CPU section (1 thread)"
+ },
+ {
+  "key": "cpu.timing.t1.speedup_step_ms",
+  "paper": "1.81",
+  "dp": 2,
+  "where": "CPU section (1 thread)"
+ },
+ {
+  "key": "cpu.size_mb.fp32",
+  "paper": "44.3",
+  "dp": 1,
+  "where": "CPU section"
+ },
+ {
+  "key": "cpu.size_mb.int8",
+  "paper": "33.2",
+  "dp": 1,
+  "where": "CPU section"
+ },
+ {
+  "key": "domain.visdrone34.n",
+  "paper": "34",
+  "dp": 0,
+  "where": "Domain section / Table 3"
+ },
+ {
+  "key": "domain.visdrone34.clusters",
+  "paper": "22",
+  "dp": 0,
+  "where": "Domain section / Table 3"
+ },
+ {
+  "key": "domain.visdrone34.B0",
+  "paper": "0.5267",
+  "dp": 4,
+  "where": "Domain section / Table 3"
+ },
+ {
+  "key": "domain.visdrone34.REF_s1",
+  "paper": "0.6032",
+  "dp": 4,
+  "where": "Domain section / Table 3"
+ },
+ {
+  "key": "domain.visdrone34.REF_s2",
+  "paper": "0.6000",
+  "dp": 4,
+  "where": "Domain section / Table 3"
+ },
+ {
+  "key": "domain.visdrone34.REF-B0.delta",
+  "paper": "0.0749",
+  "dp": 4,
+  "where": "Abstract / Domain section / Table 3"
+ },
+ {
+  "key": "domain.visdrone34.REF-B0.lo",
+  "paper": "0.024",
+  "dp": 3,
+  "where": "Domain section / Table 3"
+ },
+ {
+  "key": "domain.visdrone34.REF-B0.hi",
+  "paper": "0.124",
+  "dp": 3,
+  "where": "Domain section / Table 3"
+ },
+ {
+  "key": "domain.uav123_10fps_76.n",
+  "paper": "76",
+  "dp": 0,
+  "where": "Domain section / Table 3"
+ },
+ {
+  "key": "domain.uav123_10fps_76.clusters",
+  "paper": "48",
+  "dp": 0,
+  "where": "Domain section / Table 3"
+ },
+ {
+  "key": "domain.uav123_10fps_76.B0",
+  "paper": "0.5935",
+  "dp": 4,
+  "where": "Domain section / Table 3"
+ },
+ {
+  "key": "domain.uav123_10fps_76.REF_s1",
+  "paper": "0.5826",
+  "dp": 4,
+  "where": "Domain section / Table 3"
+ },
+ {
+  "key": "domain.uav123_10fps_76.REF_s2",
+  "paper": "0.5945",
+  "dp": 4,
+  "where": "Domain section / Table 3"
+ },
+ {
+  "key": "domain.uav123_10fps_76.REF-B0.delta",
+  "paper": "-0.0050",
+  "dp": 4,
+  "where": "Abstract / Domain section / Table 3"
+ },
+ {
+  "key": "domain.uav123_10fps_76.REF-B0.lo",
+  "paper": "-0.034",
+  "dp": 3,
+  "where": "Domain section / Table 3"
+ },
+ {
+  "key": "domain.uav123_10fps_76.REF-B0.hi",
+  "paper": "0.027",
+  "dp": 3,
+  "where": "Domain section / Table 3"
+ },
+ {
+  "key": "domain.uav123_10fps_76.s1-s2.delta",
+  "paper": "-0.0119",
+  "dp": 4,
+  "where": "Domain section / Table 3"
+ },
+ {
+  "key": "domain.uav123_10fps_76.s1-s2.lo",
+  "paper": "-0.033",
+  "dp": 3,
+  "where": "Domain section / Table 3"
+ },
+ {
+  "key": "domain.uav123_10fps_76.s1-s2.hi",
+  "paper": "0.001",
+  "dp": 3,
+  "where": "Domain section / Table 3"
+ }
+]

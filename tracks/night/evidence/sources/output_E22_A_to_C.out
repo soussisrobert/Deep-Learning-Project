@@ -1,0 +1,176 @@
+du -sm ~ before:
+82551	[redacted]
+NAT2021: 180 sequences, 909 stretches in 137 sequences, 50749 lost frames; lost frames recomputed here 50749
+starts whose logged top-1 peak is within 20 px of the GT (clip / smoothing effects): 0 of 909
+sequences with a start and a control pool: 136 (907 starts); sequences with starts but no eligible control frame: 1 (2 starts)
+computing features (909 starts + control pools) ...
+   0 / 137
+   20 / 137
+   40 / 137
+   60 / 137
+   80 / 137
+   100 / 137
+   120 / 137
+
+===== A. Was the target a logged peak? =====
+stretch starts: 909
+   starts, runner-up: top-1 wrong, 2d or 2x within 20 px           0.537 [0.486, 0.587]  (488 of 909)
+   starts,   of which 2d within 20 px                              0.265 [0.230, 0.299]  (241 of 909)
+   starts,   of which 2x within 20 px                              0.432 [0.371, 0.490]  (393 of 909)
+   starts, not a logged peak: none of the three within 20 px       0.463 [0.414, 0.514]  (421 of 909)
+   share with 2d or 2x within 20 px: starts         0.537 [0.486, 0.591]
+   same: controls                                   0.965 [0.936, 0.987]
+   mean n_distinct: starts                          87.843 [86.344, 89.535]
+   mean n_distinct: controls                        78.384 [77.415, 79.348]
+   (controls are tracked frames, so their top-1 peak is within 20 px by construction; "2d or 2x within 20 px" on a control means a second logged peak is also on the target.)
+   n_distinct at starts minus controls: +9.46
+   sequence-level control draws: 136 sequences, 907 starts paired with controls
+wrote illumination/E22_A_start_categories.csv
+
+   share of lost frames where any logged peak (top-1, 2d or 2x) is within 20 px of the GT (the top-1 is wrong on a lost frame by definition):
+      1st lost frame of each stretch               any peak  0.537 [0.486, 0.587]  (488 of 909 frames in 137 sequences)
+      1st lost frame of each stretch               2d        0.265 [0.230, 0.299]  (241 of 909 frames in 137 sequences)
+      1st lost frame of each stretch               2x        0.432 [0.372, 0.492]  (393 of 909 frames in 137 sequences)
+      5th lost frame (stretches >= 5 frames)       any peak  0.275 [0.220, 0.336]  (107 of 389 frames in 128 sequences)
+      5th lost frame (stretches >= 5 frames)       2d        0.041 [0.023, 0.060]  (16 of 389 frames in 128 sequences)
+      5th lost frame (stretches >= 5 frames)       2x        0.247 [0.192, 0.306]  (96 of 389 frames in 128 sequences)
+      20th lost frame (stretches >= 20 frames)     any peak  0.122 [0.074, 0.174]  (27 of 222 frames in 111 sequences)
+      20th lost frame (stretches >= 20 frames)     2d        0.009 [0.000, 0.029]  (2 of 222 frames in 111 sequences)
+      20th lost frame (stretches >= 20 frames)     2x        0.113 [0.067, 0.161]  (25 of 222 frames in 111 sequences)
+      all lost frames of stretches >= 101 frames   any peak  0.047 [0.022, 0.078]  (2059 of 43793 frames in 86 sequences)
+      all lost frames of stretches >= 101 frames   2d        0.002 [0.001, 0.003]  (96 of 43793 frames in 86 sequences)
+      all lost frames of stretches >= 101 frames   2x        0.046 [0.019, 0.077]  (2006 of 43793 frames in 86 sequences)
+wrote illumination/E22_A_lost_frame_peaks.csv
+
+===== B. Features at the start of a loss versus controls (paired set: 136 sequences) =====
+   feature                  mean start  mean ctrl       difference [95%]       AUC            [95%]
+   speed5                        0.083      0.068   +0.014 [  +0.005,   +0.025]   0.508 [0.475, 0.542]
+   dlogw10                      -0.019     -0.004   -0.020 [  -0.046,   +0.002]   0.498 [0.462, 0.535]
+   dlogh10                      -0.039     -0.002   -0.040 [  -0.065,   -0.017]   0.451 [0.419, 0.484]
+   abs_dlogarea10                0.223      0.146   +0.080 [  +0.048,   +0.124]   0.542 [0.508, 0.582]
+   size                         56.850     49.576   +6.709 [  +2.500,  +11.469]   0.539 [0.495, 0.587]
+   border_dist                 223.807    248.123  -21.515 [ -32.363,  -10.907]   0.446 [0.405, 0.486]
+   window_edge_dist            175.900    132.234  +44.836 [ +12.875,  +82.612]   0.579 [0.529, 0.625]
+   tgt_lum_raw                  29.605     35.931   -6.036 [  -8.771,   -3.175]   0.415 [0.379, 0.446]
+   tgt_contrast_raw             18.262     21.404   -2.807 [  -4.332,   -1.422]   0.438 [0.409, 0.464]
+   tgt_lapstd_raw                6.935      6.835   +0.092 [  -0.703,   +0.989]   0.461 [0.431, 0.493]
+   tgt_lum_gamma                61.597     70.937   -9.054 [ -12.496,   -5.449]   0.413 [0.375, 0.444]
+   tgt_contrast_gamma           21.853     24.277   -2.108 [  -3.487,   -0.700]   0.447 [0.414, 0.479]
+   tgt_lapstd_gamma              7.990      7.650   +0.331 [  -0.403,   +1.169]   0.484 [0.450, 0.523]
+   srch_lum_raw                 27.141     33.499   -5.929 [  -8.397,   -3.279]   0.405 [0.368, 0.438]
+   srch_contrast_raw            18.503     21.151   -2.317 [  -3.947,   -0.692]   0.446 [0.409, 0.481]
+   srch_lapstd_raw               7.195      5.554   +1.673 [  +0.904,   +2.623]   0.544 [0.520, 0.575]
+   srch_lum_gamma               58.436     67.975   -9.026 [ -12.299,   -5.662]   0.402 [0.366, 0.434]
+   srch_contrast_gamma          22.588     24.427   -1.524 [  -2.920,   -0.058]   0.459 [0.421, 0.497]
+   srch_lapstd_gamma             8.050      6.206   +1.866 [  +1.132,   +2.750]   0.582 [0.552, 0.614]
+wrote illumination/E22_B_features.csv
+   (38 comparisons, no multiplicity adjustment; AUC > 0.5 means larger values at starts. Feature columns tgt_* = template-sized crop at the GT box of the start frame, srch_* = 287 crop at the tracker box of the previous frame; raw = before gamma, gamma = after gamma 0.6.)
+
+   loss share by GT target-size tercile (sqrt(w h) cut at 29.6 and 51.3 px; all frames with a usable GT, frames >= 1):
+      small   frames   45869  lost share 0.292 [0.210, 0.374]  stretch starts per 1000 frames 5.01
+      medium  frames   45869  lost share 0.334 [0.253, 0.422]  stretch starts per 1000 frames 6.63
+      large   frames   45861  lost share 0.481 [0.370, 0.581]  stretch starts per 1000 frames 8.18
+wrote illumination/E22_B_size_tercile.csv
+
+   attribute flags (att00..att11; the order is unknown): per sequence 0/1, 180 sequences
+   flag  n_seq  frames |  starts/1000 w            w/o           diff [95%] | lost sh w       w/o           diff [95%]
+   att00   123  100596 |           7.81           3.06   +4.76 [+2.40,+6.92] |     0.436     0.170 +0.266 [+0.152,+0.375]
+   att01    57   45426 |           6.71           6.33   +0.38 [-2.35,+3.22] |     0.405     0.339 +0.066 [-0.069,+0.191]
+   att02    89   76097 |           6.99           5.83   +1.17 [-1.98,+3.89] |     0.437     0.270 +0.167 [+0.051,+0.277]
+   att03    46   33743 |           8.12           5.93   +2.19 [-0.81,+5.77] |     0.342     0.366 -0.024 [-0.151,+0.111]
+   att04    32   30998 |           7.42           6.18   +1.24 [-1.38,+4.08] |     0.576     0.300 +0.276 [+0.146,+0.401]
+   att05    98   84948 |           6.66           6.14   +0.52 [-2.78,+3.30] |     0.445     0.231 +0.214 [+0.105,+0.326]
+   att06    49   39876 |          10.31           4.93   +5.37 [+1.85,+9.68] |     0.387     0.350 +0.037 [-0.090,+0.162]
+   att07    17   14202 |           6.55           6.44   +0.10 [-3.05,+3.83] |     0.414     0.354 +0.060 [-0.141,+0.257]
+   att08   101   80761 |           6.74           6.08   +0.66 [-2.63,+3.43] |     0.435     0.260 +0.175 [+0.066,+0.285]
+   att09   172  135599 |           6.47           5.94   +0.53 [-4.34,+5.37] |     0.354     0.539 -0.186 [-0.425,+0.124]
+   att10   113   85055 |           7.36           5.08   +2.28 [-0.68,+5.12] |     0.381     0.330 +0.051 [-0.076,+0.170]
+   att11    84   70912 |           7.53           5.36   +2.17 [-0.74,+4.77] |     0.443     0.277 +0.166 [+0.050,+0.283]
+wrote illumination/E22_B_attributes.csv
+wrote illumination/E22_B_attribute_identification.csv
+
+   data-only identification: standardised difference d of per-sequence statistics (with flag minus without), "clear" = |d| >= 1 and the bootstrap interval excludes 0 (threshold fixed in advance):
+      att00: GT-absent share d=+0.22; mean GT size (px) d=+0.21; std of log GT size d=+0.44; mean GT speed (size units/frame) d=+0.25
+      att01: GT-absent share d=+0.09; mean GT size (px) d=-0.36; std of log GT size d=-0.30; mean GT speed (size units/frame) d=+0.24
+      att02: GT-absent share d=+0.28; mean GT size (px) d=+0.07; std of log GT size d=-0.01; mean GT speed (size units/frame) d=+0.19
+      att03: GT-absent share d=+0.08; mean GT size (px) d=+0.22; std of log GT size d=+0.11; mean GT speed (size units/frame) d=+0.49
+      att04: GT-absent share d=+0.83; mean GT size (px) d=-0.23; std of log GT size d=-0.26; mean GT speed (size units/frame) d=+0.37
+      att05: GT-absent share d=+0.06; mean GT size (px) d=-0.03; std of log GT size d=+0.34; mean GT speed (size units/frame) d=-0.06
+      att06: GT-absent share d=-0.09; mean GT size (px) d=+0.00; std of log GT size d=-0.27; mean GT speed (size units/frame) d=-0.05
+      att07: GT-absent share d=+1.19 CLEAR; mean GT size (px) d=+0.01; std of log GT size d=+1.15 CLEAR; mean GT speed (size units/frame) d=+0.37
+      att08: GT-absent share d=+0.27; mean GT size (px) d=+0.18; std of log GT size d=+0.20; mean GT speed (size units/frame) d=-0.04
+      att09: GT-absent share d=-0.94; mean GT size (px) d=+0.50; std of log GT size d=+1.56 CLEAR; mean GT speed (size units/frame) d=+0.09
+      att10: GT-absent share d=-0.25; mean GT size (px) d=-0.12; std of log GT size d=-0.14; mean GT speed (size units/frame) d=-0.10
+      att11: GT-absent share d=-0.10; mean GT size (px) d=+0.28; std of log GT size d=+0.82; mean GT speed (size units/frame) d=-0.12
+   share of sequences with each flag: att00=0.68 att01=0.32 att02=0.49 att03=0.26 att04=0.18 att05=0.54 att06=0.27 att07=0.09 att08=0.56 att09=0.96 att10=0.63 att11=0.47
+
+===== C. Concentration =====
+   top  5 sequences by lost frames: 13.2% of all lost frames; top  5 by stretch starts: 21.6% of all starts (the 5 sequences have 5.3% of all frames)
+   top 10 sequences by lost frames: 25.0% of all lost frames; top 10 by stretch starts: 32.9% of all starts (the 10 sequences have 10.4% of all frames)
+   top 20 sequences by lost frames: 44.3% of all lost frames; top 20 by stretch starts: 47.7% of all starts (the 20 sequences have 19.3% of all frames)
+wrote illumination/E22_C_concentration.csv
+   top-20 sequences by lost frames:  seq, frames, lost frames, lost share, starts, GT size, absent share, size std, speed, flags
+      N04035   1598   1464 0.92   9    29.4 0.04 0.22 0.096  111011011110
+      N08013   1416   1378 0.97   9   111.5 0.00 0.36 0.029  101101001111
+      N08014   1332   1300 0.98   9   121.1 0.00 0.14 0.021  101001001111
+      N08022   1536   1288 0.84   1   112.1 0.00 0.60 0.026  101001001101
+      N08023   1635   1288 0.79   8    61.2 0.01 0.15 0.023  101011001101
+      N04013   1272   1260 0.99  11    53.2 0.00 0.38 0.076  110001100111
+      N02053   1716   1226 0.71  10    63.5 0.00 0.30 0.028  101000100101
+      N04012   1317   1191 0.90  19    39.5 0.00 0.06 0.031  010001100010
+      N04034   1595   1160 0.73  11    23.3 0.24 0.21 0.113  111011001110
+      N01003   1200   1157 0.96  10   126.0 0.00 0.64 0.021  101001001101
+      N01007   1260   1057 0.84   2    82.6 0.07 0.24 0.029  100011001100
+      N01006   1332   1036 0.78  35    74.2 0.00 0.40 0.037  111100100101
+      N02058   1436   1021 0.71  13    54.9 0.04 0.50 0.093  111111111111
+      N04014   1228   1008 0.82   5    38.7 0.00 0.19 0.087  011001101110
+      N08010   1068   1000 0.94   3    44.5 0.05 0.39 0.048  101011001101
+      N02021   1679    990 0.59   1    20.8 0.05 0.27 0.106  111011001111
+      N08005   1070    965 0.90  28    53.1 0.00 0.23 0.051  101001001111
+      N08004   1032    947 0.92   3    70.5 0.00 0.13 0.026  100011001110
+      N07005   1061    893 0.84   7    72.1 0.06 0.34 0.058  101001010111
+      N08020   1344    870 0.65   7    84.6 0.00 0.35 0.027  101000000111
+wrote illumination/E22_C_top_sequences.csv
+   top-10 vs the other 170 sequences (per-sequence statistics; permutation test of the difference of means, 2000 permutations):
+      GT-absent share                    top-10 mean     0.029  others     0.022  diff   +0.007  permutation p 0.693
+      mean GT size (px)                  top-10 mean    74.075  others    44.444  diff  +29.632  permutation p 0.008
+      std of log GT size                 top-10 mean     0.305  others     0.315  diff   -0.010  permutation p 0.869
+      mean GT speed (size units/frame)   top-10 mean     0.046  others     0.079  diff   -0.032  permutation p 0.036
+      frames (log10)                     top-10 mean     3.162  others     2.778  diff   +0.384  permutation p 0.000
+      att00 share                        top-10 mean     0.900  others     0.671  diff   +0.229  permutation p 0.182
+      att01 share                        top-10 mean     0.400  others     0.312  diff   +0.088  permutation p 0.725
+      att02 share                        top-10 mean     0.800  others     0.476  diff   +0.324  permutation p 0.055
+      att03 share                        top-10 mean     0.100  others     0.265  diff   -0.165  permutation p 0.307
+      att04 share                        top-10 mean     0.300  others     0.171  diff   +0.129  permutation p 0.401
+      att05 share                        top-10 mean     0.900  others     0.524  diff   +0.376  permutation p 0.019
+      att06 share                        top-10 mean     0.300  others     0.271  diff   +0.029  permutation p 1.000
+      att07 share                        top-10 mean     0.100  others     0.094  diff   +0.006  permutation p 1.000
+      att08 share                        top-10 mean     0.700  others     0.553  diff   +0.147  permutation p 0.510
+      att09 share                        top-10 mean     0.900  others     0.959  diff   -0.059  permutation p 0.381
+      att10 share                        top-10 mean     0.600  others     0.629  diff   -0.029  permutation p 1.000
+      att11 share                        top-10 mean     0.700  others     0.453  diff   +0.247  permutation p 0.193
+
+done
+eligible starts: runner-up 477, not-a-logged-peak 418; chosen 60
+
+verification of the crop reconstruction (real HiFTTracker code, stub model captures the crop):
+   N01004 frame 731: search crop identical to the tracker code's crop: True; template crop identical: True
+   N01004 frame 732: search crop identical to the tracker code's crop: True; template crop identical: True
+   N02018 frame 329: search crop identical to the tracker code's crop: True; template crop identical: True
+   N02018 frame 330: search crop identical to the tracker code's crop: True; template crop identical: True
+   N02020 frame 116: search crop identical to the tracker code's crop: True; template crop identical: True
+   N02020 frame 117: search crop identical to the tracker code's crop: True; template crop identical: True
+   N02039 frame 90: search crop identical to the tracker code's crop: True; template crop identical: True
+   N02039 frame 91: search crop identical to the tracker code's crop: True; template crop identical: True
+   N02040 frame 634: search crop identical to the tracker code's crop: True; template crop identical: True
+   N02040 frame 635: search crop identical to the tracker code's crop: True; template crop identical: True
+   N02044 frame 604: search crop identical to the tracker code's crop: True; template crop identical: True
+   N02044 frame 605: search crop identical to the tracker code's crop: True; template crop identical: True
+   N07005 frame 99: search crop identical to the tracker code's crop: True; template crop identical: True
+   N07005 frame 100: search crop identical to the tracker code's crop: True; template crop identical: True
+   N08013 frame 23: search crop identical to the tracker code's crop: True; template crop identical: True
+   N08013 frame 24: search crop identical to the tracker code's crop: True; template crop identical: True
+   N08016 frame 27: search crop identical to the tracker code's crop: True; template crop identical: True
+   N08016 frame 28: search crop identical to the tracker code's crop: True; template crop identical: True
+   18 of 18 search crops identical (state restored from the saved box)
+   float round trip: 192 of 281270 crop-position coordinates lie within 1e-9 of a rounding boundary (a flip would need that)

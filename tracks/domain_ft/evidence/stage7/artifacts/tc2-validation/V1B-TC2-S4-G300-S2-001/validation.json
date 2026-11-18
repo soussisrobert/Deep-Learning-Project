@@ -1,0 +1,664 @@
+{
+  "schema": "hift-domain-validation-v1",
+  "tracker": {
+    "layout": "B2 corrected encoder layout",
+    "update": 10000,
+    "backbone": "alexnet",
+    "checkpoint": "/home/msai/ning011/hift/checkpoints/TC2-S4-G300-S2-001.pt",
+    "checkpoint_sha256": "806f9d79388c2938b8e3780d9db62c90b0b5dad0e1d957f396225294c59dc2f1",
+    "score": "sigmoid",
+    "selection": "nan-safe",
+    "upstream_verification": "file manifest (167 files, configs/upstream_992aa7c_files.sha256)",
+    "track_config": {
+      "PENALTY_K": 0.08,
+      "WINDOW_INFLUENCE": 0.42,
+      "LR": 0.3
+    },
+    "track_overrides": {}
+  },
+  "grid_label": null,
+  "subsets": [
+    "V1",
+    "V1B"
+  ],
+  "uavdt_holdout_fraction": 0.1,
+  "uavdt_holdout_videos": [],
+  "episode_listing_sha256": "3870312a1ff0f0661552aafa73f7dc374ff09729c5c550fa813dffb9e2adcb97",
+  "episodes": [
+    {
+      "subset": "V1",
+      "name": "uav0000024_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 1478,
+      "scored": 1478
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000029_01102_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 568,
+      "scored": 568
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000053_00264_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 167,
+      "scored": 167
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000054_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 616,
+      "scored": 616
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000086_00870_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 697,
+      "scored": 697
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000092_00575_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 269,
+      "scored": 269
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000092_01150_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 922,
+      "scored": 922
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000115_00606_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 388,
+      "scored": 388
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000245_00001_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 768,
+      "scored": 768
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000317_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 529,
+      "scored": 529
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000317_02945_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 644,
+      "scored": 644
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000171_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 294,
+      "scored": 294
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000172_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 1485,
+      "scored": 1485
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000173_00781_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 1910,
+      "scored": 1910
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000174_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 2176,
+      "scored": 2176
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000175_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 451,
+      "scored": 451
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000175_00697_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 187,
+      "scored": 187
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000176_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 776,
+      "scored": 776
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000178_00025_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 901,
+      "scored": 901
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000182_01075_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 301,
+      "scored": 301
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000198_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 1301,
+      "scored": 1301
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000199_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 1608,
+      "scored": 1608
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000200_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 571,
+      "scored": 571
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000204_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 922,
+      "scored": 922
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000205_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 1176,
+      "scored": 1176
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000209_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 923,
+      "scored": 923
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000217_00001_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 210,
+      "scored": 210
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000221_10400_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 2970,
+      "scored": 2970
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000223_00300_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 451,
+      "scored": 451
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000226_05370_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 1861,
+      "scored": 1861
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000232_00960_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 433,
+      "scored": 433
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000235_00001_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 1008,
+      "scored": 1008
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000235_01032_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 1057,
+      "scored": 1057
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000236_00001_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 576,
+      "scored": 576
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000237_00001_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 599,
+      "scored": 599
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000238_00001_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 1200,
+      "scored": 1200
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000238_01280_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 625,
+      "scored": 625
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000240_00001_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 681,
+      "scored": 681
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000252_00001_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 768,
+      "scored": 768
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000303_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 1202,
+      "scored": 1202
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000303_01250_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 1628,
+      "scored": 1628
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000304_00253_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 1726,
+      "scored": 1726
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000325_01656_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 346,
+      "scored": 346
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000331_02691_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 392,
+      "scored": 392
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000348_02415_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 645,
+      "scored": 645
+    },
+    {
+      "subset": "V1B",
+      "name": "uav0000349_02668_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 553,
+      "scored": 553
+    }
+  ],
+  "summary": {
+    "V1": {
+      "all": {
+        "count": 11,
+        "success_auc": 0.5237232697084786,
+        "precision_at_20px": 0.788422816249988
+      },
+      "unlabeled": {
+        "count": 11,
+        "success_auc": 0.5237232697084786,
+        "precision_at_20px": 0.788422816249988
+      }
+    },
+    "V1B": {
+      "all": {
+        "count": 35,
+        "success_auc": 0.5991582609380202,
+        "precision_at_20px": 0.7841160084849843
+      },
+      "unlabeled": {
+        "count": 35,
+        "success_auc": 0.5991582609380202,
+        "precision_at_20px": 0.7841160084849843
+      }
+    },
+    "M": 0.5237232697084786,
+    "M_definition": "mean(V1 AUC, mean(V2 vehicle AUC, V2 person AUC), V3 AUC) over present subsets"
+  },
+  "per_episode": {
+    "V1/uav0000024_00000_s": {
+      "success_auc": 0.512081964044075,
+      "precision_at_20px": 0.7510148849797023
+    },
+    "V1/uav0000029_01102_s": {
+      "success_auc": 0.698524480214621,
+      "precision_at_20px": 0.9982394366197183
+    },
+    "V1/uav0000053_00264_s": {
+      "success_auc": 0.7359566581123467,
+      "precision_at_20px": 1.0
+    },
+    "V1/uav0000054_00000_s": {
+      "success_auc": 0.1971243042671614,
+      "precision_at_20px": 0.2922077922077922
+    },
+    "V1/uav0000086_00870_s": {
+      "success_auc": 0.3907221425155428,
+      "precision_at_20px": 0.5078909612625538
+    },
+    "V1/uav0000092_00575_s": {
+      "success_auc": 0.25933793591786153,
+      "precision_at_20px": 0.7881040892193308
+    },
+    "V1/uav0000092_01150_s": {
+      "success_auc": 0.4789794442722859,
+      "precision_at_20px": 0.754880694143167
+    },
+    "V1/uav0000115_00606_s": {
+      "success_auc": 0.74693176239568,
+      "precision_at_20px": 0.979381443298969
+    },
+    "V1/uav0000245_00001_s": {
+      "success_auc": 0.5238095238095238,
+      "precision_at_20px": 1.0
+    },
+    "V1/uav0000317_00000_s": {
+      "success_auc": 0.7748672247727068,
+      "precision_at_20px": 1.0
+    },
+    "V1/uav0000317_02945_s": {
+      "success_auc": 0.4426205264714582,
+      "precision_at_20px": 0.6009316770186336
+    },
+    "V1B/uav0000171_00000_s": {
+      "success_auc": 0.7886297376093293,
+      "precision_at_20px": 1.0
+    },
+    "V1B/uav0000172_00000_s": {
+      "success_auc": 0.7999358666025335,
+      "precision_at_20px": 0.9838383838383838
+    },
+    "V1B/uav0000173_00781_s": {
+      "success_auc": 0.21498379456494637,
+      "precision_at_20px": 0.2696335078534031
+    },
+    "V1B/uav0000174_00000_s": {
+      "success_auc": 0.6798625700280111,
+      "precision_at_20px": 1.0
+    },
+    "V1B/uav0000175_00000_s": {
+      "success_auc": 0.0471967057332911,
+      "precision_at_20px": 0.015521064301552107
+    },
+    "V1B/uav0000175_00697_s": {
+      "success_auc": 0.5441813088871912,
+      "precision_at_20px": 0.48128342245989303
+    },
+    "V1B/uav0000176_00000_s": {
+      "success_auc": 0.6748895434462445,
+      "precision_at_20px": 0.8324742268041238
+    },
+    "V1B/uav0000178_00025_s": {
+      "success_auc": 0.6485915120765288,
+      "precision_at_20px": 0.9334073251942286
+    },
+    "V1B/uav0000182_01075_s": {
+      "success_auc": 0.7930707166587565,
+      "precision_at_20px": 1.0
+    },
+    "V1B/uav0000198_00000_s": {
+      "success_auc": 0.6266608103656528,
+      "precision_at_20px": 0.883935434281322
+    },
+    "V1B/uav0000199_00000_s": {
+      "success_auc": 0.38613480217957824,
+      "precision_at_20px": 0.5099502487562189
+    },
+    "V1B/uav0000200_00000_s": {
+      "success_auc": 0.7589025102159953,
+      "precision_at_20px": 0.9772329246935202
+    },
+    "V1B/uav0000204_00000_s": {
+      "success_auc": 0.8219708707778123,
+      "precision_at_20px": 1.0
+    },
+    "V1B/uav0000205_00000_s": {
+      "success_auc": 0.6970359572400389,
+      "precision_at_20px": 1.0
+    },
+    "V1B/uav0000209_00000_s": {
+      "success_auc": 0.6883867306402517,
+      "precision_at_20px": 0.9512459371614301
+    },
+    "V1B/uav0000217_00001_s": {
+      "success_auc": 0.7054421768707483,
+      "precision_at_20px": 0.8666666666666667
+    },
+    "V1B/uav0000221_10400_s": {
+      "success_auc": 0.0562449895783229,
+      "precision_at_20px": 0.06700336700336701
+    },
+    "V1B/uav0000223_00300_s": {
+      "success_auc": 0.4652095871608067,
+      "precision_at_20px": 0.5720620842572062
+    },
+    "V1B/uav0000226_05370_s": {
+      "success_auc": 0.030603106368823726,
+      "precision_at_20px": 0.007522837184309511
+    },
+    "V1B/uav0000232_00960_s": {
+      "success_auc": 0.6326844825690091,
+      "precision_at_20px": 1.0
+    },
+    "V1B/uav0000235_00001_s": {
+      "success_auc": 0.6856103552532123,
+      "precision_at_20px": 0.8938492063492064
+    },
+    "V1B/uav0000235_01032_s": {
+      "success_auc": 0.6167049601297473,
+      "precision_at_20px": 1.0
+    },
+    "V1B/uav0000236_00001_s": {
+      "success_auc": 0.713128306878307,
+      "precision_at_20px": 0.9878472222222222
+    },
+    "V1B/uav0000237_00001_s": {
+      "success_auc": 0.778519755147468,
+      "precision_at_20px": 1.0
+    },
+    "V1B/uav0000238_00001_s": {
+      "success_auc": 0.7418650793650793,
+      "precision_at_20px": 1.0
+    },
+    "V1B/uav0000238_01280_s": {
+      "success_auc": 0.6905142857142857,
+      "precision_at_20px": 0.912
+    },
+    "V1B/uav0000240_00001_s": {
+      "success_auc": 0.7998741346758967,
+      "precision_at_20px": 1.0
+    },
+    "V1B/uav0000252_00001_s": {
+      "success_auc": 0.6832217261904763,
+      "precision_at_20px": 0.9244791666666666
+    },
+    "V1B/uav0000303_00000_s": {
+      "success_auc": 0.597852785040805,
+      "precision_at_20px": 0.6314475873544093
+    },
+    "V1B/uav0000303_01250_s": {
+      "success_auc": 0.7888147888147888,
+      "precision_at_20px": 0.9318181818181818
+    },
+    "V1B/uav0000304_00253_s": {
+      "success_auc": 0.667328808696132,
+      "precision_at_20px": 0.9936268829663963
+    },
+    "V1B/uav0000325_01656_s": {
+      "success_auc": 0.8296173960913845,
+      "precision_at_20px": 1.0
+    },
+    "V1B/uav0000331_02691_s": {
+      "success_auc": 0.6427356656948494,
+      "precision_at_20px": 0.7372448979591837
+    },
+    "V1B/uav0000348_02415_s": {
+      "success_auc": 0.3319306016980436,
+      "precision_at_20px": 0.5627906976744186
+    },
+    "V1B/uav0000349_02668_s": {
+      "success_auc": 0.34220270386635676,
+      "precision_at_20px": 0.5171790235081374
+    }
+  },
+  "seconds": 235.85861066301004,
+  "finished_utc": "2026-11-03T10:00:23.775220+00:00",
+  "software": {
+    "torch": "2.10.0+cu126",
+    "platform": "Linux-5.14.0-503.14.1.el9_5.x86_64-x86_64-with-glibc2.34"
+  },
+  "gpu": "NVIDIA L40S"
+}

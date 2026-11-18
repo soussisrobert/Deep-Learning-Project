@@ -1,0 +1,817 @@
+{
+ "cpu.all121_excl_flips.delta": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": -0.0037129476584022033
+ },
+ "cpu.all121_excl_flips.hi": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": -0.0006099035812672177
+ },
+ "cpu.all121_excl_flips.lo": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": -0.007590915977961433
+ },
+ "cpu.all123.delta": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": 0.00297588075880759
+ },
+ "cpu.all123.fp32": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": 0.5864585365853657
+ },
+ "cpu.all123.hi": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": 0.013989430894308937
+ },
+ "cpu.all123.int8": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": 0.5894344173441733
+ },
+ "cpu.all123.lo": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": -0.005407960704607046
+ },
+ "cpu.all123.n": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": 123
+ },
+ "cpu.all123.within_0.02": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": 114
+ },
+ "cpu.attack.alarm_share_pct": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-10-22_round5-final/numbers5.json",
+  "value": 0.2919578872865611
+ },
+ "cpu.loss.car4_s": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": -0.11039999999999994
+ },
+ "cpu.loss.group1_2": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": -0.07280000000000009
+ },
+ "cpu.loss.uav2": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": -0.15490000000000004
+ },
+ "cpu.pgd.attacked_gpu": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": 0.095455
+ },
+ "cpu.pgd.clean_gpu": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": 0.5824925000000001
+ },
+ "cpu.pgd.delta": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": -0.4870375000000001
+ },
+ "cpu.pgd.hi": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": -0.3924269375000001
+ },
+ "cpu.pgd.lo": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": -0.57389325
+ },
+ "cpu.size_mb.fp32": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 44.333207
+ },
+ "cpu.size_mb.int8": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 33.196325
+ },
+ "cpu.test40.fp32": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": 0.588265
+ },
+ "cpu.test40.int8": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": 0.5808233333333334
+ },
+ "cpu.test40.two_level.delta": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": -0.00744166666666668
+ },
+ "cpu.test40.two_level.hi": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": -0.0011915833333333665
+ },
+ "cpu.test40.two_level.lo": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": -0.019305375000000125
+ },
+ "cpu.timing.t1.fp32_backbone_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t1/summary.json",
+  "value": 139.0065
+ },
+ "cpu.timing.t1.fp32_head_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t1/summary.json",
+  "value": 31.2405
+ },
+ "cpu.timing.t1.fp32_net_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t1/summary.json",
+  "value": 170.248
+ },
+ "cpu.timing.t1.fp32_step_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t1/summary.json",
+  "value": 171.86849999999998
+ },
+ "cpu.timing.t1.int8bb-s1_backbone_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t1/summary.json",
+  "value": 60.644999999999996
+ },
+ "cpu.timing.t1.int8bb-s1_head_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t1/summary.json",
+  "value": 33.419
+ },
+ "cpu.timing.t1.int8bb-s1_net_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t1/summary.json",
+  "value": 94.064
+ },
+ "cpu.timing.t1.int8bb-s1_step_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t1/summary.json",
+  "value": 95.0385
+ },
+ "cpu.timing.t1.speedup_net_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t1/summary.json",
+  "value": 1.813367493979698
+ },
+ "cpu.timing.t1.speedup_net_ms.max": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t1/summary.json",
+  "value": 1.8173585705954083
+ },
+ "cpu.timing.t1.speedup_net_ms.min": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t1/summary.json",
+  "value": 1.8048246313484089
+ },
+ "cpu.timing.t1.speedup_step_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t1/summary.json",
+  "value": 1.8053972599171075
+ },
+ "cpu.timing.t1.speedup_step_ms.max": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t1/summary.json",
+  "value": 1.8338930262614277
+ },
+ "cpu.timing.t1.speedup_step_ms.min": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t1/summary.json",
+  "value": 1.7917051853096901
+ },
+ "cpu.timing.t4.fp32_backbone_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 68.083
+ },
+ "cpu.timing.t4.fp32_head_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 20.9255
+ },
+ "cpu.timing.t4.fp32_net_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 89.13
+ },
+ "cpu.timing.t4.fp32_step_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 90.517
+ },
+ "cpu.timing.t4.int8bb-s1_backbone_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 29.302
+ },
+ "cpu.timing.t4.int8bb-s1_head_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 21.6185
+ },
+ "cpu.timing.t4.int8bb-s1_net_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 50.8805
+ },
+ "cpu.timing.t4.int8bb-s1_step_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 52.5385
+ },
+ "cpu.timing.t4.speedup_net_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 1.7484393456175427
+ },
+ "cpu.timing.t4.speedup_net_ms.max": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 1.7599708793262894
+ },
+ "cpu.timing.t4.speedup_net_ms.min": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 1.7383878440457026
+ },
+ "cpu.timing.t4.speedup_step_ms": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 1.7170370653029505
+ },
+ "cpu.timing.t4.speedup_step_ms.max": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 1.730794897706256
+ },
+ "cpu.timing.t4.speedup_step_ms.min": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 1.7112680033888732
+ },
+ "cpu.warn.alarm_before_onset": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-10-22_round5-final/numbers5.json",
+  "value": 10
+ },
+ "cpu.warn.auroc": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-10-22_round5-final/numbers5.json",
+  "value": 0.968041942938712
+ },
+ "cpu.warn.auroc.hi": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-10-22_round5-final/numbers5.json",
+  "value": 0.9885219446093767
+ },
+ "cpu.warn.auroc.lo": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-10-22_round5-final/numbers5.json",
+  "value": 0.9379212756578929
+ },
+ "cpu.warn.onsets": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-10-22_round5-final/numbers5.json",
+  "value": 32
+ },
+ "domain.uav123_10fps_76.B0": {
+  "kind": "computed",
+  "source": "results/domain/per_video_UAV123_10fps_76.csv",
+  "value": 0.593545384687421
+ },
+ "domain.uav123_10fps_76.REF-B0.delta": {
+  "kind": "computed",
+  "source": "results/domain/per_video_UAV123_10fps_76.csv",
+  "value": -0.004987457122603576
+ },
+ "domain.uav123_10fps_76.REF-B0.hi": {
+  "kind": "computed",
+  "source": "results/domain/per_video_UAV123_10fps_76.csv",
+  "value": 0.027296265440624325
+ },
+ "domain.uav123_10fps_76.REF-B0.lo": {
+  "kind": "computed",
+  "source": "results/domain/per_video_UAV123_10fps_76.csv",
+  "value": -0.03372965424019039
+ },
+ "domain.uav123_10fps_76.REF_s1": {
+  "kind": "computed",
+  "source": "results/domain/per_video_UAV123_10fps_76.csv",
+  "value": 0.5826255010227928
+ },
+ "domain.uav123_10fps_76.REF_s2": {
+  "kind": "computed",
+  "source": "results/domain/per_video_UAV123_10fps_76.csv",
+  "value": 0.5944903541068424
+ },
+ "domain.uav123_10fps_76.clusters": {
+  "kind": "computed",
+  "source": "results/domain/per_video_UAV123_10fps_76.csv",
+  "value": 48
+ },
+ "domain.uav123_10fps_76.n": {
+  "kind": "computed",
+  "source": "results/domain/per_video_UAV123_10fps_76.csv",
+  "value": 76
+ },
+ "domain.uav123_10fps_76.s1-s2.delta": {
+  "kind": "computed",
+  "source": "results/domain/per_video_UAV123_10fps_76.csv",
+  "value": -0.011864853084049531
+ },
+ "domain.uav123_10fps_76.s1-s2.hi": {
+  "kind": "computed",
+  "source": "results/domain/per_video_UAV123_10fps_76.csv",
+  "value": 0.0006098845453243616
+ },
+ "domain.uav123_10fps_76.s1-s2.lo": {
+  "kind": "computed",
+  "source": "results/domain/per_video_UAV123_10fps_76.csv",
+  "value": -0.03266452130044682
+ },
+ "domain.visdrone34.B0": {
+  "kind": "computed",
+  "source": "results/domain/per_video_VisDrone34.csv",
+  "value": 0.5267091997273126
+ },
+ "domain.visdrone34.REF-B0.delta": {
+  "kind": "computed",
+  "source": "results/domain/per_video_VisDrone34.csv",
+  "value": 0.07490623097531153
+ },
+ "domain.visdrone34.REF-B0.hi": {
+  "kind": "computed",
+  "source": "results/domain/per_video_VisDrone34.csv",
+  "value": 0.1239847595119689
+ },
+ "domain.visdrone34.REF-B0.lo": {
+  "kind": "computed",
+  "source": "results/domain/per_video_VisDrone34.csv",
+  "value": 0.02390502418236582
+ },
+ "domain.visdrone34.REF_s1": {
+  "kind": "computed",
+  "source": "results/domain/per_video_VisDrone34.csv",
+  "value": 0.6032046485941278
+ },
+ "domain.visdrone34.REF_s2": {
+  "kind": "computed",
+  "source": "results/domain/per_video_VisDrone34.csv",
+  "value": 0.6000262128111206
+ },
+ "domain.visdrone34.clusters": {
+  "kind": "computed",
+  "source": "results/domain/per_video_VisDrone34.csv",
+  "value": 22
+ },
+ "domain.visdrone34.n": {
+  "kind": "computed",
+  "source": "results/domain/per_video_VisDrone34.csv",
+  "value": 34
+ },
+ "night.E15.lost_frames": {
+  "kind": "computed",
+  "source": "tracks/night/evidence/sources/E15_stretch_length_hist.csv",
+  "value": 50749
+ },
+ "night.E15.lost_frames_in_101plus": {
+  "kind": "computed",
+  "source": "tracks/night/evidence/sources/E15_stretch_length_hist.csv",
+  "value": 43793
+ },
+ "night.E15.share_101plus": {
+  "kind": "computed",
+  "source": "tracks/night/evidence/sources/E15_stretch_length_hist.csv",
+  "value": 0.8629332597686654
+ },
+ "night.E15.start_in_window": {
+  "kind": "computed",
+  "source": "tracks/night/evidence/sources/E15_stretches.csv",
+  "value": 864
+ },
+ "night.E15.stretches": {
+  "kind": "computed",
+  "source": "tracks/night/evidence/sources/E15_stretches.csv",
+  "value": 909
+ },
+ "night.NAT2021.gamma": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021.csv",
+  "value": 0.41694082777777774
+ },
+ "night.NAT2021.gamma-original.delta": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021.csv",
+  "value": 0.04488347777777777
+ },
+ "night.NAT2021.gamma-original.hi": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021.csv",
+  "value": 0.06825557388888889
+ },
+ "night.NAT2021.gamma-original.lo": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021.csv",
+  "value": 0.021774295555555552
+ },
+ "night.NAT2021.gamma_anchor": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021.csv",
+  "value": 0.45325524444444454
+ },
+ "night.NAT2021.gamma_anchor-gamma.delta": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021.csv",
+  "value": 0.03631441666666666
+ },
+ "night.NAT2021.gamma_anchor-gamma.hi": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021.csv",
+  "value": 0.056287092083333316
+ },
+ "night.NAT2021.gamma_anchor-gamma.lo": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021.csv",
+  "value": 0.017026461527777783
+ },
+ "night.NAT2021.gamma_anchor-original.delta": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021.csv",
+  "value": 0.08119789444444445
+ },
+ "night.NAT2021.gamma_anchor-original.hi": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021.csv",
+  "value": 0.1080108747222222
+ },
+ "night.NAT2021.gamma_anchor-original.lo": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021.csv",
+  "value": 0.05545565708333334
+ },
+ "night.NAT2021.n": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021.csv",
+  "value": 180
+ },
+ "night.NAT2021.original": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021.csv",
+  "value": 0.37205734999999995
+ },
+ "night.NAT2021.original.precision20": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021.csv",
+  "value": 0.5529776166666667
+ },
+ "night.NAT2021L.gamma": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021L.csv",
+  "value": 0.31612913043478263
+ },
+ "night.NAT2021L.gamma-original.delta": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021L.csv",
+  "value": 0.017227217391304346
+ },
+ "night.NAT2021L.gamma-original.hi": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021L.csv",
+  "value": 0.05789073478260869
+ },
+ "night.NAT2021L.gamma-original.lo": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021L.csv",
+  "value": -0.022231581521739138
+ },
+ "night.NAT2021L.gamma_anchor": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021L.csv",
+  "value": 0.3769910434782609
+ },
+ "night.NAT2021L.gamma_anchor-gamma.delta": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021L.csv",
+  "value": 0.06086191304347828
+ },
+ "night.NAT2021L.gamma_anchor-gamma.hi": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021L.csv",
+  "value": 0.1317521554347826
+ },
+ "night.NAT2021L.gamma_anchor-gamma.lo": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021L.csv",
+  "value": -0.006100428260869555
+ },
+ "night.NAT2021L.gamma_anchor-original.delta": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021L.csv",
+  "value": 0.07808913043478262
+ },
+ "night.NAT2021L.gamma_anchor-original.hi": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021L.csv",
+  "value": 0.1578954358695652
+ },
+ "night.NAT2021L.gamma_anchor-original.lo": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021L.csv",
+  "value": 0.011662709782608695
+ },
+ "night.NAT2021L.n": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021L.csv",
+  "value": 23
+ },
+ "night.NAT2021L.original": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021L.csv",
+  "value": 0.29890191304347824
+ },
+ "night.NAT2021L.original.precision20": {
+  "kind": "computed",
+  "source": "results/night/per_video_NAT2021L.csv",
+  "value": 0.44587452173913056
+ },
+ "night.UAVDark135_pooled39.gamma": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_{test,val}.csv",
+  "value": 0.4511055128205129
+ },
+ "night.UAVDark135_pooled39.gamma-original.delta": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_{test,val}.csv",
+  "value": 0.07070261538461539
+ },
+ "night.UAVDark135_pooled39.gamma-original.hi": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_{test,val}.csv",
+  "value": 0.11629827756410256
+ },
+ "night.UAVDark135_pooled39.gamma-original.lo": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_{test,val}.csv",
+  "value": 0.028436638461538478
+ },
+ "night.UAVDark135_pooled39.gamma_anchor": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_{test,val}.csv",
+  "value": 0.46388725641025647
+ },
+ "night.UAVDark135_pooled39.gamma_anchor-gamma.delta": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_{test,val}.csv",
+  "value": 0.012781743589743582
+ },
+ "night.UAVDark135_pooled39.gamma_anchor-gamma.hi": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_{test,val}.csv",
+  "value": 0.05763031794871792
+ },
+ "night.UAVDark135_pooled39.gamma_anchor-gamma.lo": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_{test,val}.csv",
+  "value": -0.031153398717948724
+ },
+ "night.UAVDark135_pooled39.gamma_anchor-original.delta": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_{test,val}.csv",
+  "value": 0.08348435897435896
+ },
+ "night.UAVDark135_pooled39.gamma_anchor-original.hi": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_{test,val}.csv",
+  "value": 0.1432286493589744
+ },
+ "night.UAVDark135_pooled39.gamma_anchor-original.lo": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_{test,val}.csv",
+  "value": 0.022897125641025654
+ },
+ "night.UAVDark135_pooled39.n": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_{test,val}.csv",
+  "value": 39
+ },
+ "night.UAVDark135_pooled39.original": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_{test,val}.csv",
+  "value": 0.3804028974358975
+ },
+ "night.UAVDark135_test.gamma": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_test.csv",
+  "value": 0.43432334782608706
+ },
+ "night.UAVDark135_test.gamma-original.delta": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_test.csv",
+  "value": 0.08259834782608698
+ },
+ "night.UAVDark135_test.gamma-original.hi": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_test.csv",
+  "value": 0.14174388913043473
+ },
+ "night.UAVDark135_test.gamma-original.lo": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_test.csv",
+  "value": 0.03161871630434783
+ },
+ "night.UAVDark135_test.gamma_anchor": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_test.csv",
+  "value": 0.4433387391304348
+ },
+ "night.UAVDark135_test.gamma_anchor-gamma.delta": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_test.csv",
+  "value": 0.009015391304347822
+ },
+ "night.UAVDark135_test.gamma_anchor-gamma.hi": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_test.csv",
+  "value": 0.06144704239130433
+ },
+ "night.UAVDark135_test.gamma_anchor-gamma.lo": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_test.csv",
+  "value": -0.05392005434782609
+ },
+ "night.UAVDark135_test.gamma_anchor-original.delta": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_test.csv",
+  "value": 0.09161373913043479
+ },
+ "night.UAVDark135_test.gamma_anchor-original.hi": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_test.csv",
+  "value": 0.17388286195652175
+ },
+ "night.UAVDark135_test.gamma_anchor-original.lo": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_test.csv",
+  "value": 0.004731477173913058
+ },
+ "night.UAVDark135_test.n": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_test.csv",
+  "value": 23
+ },
+ "night.UAVDark135_test.original": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_test.csv",
+  "value": 0.351725
+ },
+ "night.UAVDark135_val.gamma": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_val.csv",
+  "value": 0.475229875
+ },
+ "night.UAVDark135_val.gamma-original.delta": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_val.csv",
+  "value": 0.05360250000000001
+ },
+ "night.UAVDark135_val.gamma-original.hi": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_val.csv",
+  "value": 0.1273457953125
+ },
+ "night.UAVDark135_val.gamma-original.lo": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_val.csv",
+  "value": -0.011865203125000006
+ },
+ "night.UAVDark135_val.gamma_anchor": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_val.csv",
+  "value": 0.49342575
+ },
+ "night.UAVDark135_val.gamma_anchor-gamma.delta": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_val.csv",
+  "value": 0.018195874999999986
+ },
+ "night.UAVDark135_val.gamma_anchor-gamma.hi": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_val.csv",
+  "value": 0.09765290624999998
+ },
+ "night.UAVDark135_val.gamma_anchor-gamma.lo": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_val.csv",
+  "value": -0.03976378593750001
+ },
+ "night.UAVDark135_val.gamma_anchor-original.delta": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_val.csv",
+  "value": 0.071798375
+ },
+ "night.UAVDark135_val.gamma_anchor-original.hi": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_val.csv",
+  "value": 0.16071321093749996
+ },
+ "night.UAVDark135_val.gamma_anchor-original.lo": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_val.csv",
+  "value": -0.006589781249999991
+ },
+ "night.UAVDark135_val.n": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_val.csv",
+  "value": 16
+ },
+ "night.UAVDark135_val.original": {
+  "kind": "computed",
+  "source": "results/night/per_video_UAVDark135_val.csv",
+  "value": 0.421627375
+ },
+ "night.leak.linked_pairs": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/sources/output_HiFT_uavdark_leak_49103.out",
+  "value": 14
+ },
+ "night.leak.matching_frames": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/sources/output_HiFT_uavdark_leak_49103.out",
+  "value": 0
+ },
+ "night.leak.query_frames": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/sources/output_HiFT_uavdark_leak_49103.out",
+  "value": 2578
+ },
+ "night.speed.speed_gamma_anchor_p1.seconds": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/sources/speed_gamma_anchor_p1.log",
+  "value": 186.9
+ },
+ "night.speed.speed_gamma_anchor_p2.seconds": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/sources/speed_gamma_anchor_p2.log",
+  "value": 188.1
+ },
+ "night.speed.speed_gamma_p1.seconds": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/sources/speed_gamma_p1.log",
+  "value": 186.7
+ },
+ "night.speed.speed_gamma_p2.seconds": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/sources/speed_gamma_p2.log",
+  "value": 186.9
+ },
+ "night.speed.speed_original_p1.seconds": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/sources/speed_original_p1.log",
+  "value": 176.5
+ },
+ "night.speed.speed_original_p2.seconds": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/sources/speed_original_p2.log",
+  "value": 179.6
+ },
+ "night.split.groups_straddling": {
+  "kind": "computed",
+  "source": "data/splits/night/UAVDark135_groups.csv",
+  "value": 0
+ },
+ "night.split.test": {
+  "kind": "computed",
+  "source": "data/splits/night",
+  "value": 23
+ },
+ "night.split.train": {
+  "kind": "computed",
+  "source": "data/splits/night",
+  "value": 96
+ },
+ "night.split.val": {
+  "kind": "computed",
+  "source": "data/splits/night",
+  "value": 16
+ }
+}

@@ -1,0 +1,14 @@
+--- a/pysot/utils/distributed.py
++++ b/pysot/utils/distributed.py
+@@ -100,6 +100,11 @@
+ 
+ 
+ def dist_init():
++    if (int(os.environ.get('WORLD_SIZE', '1')) != 1 or
++            int(os.environ.get('RANK', '0')) != 0 or
++            int(os.environ.get('LOCAL_RANK', '0')) != 0):
++        raise RuntimeError('Pinned HiFT supports one DataParallel process only; '
++                           'multi-process launch requires an explicit DDP implementation')
+     global rank, world_size, inited
+     # try:
+     #     rank, world_size = _dist_init()

@@ -1,0 +1,15 @@
+seq_a,seq_b,frame_pairs,max_hp_corr
+bike1,person1,5,0.943
+bike7,car5,1,0.691
+car12,car13,1,0.678
+car14,truck1,2,0.700
+dancing1,dancing2,4,0.998
+group2_2,group3,2,0.979
+person10_1,person10_2,1,0.973
+person10_1,valleyballplayer2,8,0.951
+person10_2,valleyballplayer2,4,0.864
+person16_1,person16_2,1,0.966
+person3_1,person3_2,1,0.967
+person3_2,person3_3,1,0.561
+person8,valleyballplayer1,16,0.932
+signpost5,truck3,1,0.884

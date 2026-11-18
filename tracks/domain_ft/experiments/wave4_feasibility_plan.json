@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "bounded_real_input_forward_only_and_synthetic_cost_plan_NOT_SGD_authorization",
+  "frozen_before_real_forward_measurements": true,
+  "training_authorized": false,
+  "official_checkpoint_finetuning_authorized": false,
+  "real_input_measurement": {
+    "selection": "First 32 candidate indices from the frozen training manifest/policy; no loss-dependent replacement or selection",
+    "attempt_count": 32,
+    "physical_attempt_slots": 4,
+    "rejections": "Keep and count; collate only accepted candidates within each four-attempt block; no refilling",
+    "extra_negative_control": "If first32 contain no accepted negative, separately forward the lowest-index accepted negative in the immutable1024 preflight; not mixed into representative timing",
+    "stages": ["image_decode", "source_crop_and_JPEG", "augmentation", "target_generation", "input_validation", "collation", "host_to_device", "CUDA_forward_and_loss", "end_to_end"],
+    "cache_policy": "Use the actual intended production pipeline/cache; report cold and warm observations and explicit hit counts, not an imaginary all-resident rate",
+    "backward": false,
+    "optimizer_steps": 0,
+    "model": "Corrected B2 graph with source-backbone strict five-counter compatibility and random corrected grader; never released general_model checkpoint",
+    "modes": "Measure the intended pilot epoch0 modes; an additional epoch10 forward-only control is allowed if explicitly separated",
+    "buffer_policy": "BN may update only in disposable train-mode forward checks; learned parameters must be identical before/after; no real-data-adapted checkpoint retained",
+    "max_real_forward_pairs": 80,
+    "max_source_crop_cache_MiB": 256,
+    "gpu_jobs": "Exclusive lead token after lifecycle worker explicitly releases CUDA"
+  },
+  "synthetic_cuda_optimization": {
+    "owner": "training-profile",
+    "data": "Random synthetic tensors only; all model weights random for optimization",
+    "epochs_tested": [0, 10],
+    "physical_batch": 4,
+    "accumulation": 4,
+    "effective_updates_each_comparison_path": 2,
+    "paths_per_epoch": 2,
+    "planned_total_effective_updates": 8,
+    "hard_total_effective_update_cap": 12,
+    "real_images_or_pretrained_parameters_optimized": false
+  },
+  "budget_method": "Combine measured real input/decode/crop/augmentation/target/collate/H2D/forward costs with bounded synthetic backward/clip/step costs and explicit validation/checkpoint/init overhead; report conservative range, not synthetic31ms-only extrapolation",
+  "interpretation": ["No tracking accuracy or convergence measured", "Development monitoring is disjoint fixed pair loss, not frozen15-sequence test tuning", "GO is a recommendation requiring separate future real-data SGD authorization", "No R1 or adaptive crop implementation"]
+}

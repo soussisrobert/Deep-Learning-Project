@@ -1,0 +1,39 @@
+# V1b (stage 6): VisDrone-SOT train_part2 sequences sharing no source video (uavNNNNNNN) with any training split
+# (VisDrone-MOT-train, SOT train_part1) or the sealed SOT test-dev. Derived from reports/source_video_audit_names.txt
+# (reports/SOURCE_VIDEO_AUDIT.md). Validation only: B0, REF and the stage 2-4 arms never trained on part2.
+# Shares uav0000182 with V2 (MOT-val), so V1b is not fully independent of V2.
+uav0000171_00000_s
+uav0000172_00000_s
+uav0000173_00781_s
+uav0000174_00000_s
+uav0000175_00000_s
+uav0000175_00697_s
+uav0000176_00000_s
+uav0000178_00025_s
+uav0000182_01075_s
+uav0000198_00000_s
+uav0000199_00000_s
+uav0000200_00000_s
+uav0000204_00000_s
+uav0000205_00000_s
+uav0000209_00000_s
+uav0000217_00001_s
+uav0000221_10400_s
+uav0000223_00300_s
+uav0000226_05370_s
+uav0000232_00960_s
+uav0000235_00001_s
+uav0000235_01032_s
+uav0000236_00001_s
+uav0000237_00001_s
+uav0000238_00001_s
+uav0000238_01280_s
+uav0000240_00001_s
+uav0000252_00001_s
+uav0000303_00000_s
+uav0000303_01250_s
+uav0000304_00253_s
+uav0000325_01656_s
+uav0000331_02691_s
+uav0000348_02415_s
+uav0000349_02668_s

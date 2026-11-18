@@ -1,0 +1,27 @@
+--- a/pysot/datasets/anchortarget.py
++++ b/pysot/datasets/anchortarget.py
+@@ -27,7 +27,12 @@
+         return tuple(p[slt] for p in position), keep_num
+     
+ 
+-    def get(self,bbox,size):
++    def get(self,bbox,size,neg=False):
++        if neg:
++            # Explicit B2 policy: dense background and no box supervision.
++            return (np.zeros((1,size,size)),
++                    np.zeros((4,size,size), dtype=np.float32),
++                    np.zeros((1,size,size)), np.zeros((1,size,size)))
+            
+         labelcls1=np.zeros((1,size,size))-1
+ 
+--- a/pysot/datasets/dataset.py
++++ b/pysot/datasets/dataset.py
+@@ -264,7 +264,7 @@
+                                        gray=gray)
+         
+         labelcls1,labelxff,labelcls2,weightxff \
+-                 = self.anchor_target.get(bbox, cfg.TRAIN.OUTPUT_SIZE)
++                 = self.anchor_target.get(bbox, cfg.TRAIN.OUTPUT_SIZE, neg=neg)
+         
+         
+         template = template.transpose((2, 0, 1)).astype(np.float32)

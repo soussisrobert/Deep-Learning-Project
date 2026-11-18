@@ -1,0 +1,185 @@
+{
+  "created_asia_singapore": "2026-10-24T01:43:51.439552+08:00",
+  "created_utc": "2026-10-23T17:43:51.439552+00:00",
+  "data_identity": {
+    "accepted_archives": 1151,
+    "asset_map_sha256": "e1afd3e1783c2427ac8cc23033e923a774f1e7b151fd26a3c3cdb5f2803a52df",
+    "bound_authentic_files": 1319,
+    "frozen_wave5_inventory_sha256": "3ff399383ebaa6d57a47a602714bdf3c8f91aaa683d94fd661ae301e11fd190f"
+  },
+  "dirty_diff_sha256": "1b56dd03c8124b0940a0878fa04f494b3874e9f93fec4d20b2883e4a9f703780",
+  "environment": {
+    "base_interpreter": "C:\\Users\\Nao\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "base_interpreter_sha256": "62ebc90a2884bb63a0cd67e789cafdd51e771eee043587e2354327b4ccc9bb05",
+    "interpreter": "F:\\Code\\HiFT\\.venv\\Scripts\\python.exe",
+    "interpreter_sha256": "6f8c9878450765686ace476d2170b970761d68ace63f16092489c4c8bd5d7018",
+    "packages": {
+      "numpy": "2.4.4",
+      "opencv-python": "4.13.0.92",
+      "pytest": "8.4.2",
+      "torch": "2.10.0+cu128"
+    },
+    "platform": "Windows-10-10.0.19044-SP0",
+    "python": "3.13.0 (tags/v3.13.0:60403a5, Oct  7 2024, 09:38:07) [MSC v.1941 64 bit (AMD64)]"
+  },
+  "frozen_science": {
+    "DEV_draws": 128,
+    "clip": 10,
+    "config_sha256": "420de51fc52136043cb05d30a1a203f6abc862de6a80aef60dec0f9b7a5bae6e",
+    "dev_updates": [
+      0,
+      25,
+      50,
+      100
+    ],
+    "effective_attempt_slots": 16,
+    "epoch": 0,
+    "learning_rate": 0.0025,
+    "max_attempts": 1600,
+    "max_cumulative_seconds": 900,
+    "max_microbatches": 4,
+    "max_updates": 100,
+    "max_windows": 100,
+    "momentum": 0.9,
+    "no_refill": true,
+    "physical_batch": 4,
+    "primary_signal": "fixed_update100_loss <= .95 * actual_DEV0; exploratory_only",
+    "seed": 20261023,
+    "weight_decay": 0.0001
+  },
+  "gate_status": {
+    "G1": "PASS_bounded_native_Windows_external_supervision",
+    "G2": "PASS_supported_exact_one_use_ACK_entry",
+    "G3": "PASS_CPU_runtime_and_typed_input_fault_scope",
+    "G4": "PASS_durable_fresh_only_failure_checkpoint_scope",
+    "G5": "BLOCKED_native_compute_ownership_unestablished",
+    "G6": "BLOCKED_dependent_no_new_pilot_proposal"
+  },
+  "hardware": {
+    "VRAM_total_bytes": 17094934528,
+    "driver_model": "WDDM",
+    "gpu_name": "NVIDIA GeForce RTX 5070 Ti",
+    "gpu_uuid": "GPU-4d0142b1-6cb1-48e2-1936-ea596332cd7f",
+    "producer": {
+      "argv": [
+        "C:\\Windows\\System32\\nvidia-smi.exe",
+        "-q",
+        "-x"
+      ],
+      "path": "C:\\Windows\\System32\\nvidia-smi.exe",
+      "resolver": "Windows_GetSystemDirectoryW",
+      "sha256": "3fd0d31eaa346704ec7fa6872c2009898d30223dd69e89573eb7f12cfb521e05"
+    }
+  },
+  "historical_byte_audit": {
+    "frozen_executing": 29,
+    "wave5_authentic_asset_files": 1319,
+    "wave5_source_files": 187
+  },
+  "history_receipt": "artifacts/wave6-verification/HISTORY-002.json",
+  "id": "W6-GUARDED-ENGINEERING-20261024-001",
+  "implementation_tested_parent_HEAD": "1a789938eb5afbf63f1de64d2ae437ee39f29772",
+  "independent_review": {
+    "path": "reports/wave6_independent_review.md",
+    "sha256": "f41911fae4d605e03131b9dfb8ca4e206e8508831c9360157d6c9863d7b1e064",
+    "source_findings_closed": 6,
+    "overall_status": "BLOCKED_G5_G6"
+  },
+  "initialization_digests": {
+    "all_parameters_sha256": "52e80c8edd422bf78e0aa09ef1b9bba998f4b91ea3842863fa1c0d2225d20130",
+    "backbone_state_sha256": "c3f2d95caf15d49a922b464568e1cb6fbfa30f6922c793486b54c676e1a99e5e",
+    "grader_parameters_sha256": "f6d0b47dcbfbc706bc524e1693acf36bdf2ca8a59aa52ab6cd29fa5e9b865a36"
+  },
+  "integrated_tests": {
+    "junit_elapsed_seconds_rounded_3dp": 196.838,
+    "errors": 0,
+    "failures": 0,
+    "passed": 626,
+    "skipped": 0,
+    "tests": 626,
+    "xml": "artifacts/wave6-verification/FINAL-002.xml",
+    "xml_sha256": "8c23cd235c46940e60b6a03a1eca19baa216e50f6f87735e6c380d3c34d2cb35"
+  },
+  "limitations": [
+    "No Wave6 CUDA math/real SGD proof; CPU equivalence is not CUDA equivalence.",
+    "No recovery capability is authorized. Failed mid-fetch exact observed counts may be unknown; planned TRAIN slots give conservative bounds, not resume authority.",
+    "Operator-installed Python/site/dependency environment is trusted; not an arbitrary-Python/admin sandbox.",
+    "Short-fixture global-cache deadline failures and corrected harness failures retained; no cap/recipe loosening."
+  ],
+  "next_action": "Establish unambiguous native GPU exclusivity and sufficient host RAM; re-probe; only after ALL gates PASS freeze a fresh exact UNAPPROVED proposal and STOP for human approval.",
+  "physical_snapshot": {
+    "available_host_bytes": 17410555904,
+    "eligible": false,
+    "path": "artifacts/wave6-lease-validation/physical-availability-002.json",
+    "reasons": [
+      "unresolved_or_compute_GPU_process:4:C+G",
+      "unresolved_or_compute_GPU_process:4076:C+G",
+      "unresolved_or_compute_GPU_process:6084:C+G",
+      "unresolved_or_compute_GPU_process:6440:C+G",
+      "unresolved_or_compute_GPU_process:6828:C+G",
+      "unresolved_or_compute_GPU_process:7636:C+G",
+      "unresolved_or_compute_GPU_process:12184:C+G",
+      "unresolved_or_compute_GPU_process:13784:C+G",
+      "unresolved_or_compute_GPU_process:15988:C+G",
+      "unresolved_or_compute_GPU_process:16468:C+G",
+      "unresolved_or_compute_GPU_process:17900:C+G",
+      "unresolved_or_compute_GPU_process:19068:C+G",
+      "unresolved_or_compute_GPU_process:19148:C+G",
+      "unresolved_or_compute_GPU_process:19192:C+G",
+      "unresolved_or_compute_GPU_process:19576:C+G",
+      "unresolved_or_compute_GPU_process:19868:C+G",
+      "unresolved_or_compute_GPU_process:20632:C+G",
+      "unresolved_or_compute_GPU_process:20948:C+G",
+      "unresolved_or_compute_GPU_process:21784:C+G",
+      "unresolved_or_compute_GPU_process:21828:C+G",
+      "unresolved_or_compute_GPU_process:22400:C+G",
+      "unresolved_or_compute_GPU_process:22668:C+G",
+      "unresolved_or_compute_GPU_process:23148:C+G",
+      "unresolved_or_compute_GPU_process:23200:C+G",
+      "unresolved_or_compute_GPU_process:23220:C+G",
+      "unresolved_or_compute_GPU_process:25000:C+G",
+      "unresolved_or_compute_GPU_process:25020:C+G",
+      "unresolved_or_compute_GPU_process:28188:C+G",
+      "unresolved_or_compute_GPU_process:29224:C+G",
+      "unresolved_or_compute_GPU_process:29724:C+G",
+      "unresolved_or_compute_GPU_process:32524:C+G",
+      "unresolved_or_compute_GPU_process:33736:C+G",
+      "unresolved_or_compute_GPU_process:36688:C+G",
+      "unresolved_or_compute_GPU_process:37172:C+G",
+      "unresolved_or_compute_GPU_process:48012:C+G",
+      "unresolved_or_compute_GPU_process:52016:C+G",
+      "unresolved_or_compute_GPU_process:53848:C+G",
+      "unresolved_or_compute_GPU_process:54120:C+G"
+    ],
+    "sha256": "c92347e6798d7e34aaec8add4efac567eb69b8eba8a5872a177f909b57f206bc"
+  },
+  "schema": "hift-wave6-engineering-validation-v1",
+  "scope": {
+    "GPU_compute_experiments": 0,
+    "approval_ready": false,
+    "four_real_archives_input_validation_only": true,
+    "new_real_pilot_proposal": null,
+    "real_human_grant_created": false,
+    "real_image_backward_calls": 0,
+    "real_optimizer_steps": 0,
+    "resume_authorized": false,
+    "synthetic_CPU_tests_only": true,
+    "training_authorized": false
+  },
+  "seven_blockers": {
+    "B1_external_deadline": "PASS",
+    "B2_exact_authorization": "PASS",
+    "B3_runtime_checks": "PASS",
+    "B4_fatal_input_vs_geometry": "PASS",
+    "B5_runtime_invariants": "PASS",
+    "B6_durable_evidence": "PASS_fresh_only_scope",
+    "B7_operational_exclusivity": "BLOCKED_interface_ambiguity_control_implementation_passed"
+  },
+  "source_inventory": {
+    "path": "artifacts/wave6-verification/SOURCE-INVENTORY-001.json",
+    "sha256": "e30fad07bd1355c213dc208d00be6882faa24a2b77073431d39675f591fcdec9"
+  },
+  "status": "BLOCKED_NOT_APPROVAL_READY",
+  "synthetic_resource_probe": "explicit_counterfactual_only_in_CPU_TEMP_fixture; authentic_branch_always_native",
+  "upstream_SHA": "992aa7c1605360d607af84cb804b93cd8ee81caf"
+}

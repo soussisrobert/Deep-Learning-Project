@@ -1,0 +1,1793 @@
+{
+  "schema": "hift-domain-validation-v1",
+  "tracker": {
+    "layout": "B2 corrected encoder layout",
+    "update": 10000,
+    "backbone": "alexnet",
+    "checkpoint": "/home/msai/ning011/hift/runs/TC2-S4-G300-S2-001/final-model.pt",
+    "checkpoint_sha256": "806f9d79388c2938b8e3780d9db62c90b0b5dad0e1d957f396225294c59dc2f1",
+    "score": "sigmoid",
+    "selection": "nan-safe",
+    "upstream_verification": "file manifest (167 files, configs/upstream_992aa7c_files.sha256)",
+    "track_config": {
+      "PENALTY_K": 0.08,
+      "WINDOW_INFLUENCE": 0.42,
+      "LR": 0.3
+    },
+    "track_overrides": {}
+  },
+  "grid_label": null,
+  "subsets": [
+    "V1",
+    "V2",
+    "V3"
+  ],
+  "uavdt_holdout_fraction": 0.1,
+  "uavdt_holdout_videos": [
+    "M0202",
+    "M0208",
+    "M0209",
+    "M0301",
+    "M0801"
+  ],
+  "episode_listing_sha256": "00799d79a39811c90de14a231183a71cc9a646225bb16caf23949494bd4d857d",
+  "episodes": [
+    {
+      "subset": "V1",
+      "name": "uav0000024_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 1478,
+      "scored": 1478
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000029_01102_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 568,
+      "scored": 568
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000053_00264_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 167,
+      "scored": 167
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000054_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 616,
+      "scored": 616
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000086_00870_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 697,
+      "scored": 697
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000092_00575_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 269,
+      "scored": 269
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000092_01150_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 922,
+      "scored": 922
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000115_00606_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 388,
+      "scored": 388
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000245_00001_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 768,
+      "scored": 768
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000317_00000_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 529,
+      "scored": 529
+    },
+    {
+      "subset": "V1",
+      "name": "uav0000317_02945_s",
+      "group": "unlabeled",
+      "category": "unlabeled",
+      "first_frame": "img0000001.jpg",
+      "frames": 644,
+      "scored": 644
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000086_00000_v#29",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000068.jpg",
+      "frames": 200,
+      "scored": 157
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000086_00000_v#34",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000137_00458_v#125",
+      "group": "person",
+      "category": "people",
+      "first_frame": "0000081.jpg",
+      "frames": 127,
+      "scored": 127
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000086_00000_v#39",
+      "group": "person",
+      "category": "people",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000086_00000_v#21",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000181.jpg",
+      "frames": 200,
+      "scored": 143
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000137_00458_v#40",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000117_02622_v#6",
+      "group": "person",
+      "category": "people",
+      "first_frame": "0000066.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000137_00458_v#104",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000203.jpg",
+      "frames": 31,
+      "scored": 31
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000137_00458_v#105",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000203.jpg",
+      "frames": 31,
+      "scored": 31
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000137_00458_v#156",
+      "group": "person",
+      "category": "people",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 188
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000182_00000_v#116",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000305.jpg",
+      "frames": 31,
+      "scored": 31
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000268_05773_v#39",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000635.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000339_00001_v#12",
+      "group": "person",
+      "category": "people",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000182_00000_v#115",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000270.jpg",
+      "frames": 63,
+      "scored": 63
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000086_00000_v#16",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000117_02622_v#9",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000026.jpg",
+      "frames": 200,
+      "scored": 32
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000117_02622_v#27",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000301.jpg",
+      "frames": 49,
+      "scored": 39
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000339_00001_v#74",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000172.jpg",
+      "frames": 104,
+      "scored": 104
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000117_02622_v#96",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000301.jpg",
+      "frames": 49,
+      "scored": 49
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000117_02622_v#69",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000301.jpg",
+      "frames": 49,
+      "scored": 49
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000086_00000_v#17",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000117_02622_v#141",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000026.jpg",
+      "frames": 26,
+      "scored": 26
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000086_00000_v#74",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000426.jpg",
+      "frames": 39,
+      "scored": 39
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000137_00458_v#75",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000137_00458_v#150",
+      "group": "person",
+      "category": "people",
+      "first_frame": "0000001.jpg",
+      "frames": 140,
+      "scored": 140
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000182_00000_v#123",
+      "group": "person",
+      "category": "people",
+      "first_frame": "0000301.jpg",
+      "frames": 37,
+      "scored": 37
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000182_00000_v#135",
+      "group": "person",
+      "category": "people",
+      "first_frame": "0000301.jpg",
+      "frames": 63,
+      "scored": 63
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000182_00000_v#140",
+      "group": "person",
+      "category": "people",
+      "first_frame": "0000338.jpg",
+      "frames": 26,
+      "scored": 21
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000339_00001_v#78",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000018.jpg",
+      "frames": 108,
+      "scored": 108
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000117_02622_v#144",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000002.jpg",
+      "frames": 180,
+      "scored": 180
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000339_00001_v#39",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000063.jpg",
+      "frames": 200,
+      "scored": 55
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000339_00001_v#41",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000339_00001_v#34",
+      "group": "person",
+      "category": "people",
+      "first_frame": "0000155.jpg",
+      "frames": 75,
+      "scored": 75
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000182_00000_v#81",
+      "group": "person",
+      "category": "people",
+      "first_frame": "0000301.jpg",
+      "frames": 23,
+      "scored": 20
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000339_00001_v#73",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000268_05773_v#37",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000447.jpg",
+      "frames": 176,
+      "scored": 176
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000305_00000_v#55",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000001.jpg",
+      "frames": 184,
+      "scored": 166
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000268_05773_v#26",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000446.jpg",
+      "frames": 177,
+      "scored": 177
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000182_00000_v#75",
+      "group": "person",
+      "category": "pedestrian",
+      "first_frame": "0000186.jpg",
+      "frames": 127,
+      "scored": 125
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000268_05773_v#36",
+      "group": "person",
+      "category": "people",
+      "first_frame": "0000447.jpg",
+      "frames": 176,
+      "scored": 176
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000137_00458_v#4",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 39,
+      "scored": 28
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000137_00458_v#63",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000054.jpg",
+      "frames": 180,
+      "scored": 167
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000137_00458_v#21",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 145,
+      "scored": 145
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000137_00458_v#146",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000080.jpg",
+      "frames": 124,
+      "scored": 124
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000339_00001_v#18",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000215.jpg",
+      "frames": 61,
+      "scored": 61
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000182_00000_v#33",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 171,
+      "scored": 114
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000137_00458_v#65",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000268_05773_v#45",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000435.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000117_02622_v#108",
+      "group": "vehicle",
+      "category": "van",
+      "first_frame": "0000044.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000339_00001_v#13",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000044.jpg",
+      "frames": 162,
+      "scored": 162
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000182_00000_v#124",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000206.jpg",
+      "frames": 139,
+      "scored": 137
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000182_00000_v#8",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 199
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000268_05773_v#44",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 127
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000182_00000_v#111",
+      "group": "vehicle",
+      "category": "van",
+      "first_frame": "0000126.jpg",
+      "frames": 198,
+      "scored": 198
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000305_00000_v#32",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 179,
+      "scored": 155
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000339_00001_v#9",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000182_00000_v#0",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 129,
+      "scored": 101
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000182_00000_v#40",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 95,
+      "scored": 95
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000305_00000_v#49",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000156.jpg",
+      "frames": 29,
+      "scored": 23
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000182_00000_v#20",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000012.jpg",
+      "frames": 45,
+      "scored": 45
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000339_00001_v#60",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 167,
+      "scored": 167
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000137_00458_v#18",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000268_05773_v#32",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000466.jpg",
+      "frames": 103,
+      "scored": 103
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000339_00001_v#59",
+      "group": "vehicle",
+      "category": "van",
+      "first_frame": "0000001.jpg",
+      "frames": 174,
+      "scored": 174
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000268_05773_v#43",
+      "group": "vehicle",
+      "category": "van",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 127
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000117_02622_v#87",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000023.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000305_00000_v#30",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 180,
+      "scored": 161
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000305_00000_v#7",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 31,
+      "scored": 31
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000305_00000_v#16",
+      "group": "vehicle",
+      "category": "van",
+      "first_frame": "0000001.jpg",
+      "frames": 184,
+      "scored": 133
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000137_00458_v#9",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000339_00001_v#19",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000068.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000305_00000_v#15",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 142,
+      "scored": 132
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000305_00000_v#23",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 184,
+      "scored": 173
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000339_00001_v#49",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000117_02622_v#106",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000032.jpg",
+      "frames": 151,
+      "scored": 151
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000117_02622_v#34",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000301.jpg",
+      "frames": 49,
+      "scored": 49
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000268_05773_v#0",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000904.jpg",
+      "frames": 75,
+      "scored": 75
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000117_02622_v#85",
+      "group": "vehicle",
+      "category": "van",
+      "first_frame": "0000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000117_02622_v#98",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000001.jpg",
+      "frames": 103,
+      "scored": 103
+    },
+    {
+      "subset": "V2",
+      "name": "uav0000117_02622_v#104",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "0000002.jpg",
+      "frames": 145,
+      "scored": 145
+    },
+    {
+      "subset": "V3",
+      "name": "M0301#19",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000253.jpg",
+      "frames": 73,
+      "scored": 61
+    },
+    {
+      "subset": "V3",
+      "name": "M0801#25",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000082.jpg",
+      "frames": 115,
+      "scored": 115
+    },
+    {
+      "subset": "V3",
+      "name": "M0202#15",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000102.jpg",
+      "frames": 190,
+      "scored": 190
+    },
+    {
+      "subset": "V3",
+      "name": "M0209#58",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000651.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V3",
+      "name": "M0209#24",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img001190.jpg",
+      "frames": 145,
+      "scored": 145
+    },
+    {
+      "subset": "V3",
+      "name": "M0209#59",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000766.jpg",
+      "frames": 33,
+      "scored": 33
+    },
+    {
+      "subset": "V3",
+      "name": "M0202#4",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000001.jpg",
+      "frames": 89,
+      "scored": 87
+    },
+    {
+      "subset": "V3",
+      "name": "M0801#16",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V3",
+      "name": "M0209#14",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000856.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V3",
+      "name": "M0209#2",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000206.jpg",
+      "frames": 114,
+      "scored": 113
+    },
+    {
+      "subset": "V3",
+      "name": "M0209#50",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000650.jpg",
+      "frames": 200,
+      "scored": 128
+    },
+    {
+      "subset": "V3",
+      "name": "M0209#44",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000077.jpg",
+      "frames": 109,
+      "scored": 28
+    },
+    {
+      "subset": "V3",
+      "name": "M0801#15",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V3",
+      "name": "M0209#12",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img001116.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V3",
+      "name": "M0202#1",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V3",
+      "name": "M0202#6",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000001.jpg",
+      "frames": 130,
+      "scored": 128
+    },
+    {
+      "subset": "V3",
+      "name": "M0202#12",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V3",
+      "name": "M0202#9",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V3",
+      "name": "M0301#4",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000001.jpg",
+      "frames": 90,
+      "scored": 90
+    },
+    {
+      "subset": "V3",
+      "name": "M0208#5",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000171.jpg",
+      "frames": 66,
+      "scored": 63
+    },
+    {
+      "subset": "V3",
+      "name": "M0801#8",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V3",
+      "name": "M0208#2",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000064.jpg",
+      "frames": 61,
+      "scored": 61
+    },
+    {
+      "subset": "V3",
+      "name": "M0301#1",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000001.jpg",
+      "frames": 32,
+      "scored": 32
+    },
+    {
+      "subset": "V3",
+      "name": "M0801#22",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000039.jpg",
+      "frames": 200,
+      "scored": 190
+    },
+    {
+      "subset": "V3",
+      "name": "M0202#14",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000077.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V3",
+      "name": "M0301#14",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000249.jpg",
+      "frames": 69,
+      "scored": 69
+    },
+    {
+      "subset": "V3",
+      "name": "M0801#5",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000249.jpg",
+      "frames": 50,
+      "scored": 50
+    },
+    {
+      "subset": "V3",
+      "name": "M0202#8",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V3",
+      "name": "M0208#12",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000017.jpg",
+      "frames": 70,
+      "scored": 70
+    },
+    {
+      "subset": "V3",
+      "name": "M0801#23",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000050.jpg",
+      "frames": 200,
+      "scored": 190
+    },
+    {
+      "subset": "V3",
+      "name": "M0301#18",
+      "group": "vehicle",
+      "category": "truck",
+      "first_frame": "img000253.jpg",
+      "frames": 73,
+      "scored": 61
+    },
+    {
+      "subset": "V3",
+      "name": "M0208#6",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000212.jpg",
+      "frames": 54,
+      "scored": 54
+    },
+    {
+      "subset": "V3",
+      "name": "M0801#3",
+      "group": "vehicle",
+      "category": "truck",
+      "first_frame": "img000186.jpg",
+      "frames": 113,
+      "scored": 113
+    },
+    {
+      "subset": "V3",
+      "name": "M0208#1",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000061.jpg",
+      "frames": 50,
+      "scored": 50
+    },
+    {
+      "subset": "V3",
+      "name": "M0301#15",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000249.jpg",
+      "frames": 64,
+      "scored": 64
+    },
+    {
+      "subset": "V3",
+      "name": "M0208#9",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000001.jpg",
+      "frames": 200,
+      "scored": 200
+    },
+    {
+      "subset": "V3",
+      "name": "M0208#4",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000125.jpg",
+      "frames": 69,
+      "scored": 69
+    },
+    {
+      "subset": "V3",
+      "name": "M0208#8",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000001.jpg",
+      "frames": 44,
+      "scored": 41
+    },
+    {
+      "subset": "V3",
+      "name": "M0301#6",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000001.jpg",
+      "frames": 100,
+      "scored": 99
+    },
+    {
+      "subset": "V3",
+      "name": "M0301#9",
+      "group": "vehicle",
+      "category": "car",
+      "first_frame": "img000116.jpg",
+      "frames": 100,
+      "scored": 100
+    }
+  ],
+  "summary": {
+    "V1": {
+      "all": {
+        "count": 11,
+        "success_auc": 0.5237232697084786,
+        "precision_at_20px": 0.788422816249988
+      },
+      "unlabeled": {
+        "count": 11,
+        "success_auc": 0.5237232697084786,
+        "precision_at_20px": 0.788422816249988
+      }
+    },
+    "V2": {
+      "all": {
+        "count": 80,
+        "success_auc": 0.6647989969956354,
+        "precision_at_20px": 0.9060546618450889
+      },
+      "vehicle": {
+        "count": 40,
+        "success_auc": 0.7177681592785181,
+        "precision_at_20px": 0.9071464605064795
+      },
+      "person": {
+        "count": 40,
+        "success_auc": 0.6118298347127529,
+        "precision_at_20px": 0.9049628631836985
+      }
+    },
+    "V3": {
+      "all": {
+        "count": 40,
+        "success_auc": 0.7379597474931044,
+        "precision_at_20px": 0.9701328124999999
+      },
+      "vehicle": {
+        "count": 40,
+        "success_auc": 0.7379597474931044,
+        "precision_at_20px": 0.9701328124999999
+      }
+    },
+    "M": 0.6421606713990728,
+    "M_definition": "mean(V1 AUC, mean(V2 vehicle AUC, V2 person AUC), V3 AUC) over present subsets"
+  },
+  "per_episode": {
+    "V1/uav0000024_00000_s": {
+      "success_auc": 0.512081964044075,
+      "precision_at_20px": 0.7510148849797023
+    },
+    "V1/uav0000029_01102_s": {
+      "success_auc": 0.698524480214621,
+      "precision_at_20px": 0.9982394366197183
+    },
+    "V1/uav0000053_00264_s": {
+      "success_auc": 0.7359566581123467,
+      "precision_at_20px": 1.0
+    },
+    "V1/uav0000054_00000_s": {
+      "success_auc": 0.1971243042671614,
+      "precision_at_20px": 0.2922077922077922
+    },
+    "V1/uav0000086_00870_s": {
+      "success_auc": 0.3907221425155428,
+      "precision_at_20px": 0.5078909612625538
+    },
+    "V1/uav0000092_00575_s": {
+      "success_auc": 0.25933793591786153,
+      "precision_at_20px": 0.7881040892193308
+    },
+    "V1/uav0000092_01150_s": {
+      "success_auc": 0.4789794442722859,
+      "precision_at_20px": 0.754880694143167
+    },
+    "V1/uav0000115_00606_s": {
+      "success_auc": 0.74693176239568,
+      "precision_at_20px": 0.979381443298969
+    },
+    "V1/uav0000245_00001_s": {
+      "success_auc": 0.5238095238095238,
+      "precision_at_20px": 1.0
+    },
+    "V1/uav0000317_00000_s": {
+      "success_auc": 0.7748672247727068,
+      "precision_at_20px": 1.0
+    },
+    "V1/uav0000317_02945_s": {
+      "success_auc": 0.4426205264714582,
+      "precision_at_20px": 0.6009316770186336
+    },
+    "V2/uav0000086_00000_v#29": {
+      "success_auc": 0.24931756141947226,
+      "precision_at_20px": 0.3503184713375796
+    },
+    "V2/uav0000086_00000_v#34": {
+      "success_auc": 0.6940476190476191,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000137_00458_v#125": {
+      "success_auc": 0.680914885639295,
+      "precision_at_20px": 0.8740157480314961
+    },
+    "V2/uav0000086_00000_v#39": {
+      "success_auc": 0.7416666666666667,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000086_00000_v#21": {
+      "success_auc": 0.6027306027306027,
+      "precision_at_20px": 0.7342657342657343
+    },
+    "V2/uav0000137_00458_v#40": {
+      "success_auc": 0.596904761904762,
+      "precision_at_20px": 0.76
+    },
+    "V2/uav0000117_02622_v#6": {
+      "success_auc": 0.5371428571428571,
+      "precision_at_20px": 0.92
+    },
+    "V2/uav0000137_00458_v#104": {
+      "success_auc": 0.7619047619047619,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000137_00458_v#105": {
+      "success_auc": 0.7066052227342552,
+      "precision_at_20px": 0.967741935483871
+    },
+    "V2/uav0000137_00458_v#156": {
+      "success_auc": 0.6988348530901722,
+      "precision_at_20px": 0.8670212765957447
+    },
+    "V2/uav0000182_00000_v#116": {
+      "success_auc": 0.4823348694316438,
+      "precision_at_20px": 0.9354838709677419
+    },
+    "V2/uav0000268_05773_v#39": {
+      "success_auc": 0.5704761904761906,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000339_00001_v#12": {
+      "success_auc": 0.5623809523809524,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000182_00000_v#115": {
+      "success_auc": 0.6575963718820861,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000086_00000_v#16": {
+      "success_auc": 0.6347619047619047,
+      "precision_at_20px": 0.92
+    },
+    "V2/uav0000117_02622_v#9": {
+      "success_auc": 0.6681547619047619,
+      "precision_at_20px": 0.875
+    },
+    "V2/uav0000117_02622_v#27": {
+      "success_auc": 0.5384615384615384,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000339_00001_v#74": {
+      "success_auc": 0.6964285714285715,
+      "precision_at_20px": 0.9519230769230769
+    },
+    "V2/uav0000117_02622_v#96": {
+      "success_auc": 0.5170068027210885,
+      "precision_at_20px": 0.8367346938775511
+    },
+    "V2/uav0000117_02622_v#69": {
+      "success_auc": 0.5189504373177842,
+      "precision_at_20px": 0.8571428571428571
+    },
+    "V2/uav0000086_00000_v#17": {
+      "success_auc": 0.5850000000000001,
+      "precision_at_20px": 0.935
+    },
+    "V2/uav0000117_02622_v#141": {
+      "success_auc": 0.6648351648351648,
+      "precision_at_20px": 0.8461538461538461
+    },
+    "V2/uav0000086_00000_v#74": {
+      "success_auc": 0.6971916971916972,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000137_00458_v#75": {
+      "success_auc": 0.74,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000137_00458_v#150": {
+      "success_auc": 0.7619047619047619,
+      "precision_at_20px": 0.9785714285714285
+    },
+    "V2/uav0000182_00000_v#123": {
+      "success_auc": 0.6203346203346202,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000182_00000_v#135": {
+      "success_auc": 0.619047619047619,
+      "precision_at_20px": 0.9206349206349206
+    },
+    "V2/uav0000182_00000_v#140": {
+      "success_auc": 0.6326530612244897,
+      "precision_at_20px": 0.9523809523809523
+    },
+    "V2/uav0000339_00001_v#78": {
+      "success_auc": 0.7288359788359788,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000117_02622_v#144": {
+      "success_auc": 0.6052910052910053,
+      "precision_at_20px": 0.9444444444444444
+    },
+    "V2/uav0000339_00001_v#39": {
+      "success_auc": 0.696969696969697,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000339_00001_v#41": {
+      "success_auc": 0.11666666666666665,
+      "precision_at_20px": 0.245
+    },
+    "V2/uav0000339_00001_v#34": {
+      "success_auc": 0.8063492063492061,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000182_00000_v#81": {
+      "success_auc": 0.7547619047619049,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000339_00001_v#73": {
+      "success_auc": 0.4635714285714285,
+      "precision_at_20px": 0.72
+    },
+    "V2/uav0000268_05773_v#37": {
+      "success_auc": 0.5419372294372296,
+      "precision_at_20px": 0.9318181818181818
+    },
+    "V2/uav0000305_00000_v#55": {
+      "success_auc": 0.5975329890992541,
+      "precision_at_20px": 0.8975903614457831
+    },
+    "V2/uav0000268_05773_v#26": {
+      "success_auc": 0.6263115415657788,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000182_00000_v#75": {
+      "success_auc": 0.6049523809523809,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000268_05773_v#36": {
+      "success_auc": 0.4924242424242425,
+      "precision_at_20px": 0.9772727272727273
+    },
+    "V2/uav0000137_00458_v#4": {
+      "success_auc": 0.8962585034013606,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000137_00458_v#63": {
+      "success_auc": 0.2791559737667523,
+      "precision_at_20px": 0.31137724550898205
+    },
+    "V2/uav0000137_00458_v#21": {
+      "success_auc": 0.7011494252873562,
+      "precision_at_20px": 0.9103448275862069
+    },
+    "V2/uav0000137_00458_v#146": {
+      "success_auc": 0.596774193548387,
+      "precision_at_20px": 0.8467741935483871
+    },
+    "V2/uav0000339_00001_v#18": {
+      "success_auc": 0.8875878220140516,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000182_00000_v#33": {
+      "success_auc": 0.6386800334168755,
+      "precision_at_20px": 0.8421052631578947
+    },
+    "V2/uav0000137_00458_v#65": {
+      "success_auc": 0.7976190476190478,
+      "precision_at_20px": 0.98
+    },
+    "V2/uav0000268_05773_v#45": {
+      "success_auc": 0.7454761904761904,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000117_02622_v#108": {
+      "success_auc": 0.6202380952380953,
+      "precision_at_20px": 0.825
+    },
+    "V2/uav0000339_00001_v#13": {
+      "success_auc": 0.8101116990005879,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000182_00000_v#124": {
+      "success_auc": 0.6670142509558568,
+      "precision_at_20px": 0.9562043795620438
+    },
+    "V2/uav0000182_00000_v#8": {
+      "success_auc": 0.8490069394592009,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000268_05773_v#44": {
+      "success_auc": 0.789276340457443,
+      "precision_at_20px": 0.984251968503937
+    },
+    "V2/uav0000182_00000_v#111": {
+      "success_auc": 0.5870610870610872,
+      "precision_at_20px": 0.98989898989899
+    },
+    "V2/uav0000305_00000_v#32": {
+      "success_auc": 0.8184331797235025,
+      "precision_at_20px": 0.9548387096774194
+    },
+    "V2/uav0000339_00001_v#9": {
+      "success_auc": 0.8797619047619049,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000182_00000_v#0": {
+      "success_auc": 0.8689297501178691,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000182_00000_v#40": {
+      "success_auc": 0.7604010025062657,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000305_00000_v#49": {
+      "success_auc": 0.2422360248447205,
+      "precision_at_20px": 0.21739130434782608
+    },
+    "V2/uav0000182_00000_v#20": {
+      "success_auc": 0.5682539682539682,
+      "precision_at_20px": 0.9555555555555556
+    },
+    "V2/uav0000339_00001_v#60": {
+      "success_auc": 0.7396635300826917,
+      "precision_at_20px": 0.9940119760479041
+    },
+    "V2/uav0000137_00458_v#18": {
+      "success_auc": 0.8726190476190477,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000268_05773_v#32": {
+      "success_auc": 0.7050392972723069,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000339_00001_v#59": {
+      "success_auc": 0.718664477285167,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000268_05773_v#43": {
+      "success_auc": 0.8443944506936634,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000117_02622_v#87": {
+      "success_auc": 0.2788095238095238,
+      "precision_at_20px": 0.165
+    },
+    "V2/uav0000305_00000_v#30": {
+      "success_auc": 0.7542147293700089,
+      "precision_at_20px": 0.9192546583850931
+    },
+    "V2/uav0000305_00000_v#7": {
+      "success_auc": 0.7680491551459293,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000305_00000_v#16": {
+      "success_auc": 0.7994987468671678,
+      "precision_at_20px": 0.9473684210526315
+    },
+    "V2/uav0000137_00458_v#9": {
+      "success_auc": 0.8288095238095239,
+      "precision_at_20px": 0.985
+    },
+    "V2/uav0000339_00001_v#19": {
+      "success_auc": 0.8133333333333332,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000305_00000_v#15": {
+      "success_auc": 0.8791486291486291,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000305_00000_v#23": {
+      "success_auc": 0.6820809248554914,
+      "precision_at_20px": 0.861271676300578
+    },
+    "V2/uav0000339_00001_v#49": {
+      "success_auc": 0.6885714285714286,
+      "precision_at_20px": 0.985
+    },
+    "V2/uav0000117_02622_v#106": {
+      "success_auc": 0.653106275622832,
+      "precision_at_20px": 0.8410596026490066
+    },
+    "V2/uav0000117_02622_v#34": {
+      "success_auc": 0.6413994169096211,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000268_05773_v#0": {
+      "success_auc": 0.7352380952380952,
+      "precision_at_20px": 1.0
+    },
+    "V2/uav0000117_02622_v#85": {
+      "success_auc": 0.8138095238095238,
+      "precision_at_20px": 0.995
+    },
+    "V2/uav0000117_02622_v#98": {
+      "success_auc": 0.8238557558945908,
+      "precision_at_20px": 0.970873786407767
+    },
+    "V2/uav0000117_02622_v#104": {
+      "success_auc": 0.6669950738916256,
+      "precision_at_20px": 0.8482758620689655
+    },
+    "V3/M0301#19": {
+      "success_auc": 0.7548790007806401,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0801#25": {
+      "success_auc": 0.7602484472049689,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0202#15": {
+      "success_auc": 0.7824561403508771,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0209#58": {
+      "success_auc": 0.8307142857142855,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0209#24": {
+      "success_auc": 0.7481116584564861,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0209#59": {
+      "success_auc": 0.7171717171717173,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0202#4": {
+      "success_auc": 0.7619047619047619,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0801#16": {
+      "success_auc": 0.6223809523809524,
+      "precision_at_20px": 0.71
+    },
+    "V3/M0209#14": {
+      "success_auc": 0.7521428571428572,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0209#2": {
+      "success_auc": 0.7943531394858828,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0209#50": {
+      "success_auc": 0.6551339285714286,
+      "precision_at_20px": 0.9921875
+    },
+    "V3/M0209#44": {
+      "success_auc": 0.8333333333333334,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0801#15": {
+      "success_auc": 0.7226190476190476,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0209#12": {
+      "success_auc": 0.7030952380952382,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0202#1": {
+      "success_auc": 0.6952380952380953,
+      "precision_at_20px": 0.965
+    },
+    "V3/M0202#6": {
+      "success_auc": 0.6789434523809523,
+      "precision_at_20px": 0.828125
+    },
+    "V3/M0202#12": {
+      "success_auc": 0.7854761904761907,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0202#9": {
+      "success_auc": 0.24738095238095234,
+      "precision_at_20px": 0.31
+    },
+    "V3/M0301#4": {
+      "success_auc": 0.7708994708994711,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0208#5": {
+      "success_auc": 0.6938775510204082,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0801#8": {
+      "success_auc": 0.8288095238095237,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0208#2": {
+      "success_auc": 0.7096018735362998,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0301#1": {
+      "success_auc": 0.8139880952380952,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0801#22": {
+      "success_auc": 0.7130325814536341,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0202#14": {
+      "success_auc": 0.8157142857142858,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0301#14": {
+      "success_auc": 0.8109040717736371,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0801#5": {
+      "success_auc": 0.8447619047619047,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0202#8": {
+      "success_auc": 0.8107142857142856,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0208#12": {
+      "success_auc": 0.745578231292517,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0801#23": {
+      "success_auc": 0.713032581453634,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0301#18": {
+      "success_auc": 0.7267759562841531,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0208#6": {
+      "success_auc": 0.7513227513227514,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0801#3": {
+      "success_auc": 0.8714707121786768,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0208#1": {
+      "success_auc": 0.6914285714285713,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0301#15": {
+      "success_auc": 0.765625,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0208#9": {
+      "success_auc": 0.733095238095238,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0208#4": {
+      "success_auc": 0.6735679779158039,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0208#8": {
+      "success_auc": 0.6922183507549361,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0301#6": {
+      "success_auc": 0.7816257816257817,
+      "precision_at_20px": 1.0
+    },
+    "V3/M0301#9": {
+      "success_auc": 0.7147619047619047,
+      "precision_at_20px": 1.0
+    }
+  },
+  "seconds": 122.8267336889985,
+  "finished_utc": "2026-11-02T18:24:45.287329+00:00",
+  "software": {
+    "torch": "2.10.0+cu126",
+    "platform": "Linux-5.14.0-503.14.1.el9_5.x86_64-x86_64-with-glibc2.34"
+  },
+  "gpu": "NVIDIA L40S"
+}

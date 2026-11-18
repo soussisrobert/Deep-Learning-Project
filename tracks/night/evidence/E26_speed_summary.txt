@@ -1,0 +1,10 @@
+SPEED original      pass 1: 20 videos, 16550 frames, 93.8 fps
+SPEED gamma         pass 1: 20 videos, 16557 frames, 88.7 fps
+SPEED gamma_anchor  pass 1: 20 videos, 16546 frames, 88.5 fps
+SPEED gamma_anchor  pass 2: 20 videos, 16557 frames, 88.0 fps
+SPEED gamma         pass 2: 20 videos, 16557 frames, 88.6 fps
+SPEED original      pass 2: 20 videos, 16541 frames, 92.1 fps
+# appended from the output of job 55514 (the six SPEED lines above are the job's own summary file):
+# hardware: NVIDIA A40, 46068 MiB; 4 CPUs allocated (Intel Xeon Gold 6230R); videos: NAT2021, --every 9 (20 videos); timer excludes image decoding
+# GPU state before each run: no other compute process, 0 MiB used, SM clock 1740 MHz (210 MHz before the very first run, GPU idle)
+# boxes of pass 1 and pass 2 identical: original IDENTICAL (20 files), gamma IDENTICAL (20 files), gamma_anchor IDENTICAL (20 files)

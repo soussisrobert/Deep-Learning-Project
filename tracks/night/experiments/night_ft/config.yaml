@@ -1,0 +1,111 @@
+# Night fine-tuning of HiFT from tools/snapshot/first.pth (copy of experiments/config.yaml with corrected paths and the fine-tuning settings).
+# Shared by runs A, B and C; the run files (run_A.yaml, run_B.yaml, run_C.yaml) only switch the augmentation / negative options.
+META_ARC: "HiFT_alexnet"
+
+BACKBONE:
+    TYPE: "alexnet"
+    PRETRAINED: ''                           # the weights come from first.pth (tools/train_night.py), not from alexnet-bn.pth
+    TRAIN_LAYERS: ['layer3','layer4','layer5']
+    TRAIN_EPOCH: 0                           # train layers 3-5 from the first epoch (layers 1-2 stay frozen, as in the original schedule)
+    LAYERS_LR: 0.1
+
+TRACK:
+    TYPE: 'HiFTtracker'
+    EXEMPLAR_SIZE: 127
+    INSTANCE_SIZE: 287
+    CONTEXT_AMOUNT: 0.5
+    STRIDE: 8
+    PENALTY_K: 0.08
+    WINDOW_INFLUENCE: 0.42
+    LR: 0.30
+    w2: 1.0
+    w3: 1.0
+
+TRAIN:
+    EPOCH: 10
+    START_EPOCH: 0
+    BATCH_SIZE: 220                          # the original total batch (2 GPUs x 110); anchors are sized BATCH_SIZE // NUM_GPU
+    NUM_GPU: 1
+    BASE_LR: 0.0002                          # = LR.KWARGS.start_lr, so the scheduler gives exactly the values below
+    RESUME: ''
+    WEIGHT_DECAY: 0.0001
+    PRETRAINED: 0
+    OUTPUT_SIZE: 11                          # the label code (stride 16, offset 63, OUTPUTFEATURE_SIZE 11, 287 search) only works with 11
+    NUM_WORKERS: 8
+    LOC_WEIGHT: 2.4
+    CLS_WEIGHT: 1.0
+    w2: 1.0
+    w3: 1.0
+    w4: 1.0
+    w5: 1.0
+    POS_NUM: 16
+    TOTAL_NUM: 64
+    NEG_NUM: 16
+    LARGER: 1.0
+    range: 1.0
+    SNAPSHOT_DIR: 'experiments/night_ft/runs/default/snapshot'
+    LOG_DIR: 'experiments/night_ft/runs/default/logs'
+    LR:
+        TYPE: 'log'
+        KWARGS:
+            start_lr: 0.0002                 # heads 2e-4 -> 2e-5 over the 10 epochs, backbone layers 3-5 at 0.1 x that
+            end_lr: 0.00002
+    LR_WARMUP:
+        WARMUP: False
+        TYPE: 'step'
+        EPOCH: 5
+        KWARGS:
+            start_lr: 0.0002
+            end_lr: 0.0002
+            step: 1
+
+DATASET:
+    NAMES:
+    - 'UAVDARK'
+    - 'UAVDT'
+    - 'UAV123'
+    MIX: [0.4, 0.3, 0.3]                     # fractions of the sampled pairs
+    VIDEOS_PER_EPOCH: 330000                 # = pairs per epoch (1500 iterations of 220, about 16 min at the measured 350 pairs/s); smoke test used 110000
+    UAVDARK:
+        ROOT: 'training_dataset/night_ft/uavdark135/crop511'
+        ANNO: 'training_dataset/night_ft/uavdark135/train.json'
+        FRAME_RANGE: 100
+        NUM_USE: -1
+    UAVDARK_VAL:
+        ROOT: 'training_dataset/night_ft/uavdark135/crop511'
+        ANNO: 'training_dataset/night_ft/uavdark135/val.json'
+        FRAME_RANGE: 100
+        NUM_USE: -1
+    UAVDT:
+        ROOT: 'training_dataset/night_ft/uavdt/crop511'
+        ANNO: 'training_dataset/night_ft/uavdt/train.json'
+        FRAME_RANGE: 50
+        NUM_USE: -1
+        WEATHER: ''                    # run D keeps only 'daylight' tracks
+    UAV123:
+        ROOT: 'training_dataset/night_ft/uav123/crop511'
+        ANNO: 'training_dataset/night_ft/uav123/train.json'
+        FRAME_RANGE: 100
+        NUM_USE: -1
+
+    TEMPLATE:
+        SHIFT: 4
+        SCALE: 0.05
+        BLUR: 0.0
+        FLIP: 0.0
+        COLOR: 1.0
+
+    SEARCH:
+        SHIFT: 64
+        SCALE: 0.18
+        BLUR: 0.2
+        FLIP: 0.0
+        COLOR: 1.0
+
+    NEG: 0.0                                 # real negative pairs (different video); 0 in runs A and B
+    GRAY: 0.0
+    NIGHT:
+        DARKEN: True                         # on-the-fly darkening of UAV123 / UAVDT (profiles in pysot/datasets/night_dataset.py)
+        ENH_P: 0.0                           # random gamma enhancement, same value on both crops
+        ENH_GAMMA: [0.4, 1.0]
+        HARDNEG: 0.0                         # UAVDT distractor pairs with real negative labels

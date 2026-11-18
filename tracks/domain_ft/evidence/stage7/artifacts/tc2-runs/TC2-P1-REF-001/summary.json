@@ -1,0 +1,65 @@
+{
+  "status": "completed",
+  "steps": 10000,
+  "rejected_pairs": 46,
+  "wall_seconds": 4247.7037188485265,
+  "development": [
+    {
+      "epoch": -1,
+      "step": 0,
+      "dev_total_loss": 1.3280505664049236
+    },
+    {
+      "epoch": 0,
+      "step": 1000,
+      "dev_total_loss": 1.0727191337201152
+    },
+    {
+      "epoch": 1,
+      "step": 2000,
+      "dev_total_loss": 1.084805280474619
+    },
+    {
+      "epoch": 2,
+      "step": 3000,
+      "dev_total_loss": 1.0320301364624225
+    },
+    {
+      "epoch": 3,
+      "step": 4000,
+      "dev_total_loss": 1.0376406604054564
+    },
+    {
+      "epoch": 4,
+      "step": 5000,
+      "dev_total_loss": 1.0246081541570888
+    },
+    {
+      "epoch": 5,
+      "step": 6000,
+      "dev_total_loss": 1.010180195016333
+    },
+    {
+      "epoch": 6,
+      "step": 7000,
+      "dev_total_loss": 1.0033003525261115
+    },
+    {
+      "epoch": 7,
+      "step": 8000,
+      "dev_total_loss": 1.024606087185917
+    },
+    {
+      "epoch": 8,
+      "step": 9000,
+      "dev_total_loss": 1.0018824213737991
+    },
+    {
+      "epoch": 9,
+      "step": 10000,
+      "dev_total_loss": 1.0045634031247366
+    }
+  ],
+  "primary_checkpoint": "epoch-09.pt (fixed last)",
+  "finished_utc": "2026-10-30T05:31:43.637211+00:00"
+}

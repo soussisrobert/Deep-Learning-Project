@@ -1,0 +1,16 @@
+basketballplayer2
+bike1
+bike11
+building1
+bus1
+girl2
+girl7
+group9_1
+group9_2
+minibus2
+motorbike3
+pedestrian6
+person1
+person13
+person19
+truck2
