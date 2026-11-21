@@ -8,6 +8,7 @@ SHA-256 with `sha256sum -c checkpoints/SHA256SUMS` (paths in that file are relat
 | `general_model.pth` | official HiFT checkpoint (also distributed as `first.pth`) | links in [the HiFT README](https://github.com/vision4robotics/HiFT#2-test) | all tracks (baseline and starting point) |
 | `REF_seed20261023.pt` | domain fine-tuned REF, seed 20261023 | GitHub Release `v1.0-paper` asset | domain track |
 | `REF_seed20261102.pt` | domain fine-tuned REF, seed 20261102 | GitHub Release `v1.0-paper` asset | domain track |
+| `corner-head.pt`, `coarse-refiner.pt`, `warmup-corner-head.pt` | box refinement heads | GitHub Release `v1.0-paper` assets; hashes in `tracks/box_refinement/handoff/SHA256SUMS` | box refinement |
 | `alexnet-bn.pth` | ImageNet AlexNet backbone for HiFT training | upstream HiFT repository, `pretrained_models/alexnet-bn.pth`; goes in `tracks/night/pretrained_models/` | night fine-tuning only |
 
 The int8bb-s1 model is not a separate download: it is rebuilt deterministically from

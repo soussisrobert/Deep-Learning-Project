@@ -189,6 +189,139 @@ def domain():
                          cluster_bootstrap((r1[vids] - r2[vids]).values, [cl[v] for v in vids], seed=20261105), src)
 
 
+# ---------------------------------------------------------------- crop zoom
+def crop_zoom():
+    src = "results/crop_zoom/per_video_crop_zoom.csv"
+    d = pd.read_csv(RES / "crop_zoom/per_video_crop_zoom.csv")
+    for bench, key in [("UAV123@10fps(subsampled)", "uav123_10fps_sub"), ("UAV20L", "uav20l")]:
+        p = d[d.benchmark == bench].pivot(index="video", columns="model", values="success_auc")
+        put(f"zoom.{key}.n", len(p), source=src)
+        for m in p.columns:
+            put(f"zoom.{key}.{m}", float(p[m].mean()), source=src)
+            if m != "base1.2":
+                put_interval(f"zoom.{key}.{m}-base", video_bootstrap((p[m] - p["base1.2"]).values, seed=20261121), src)
+
+
+# ---------------------------------------------------------------- box refinement (corner head)
+def box_refinement():
+    src = "results/box_refinement/per_video_VisDrone34.csv"
+    cl = {r["sequence"]: r["source_cluster"] for r in csv.DictReader(open(SPL / "domain/source_cluster_mapping.csv"))}
+    d = pd.read_csv(RES / "box_refinement/per_video_VisDrone34.csv")
+    p = d.pivot(index="video", columns="model", values="success_auc")
+    put("refine.visdrone34.n", len(p), source=src)
+    put("refine.visdrone34.clusters", len({cl[v] for v in p.index}), source=src)
+    for m in p.columns:
+        put(f"refine.visdrone34.{m}", float(p[m].mean()), source=src)
+    put_interval("refine.visdrone34.pipeline-stock",
+                 cluster_bootstrap((p["HiFT_corner_pipeline"] - p["HiFT_stock_raw"]).values,
+                                   [cl[v] for v in p.index], seed=20261105), src)
+
+
+# ---------------------------------------------------------------- additional paper numbers (final draft)
+def extras():
+    T = ROOT / "tracks"
+    # night: speed summary (job 55514), overlap screen header, containment share
+    sp = (T / "night/evidence/E26_speed_summary.txt").read_text()
+    for m in re.finditer(r"SPEED (\w+)\s+pass (\d): 20 videos, (\d+) frames, ([\d.]+) fps", sp):
+        put(f"night.speed.{m.group(1)}_p{m.group(2)}.fps", float(m.group(4)), "recorded", "tracks/night/evidence/E26_speed_summary.txt")
+        put(f"night.speed.{m.group(1)}_p{m.group(2)}.frames", int(m.group(3)), "recorded", "tracks/night/evidence/E26_speed_summary.txt")
+    lk = (T / "night/evidence/sources/output_HiFT_uavdark_leak_49103.out").read_text()
+    src = "tracks/night/evidence/sources/output_HiFT_uavdark_leak_49103.out"
+    m = re.search(r"UAVDark135: (\d+) sequence folders, (\d+) frames", lk)
+    put("night.leak.sequences", int(m.group(1)), "recorded", src)
+    put("night.leak.total_frames", int(m.group(2)), "recorded", src)
+    put("night.leak.max_nonmatch_corr", float(re.search(r"highest lowres corr among non-matches: ([\d.]+)", lk).group(1)), "recorded", src)
+    put("night.E15.start_in_window_pct", 100 * OUT["night.E15.start_in_window"]["value"] / OUT["night.E15.stretches"]["value"],
+        source="tracks/night/evidence/sources/E15_stretches.csv")
+
+    # CPU: GPU vs CPU fp32 on TEST-40, whole-backbone draws, DEV selection, calibration crops, timing details
+    d = pd.read_csv(RES / "cpu/per_video_UAV123.csv")
+    s40 = sorted(json.loads((SPL / "cpu/uav123_test40.json").read_text())["sequences"])
+    c = d[d.model == "fp32_cpu"].set_index("video").success_auc[s40]
+    g = d[d.model == "fp32_gpu"].set_index("video").success_auc[s40]
+    put_interval("cpu.cpu_minus_gpu_test40", video_bootstrap((c - g).values, seed=0), "results/cpu/per_video_UAV123.csv")
+    put("cpu.cpu_minus_gpu_test40.person1_s", float(c["person1_s"] - g["person1_s"]), source="results/cpu/per_video_UAV123.csv")
+    w = pd.read_csv(T / "cpu_int8/analysis/all-rounds/per_video_success.csv").set_index("video")
+    srcw = "tracks/cpu_int8/analysis/all-rounds/per_video_success.csv"
+    fpc = w.loc[s40, "uav123_fp32_clean_nodef_t4"]
+    cols = ["uav123-sub40_int8bb_clean_nodef_t4"] + [f"uav123-sub40_int8bb_clean_nodef_t4_cal{k}" for k in (1, 2, 3)]
+    put("cpu.wholebackbone_test40.mean4", float(np.mean([w.loc[s40, col].mean() - fpc.mean() for col in cols])), source=srcw)
+    dev = sorted(json.loads((SPL / "cpu/uav123_dev20.json").read_text())["sequences"])
+    fpd = w.loc[dev, "uav123-dev20_fp32_clean_nodef_t4"]
+    excl = []
+    for cand in ["int8bb_c20x2", "int8bb_c40x4s", "int8bb-s1_c20x2", "int8bb-s1_c40x4s"]:
+        D = np.stack([w.loc[dev, f"uav123-dev20_{cand}_cal{k}"].values for k in (1, 2, 3)])
+        ch = pd.Series(D.mean(0) - fpd.values, index=dev)
+        put(f"cpu.dev20.{cand}.mean", float(ch.mean()), source=srcw)
+        excl.append(float(ch.drop("person19_2").mean()))
+        if cand == "int8bb-s1_c40x4s":
+            put("cpu.dev20.selected.person19_2", float(ch["person19_2"]), source=srcw)
+    put("cpu.dev20.excl_person19_2.min", min(excl), source=srcw)
+    put("cpu.dev20.excl_person19_2.max", max(excl), source=srcw)
+    cal = T / "cpu_int8/analysis/2026-10-22_round5-final/calibration_summaries"
+    for name, key in [("uav123-sub40_int8sel_clean_nodef_t4_cal1", "test_cal1"), ("uav123-sub40_int8sel_clean_nodef_t4_cal2", "test_cal2"),
+                      ("uav123-sub40_int8sel_clean_nodef_t4_cal3", "test_cal3"), ("uav123-nt83_int8sel_clean_nodef_t4_cal0", "nontest")]:
+        js = json.loads((cal / f"{name}.summary.json").read_text())
+        put(f"cpu.calib_crops.{key}", js["variant_info"]["calibration_crops"], "recorded", f"{cal.relative_to(ROOT)}/{name}.summary.json")
+    ses = list(csv.DictReader(open(T / "cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/sessions.csv")))
+    put("cpu.timing.t4.tracker_frames_per_session", int(ses[0][list(ses[0])[-1]]), "recorded",
+        "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/sessions.csv")
+    put("cpu.timing.t4.head_share_pct", 100 * OUT["cpu.timing.t4.int8bb-s1_head_ms"]["value"] / OUT["cpu.timing.t4.int8bb-s1_net_ms"]["value"],
+        "recorded", "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json")
+
+    # domain: validation raw vs sigmoid, grid size, training arms, REF schedule
+    st = (T / "domain_ft/reports/TC2_STATE.md").read_text()
+    m = re.search(r"B0-raw ([\d.]+)/.*?B0-sigmoid ([\d.]+)/", st)
+    put("domain.val.B0_raw_M", float(m.group(1)), "recorded", "tracks/domain_ft/reports/TC2_STATE.md")
+    put("domain.val.B0_sigmoid_M", float(m.group(2)), "recorded", "tracks/domain_ft/reports/TC2_STATE.md")
+    put("domain.stage3_grid.settings", len(json.loads((T / "domain_ft/evidence/stage7/configs/stage3_track_grid.json").read_text())),
+        "recorded", "tracks/domain_ft/evidence/stage7/configs/stage3_track_grid.json")
+    co = (T / "domain_ft/reports/STAGE7_CLOSEOUT.md").read_text()
+    arms = re.search(r"eight training arms \(([^)]*)\)", co).group(1).split(",")
+    put("domain.training_arms_rejected", len(arms), "recorded", "tracks/domain_ft/reports/STAGE7_CLOSEOUT.md")
+    for seed_dir in ["TC2-P1-REF-001", "TC2-P1-REF-S2-001"]:
+        mf = json.loads((T / f"domain_ft/evidence/stage7/artifacts/tc2-runs/{seed_dir}/manifest.json").read_text())
+        sc = mf["schedule"]
+        src = f"tracks/domain_ft/evidence/stage7/artifacts/tc2-runs/{seed_dir}/manifest.json"
+        put(f"domain.ref.{seed_dir}.updates", sc["epochs"] * sc["steps_per_epoch"], "recorded", src)
+        put(f"domain.ref.{seed_dir}.batch", sc["batch"], "recorded", src)
+        put(f"domain.ref.{seed_dir}.lr_first", sc["lr_table_used"][0], "recorded", src)
+        put(f"domain.ref.{seed_dir}.lr_last", sc["lr_table_used"][-1], "recorded", src)
+
+    # box refinement: clip counts, inventory, baseline check, validation and corner-stage increment
+    cl = {r["sequence"]: r["source_cluster"] for r in csv.DictReader(open(SPL / "domain/source_cluster_mapping.csv"))}
+    rf = pd.read_csv(RES / "box_refinement/per_video_VisDrone34.csv").pivot(index="video", columns="model", values="success_auc")
+    dlt = rf["HiFT_corner_pipeline"] - rf["HiFT_stock_raw"]
+    put("refine.visdrone34.better", int((dlt > 0.005).sum()), source="results/box_refinement/per_video_VisDrone34.csv")
+    put("refine.visdrone34.worse", int((dlt < -0.005).sum()), source="results/box_refinement/per_video_VisDrone34.csv")
+    b0 = pd.read_csv(RES / "domain/per_video_VisDrone34.csv")
+    b0 = b0[b0.model == "B0"].set_index("video").success_auc[rf.index]
+    put_interval("refine.baseline_check.stock_raw-B0_sigmoid",
+                 cluster_bootstrap((rf["HiFT_stock_raw"] - b0).values, [cl[v] for v in rf.index], seed=20261105),
+                 "results/box_refinement + results/domain per_video_VisDrone34.csv")
+    H = T / "box_refinement/handoff"
+    inv = pd.read_csv(H / "dataset_inventory.csv")
+    for sp_, key in [("train", "train"), ("val", "val"), ("test", "test")]:
+        sub = inv[inv.split == sp_]
+        put(f"refine.inventory.{key}.clips", len(sub), "recorded", "tracks/box_refinement/handoff/dataset_inventory.csv")
+        put(f"refine.inventory.{key}.sources", sub.source_cluster.nunique(), "recorded", "tracks/box_refinement/handoff/dataset_inventory.csv")
+    S = {k: set(g.source_cluster) for k, g in inv.groupby("split")}
+    put("refine.inventory.shared_sources", len(S["train"] & S["val"]) + len(S["train"] & S["test"]) + len(S["val"] & S["test"]),
+        "recorded", "tracks/box_refinement/handoff/dataset_inventory.csv")
+    v = json.loads((H / "evidence/corner_validation.json").read_text())["averages"]
+    put("refine.val.pipeline", v["gentle"]["success_auc"], "recorded", "tracks/box_refinement/handoff/evidence/corner_validation.json")
+    put("refine.val.coarse", v["version_one"]["success_auc"], "recorded", "tracks/box_refinement/handoff/evidence/corner_validation.json")
+    hs = json.loads((H / "evidence/historical_corner_test35.json").read_text())["sequences"]
+    keep = sorted(rf.index)
+    put("refine.test34.corner_over_coarse_historical",
+        float(np.mean([hs[x]["gentle"]["success_auc"] - hs[x]["version_one"]["success_auc"] for x in keep])),
+        "recorded", "tracks/box_refinement/handoff/evidence/historical_corner_test35.json (34 retained clips)")
+    rp = json.loads((H / "evidence/replay_per_video.json").read_text())
+    put("refine.test34.corner_over_coarse_replay",
+        float(np.mean([rp[x]["scores"]["corner_pipeline"]["success_auc"] - rp[x]["scores"]["coarse_refiner"]["success_auc"] for x in keep])),
+        "recorded", "tracks/box_refinement/handoff/evidence/replay_per_video.json")
+
+
 def fmt(v, dp):
     return f"{v:.{dp}f}" if isinstance(v, float) or dp > 0 else str(int(round(v)))
 
@@ -197,7 +330,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true", help="write results/numbers.json")
     args = ap.parse_args()
-    night(); cpu(); domain()
+    night(); cpu(); domain(); crop_zoom(); box_refinement(); extras()
     if args.write:
         (RES / "numbers.json").write_text(json.dumps(OUT, indent=1, sort_keys=True))
         print("wrote results/numbers.json")

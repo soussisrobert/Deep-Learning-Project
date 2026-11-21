@@ -773,5 +773,474 @@
   "paper": "0.001",
   "dp": 3,
   "where": "Domain section / Table 3"
+ },
+ {
+  "key": "night.speed.original_p1.fps",
+  "paper": "93.8",
+  "dp": 1,
+  "where": "Night tracking (speed)"
+ },
+ {
+  "key": "night.speed.original_p2.fps",
+  "paper": "92.1",
+  "dp": 1,
+  "where": "Night tracking (speed)"
+ },
+ {
+  "key": "night.speed.gamma_p1.fps",
+  "paper": "88.7",
+  "dp": 1,
+  "where": "Night tracking (speed)"
+ },
+ {
+  "key": "night.speed.gamma_p2.fps",
+  "paper": "88.6",
+  "dp": 1,
+  "where": "Night tracking (speed)"
+ },
+ {
+  "key": "night.speed.gamma_anchor_p1.fps",
+  "paper": "88.5",
+  "dp": 1,
+  "where": "Night tracking (speed)"
+ },
+ {
+  "key": "night.speed.gamma_anchor_p2.fps",
+  "paper": "88.0",
+  "dp": 1,
+  "where": "Night tracking (speed)"
+ },
+ {
+  "key": "night.speed.original_p1.frames",
+  "paper": "16550",
+  "dp": 0,
+  "where": "Night tracking (speed) (about 16,550 frames)",
+  "tol": 20
+ },
+ {
+  "key": "night.leak.sequences",
+  "paper": "135",
+  "dp": 0,
+  "where": "Night tracking (overlap screen)"
+ },
+ {
+  "key": "night.leak.total_frames",
+  "paper": "125466",
+  "dp": 0,
+  "where": "Night tracking (overlap screen)"
+ },
+ {
+  "key": "night.leak.max_nonmatch_corr",
+  "paper": "0.914",
+  "dp": 3,
+  "where": "Night tracking (overlap screen)"
+ },
+ {
+  "key": "night.E15.start_in_window_pct",
+  "paper": "95.0",
+  "dp": 1,
+  "where": "Why HiFT fails"
+ },
+ {
+  "key": "cpu.cpu_minus_gpu_test40.delta",
+  "paper": "0.0058",
+  "dp": 4,
+  "where": "Why HiFT fails (CPU vs GPU fp32)"
+ },
+ {
+  "key": "cpu.cpu_minus_gpu_test40.lo",
+  "paper": "-0.0002",
+  "dp": 4,
+  "where": "Why HiFT fails (CPU vs GPU fp32)"
+ },
+ {
+  "key": "cpu.cpu_minus_gpu_test40.hi",
+  "paper": "0.0163",
+  "dp": 4,
+  "where": "Why HiFT fails (CPU vs GPU fp32)"
+ },
+ {
+  "key": "cpu.cpu_minus_gpu_test40.person1_s",
+  "paper": "0.19",
+  "dp": 2,
+  "where": "Why HiFT fails (CPU vs GPU fp32)"
+ },
+ {
+  "key": "cpu.wholebackbone_test40.mean4",
+  "paper": "-0.016",
+  "dp": 3,
+  "where": "CPU efficiency (baseline, calibration and selection)"
+ },
+ {
+  "key": "cpu.dev20.int8bb-s1_c40x4s.mean",
+  "paper": "0.025",
+  "dp": 3,
+  "where": "CPU efficiency (baseline, calibration and selection)"
+ },
+ {
+  "key": "cpu.dev20.selected.person19_2",
+  "paper": "0.455",
+  "dp": 3,
+  "where": "CPU efficiency (baseline, calibration and selection)"
+ },
+ {
+  "key": "cpu.dev20.excl_person19_2.min",
+  "paper": "-0.003",
+  "dp": 3,
+  "where": "CPU efficiency (baseline, calibration and selection)"
+ },
+ {
+  "key": "cpu.dev20.excl_person19_2.max",
+  "paper": "0.002",
+  "dp": 3,
+  "where": "CPU efficiency (baseline, calibration and selection)"
+ },
+ {
+  "key": "cpu.calib_crops.test_cal1",
+  "paper": "158",
+  "dp": 0,
+  "where": "CPU efficiency (baseline, calibration and selection)"
+ },
+ {
+  "key": "cpu.calib_crops.test_cal2",
+  "paper": "156",
+  "dp": 0,
+  "where": "CPU efficiency (baseline, calibration and selection)"
+ },
+ {
+  "key": "cpu.calib_crops.test_cal3",
+  "paper": "159",
+  "dp": 0,
+  "where": "CPU efficiency (baseline, calibration and selection)"
+ },
+ {
+  "key": "cpu.calib_crops.nontest",
+  "paper": "158",
+  "dp": 0,
+  "where": "CPU efficiency (baseline, calibration and selection)"
+ },
+ {
+  "key": "cpu.timing.t4.tracker_frames_per_session",
+  "paper": "5496",
+  "dp": 0,
+  "where": "CPU efficiency (matched timing)"
+ },
+ {
+  "key": "cpu.timing.t4.head_share_pct",
+  "paper": "42",
+  "dp": 0,
+  "where": "CPU efficiency (matched timing, 'about 42%')"
+ },
+ {
+  "key": "domain.val.B0_raw_M",
+  "paper": "0.544",
+  "dp": 3,
+  "where": "HiFT and our changes (domain weights)"
+ },
+ {
+  "key": "domain.val.B0_sigmoid_M",
+  "paper": "0.588",
+  "dp": 3,
+  "where": "HiFT and our changes (domain weights)"
+ },
+ {
+  "key": "domain.stage3_grid.settings",
+  "paper": "37",
+  "dp": 0,
+  "where": "Domain fine-tuning (frozen recipe)"
+ },
+ {
+  "key": "domain.training_arms_rejected",
+  "paper": "8",
+  "dp": 0,
+  "where": "Domain fine-tuning (frozen recipe)"
+ },
+ {
+  "key": "domain.ref.TC2-P1-REF-001.updates",
+  "paper": "10000",
+  "dp": 0,
+  "where": "Domain fine-tuning (frozen recipe)"
+ },
+ {
+  "key": "domain.ref.TC2-P1-REF-001.batch",
+  "paper": "32",
+  "dp": 0,
+  "where": "Domain fine-tuning (frozen recipe)"
+ },
+ {
+  "key": "domain.ref.TC2-P1-REF-001.lr_first",
+  "paper": "0.001",
+  "dp": 4,
+  "where": "Domain fine-tuning (frozen recipe)"
+ },
+ {
+  "key": "domain.ref.TC2-P1-REF-001.lr_last",
+  "paper": "0.0001",
+  "dp": 4,
+  "where": "Domain fine-tuning (frozen recipe)"
+ },
+ {
+  "key": "domain.ref.TC2-P1-REF-S2-001.updates",
+  "paper": "10000",
+  "dp": 0,
+  "where": "Domain fine-tuning (frozen recipe)"
+ },
+ {
+  "key": "domain.ref.TC2-P1-REF-S2-001.batch",
+  "paper": "32",
+  "dp": 0,
+  "where": "Domain fine-tuning (frozen recipe)"
+ },
+ {
+  "key": "domain.ref.TC2-P1-REF-S2-001.lr_first",
+  "paper": "0.001",
+  "dp": 4,
+  "where": "Domain fine-tuning (frozen recipe)"
+ },
+ {
+  "key": "domain.ref.TC2-P1-REF-S2-001.lr_last",
+  "paper": "0.0001",
+  "dp": 4,
+  "where": "Domain fine-tuning (frozen recipe)"
+ },
+ {
+  "key": "refine.visdrone34.n",
+  "paper": "34",
+  "dp": 0,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract"
+ },
+ {
+  "key": "refine.visdrone34.clusters",
+  "paper": "22",
+  "dp": 0,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract"
+ },
+ {
+  "key": "refine.visdrone34.HiFT_stock_raw",
+  "paper": "0.5300",
+  "dp": 4,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract"
+ },
+ {
+  "key": "refine.visdrone34.HiFT_corner_pipeline",
+  "paper": "0.5456",
+  "dp": 4,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract"
+ },
+ {
+  "key": "refine.visdrone34.pipeline-stock.delta",
+  "paper": "0.0156",
+  "dp": 4,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract"
+ },
+ {
+  "key": "refine.visdrone34.pipeline-stock.lo",
+  "paper": "0.0053",
+  "dp": 4,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract"
+ },
+ {
+  "key": "refine.visdrone34.pipeline-stock.hi",
+  "paper": "0.0280",
+  "dp": 4,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract"
+ },
+ {
+  "key": "refine.visdrone34.better",
+  "paper": "22",
+  "dp": 0,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract"
+ },
+ {
+  "key": "refine.visdrone34.worse",
+  "paper": "6",
+  "dp": 0,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract"
+ },
+ {
+  "key": "refine.test34.corner_over_coarse_historical",
+  "paper": "0.0056",
+  "dp": 4,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract (historical TC2 run)"
+ },
+ {
+  "key": "refine.val.pipeline",
+  "paper": "0.4679",
+  "dp": 4,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract"
+ },
+ {
+  "key": "refine.val.coarse",
+  "paper": "0.4734",
+  "dp": 4,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract"
+ },
+ {
+  "key": "refine.inventory.train.clips",
+  "paper": "86",
+  "dp": 0,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract"
+ },
+ {
+  "key": "refine.inventory.train.sources",
+  "paper": "66",
+  "dp": 0,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract"
+ },
+ {
+  "key": "refine.inventory.val.clips",
+  "paper": "11",
+  "dp": 0,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract"
+ },
+ {
+  "key": "refine.inventory.test.clips",
+  "paper": "35",
+  "dp": 0,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract"
+ },
+ {
+  "key": "refine.inventory.shared_sources",
+  "paper": "0",
+  "dp": 0,
+  "where": "Domain fine-tuning (output-only box refinement) / Abstract"
+ },
+ {
+  "key": "refine.baseline_check.stock_raw-B0_sigmoid.delta",
+  "paper": "0.0033",
+  "dp": 4,
+  "where": "Domain fine-tuning (baseline check)"
+ },
+ {
+  "key": "refine.baseline_check.stock_raw-B0_sigmoid.lo",
+  "paper": "-0.049",
+  "dp": 3,
+  "where": "Domain fine-tuning (baseline check)"
+ },
+ {
+  "key": "refine.baseline_check.stock_raw-B0_sigmoid.hi",
+  "paper": "0.040",
+  "dp": 3,
+  "where": "Domain fine-tuning (baseline check)"
+ },
+ {
+  "key": "zoom.uav123_10fps_sub.n",
+  "paper": "123",
+  "dp": 0,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav20l.n",
+  "paper": "20",
+  "dp": 0,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav123_10fps_sub.base1.2",
+  "paper": "0.569",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav123_10fps_sub.z0901.2",
+  "paper": "0.321",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav123_10fps_sub.z1151.2",
+  "paper": "0.231",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav123_10fps_sub.z0901.2-base.delta",
+  "paper": "-0.248",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav123_10fps_sub.z0901.2-base.lo",
+  "paper": "-0.288",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav123_10fps_sub.z0901.2-base.hi",
+  "paper": "-0.207",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav123_10fps_sub.z1151.2-base.delta",
+  "paper": "-0.338",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav123_10fps_sub.z1151.2-base.lo",
+  "paper": "-0.382",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav123_10fps_sub.z1151.2-base.hi",
+  "paper": "-0.293",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav123_10fps_sub.interp_auto1.2-base.delta",
+  "paper": "0.002",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav123_10fps_sub.interp_auto1.2-base.lo",
+  "paper": "-0.008",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav123_10fps_sub.interp_auto1.2-base.hi",
+  "paper": "0.012",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav20l.z0901.2-base.delta",
+  "paper": "-0.290",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav20l.z0901.2-base.lo",
+  "paper": "-0.396",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav20l.z0901.2-base.hi",
+  "paper": "-0.192",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav20l.interp_auto1.2-base.delta",
+  "paper": "-0.016",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav20l.interp_auto1.2-base.lo",
+  "paper": "-0.066",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
+ },
+ {
+  "key": "zoom.uav20l.interp_auto1.2-base.hi",
+  "paper": "0.028",
+  "dp": 3,
+  "where": "Why HiFT fails (crop rescaling)"
  }
 ]
