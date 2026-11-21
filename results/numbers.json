@@ -54,6 +54,81 @@
   "source": "tracks/cpu_int8/analysis/2026-10-22_round5-final/numbers5.json",
   "value": 0.2919578872865611
  },
+ "cpu.calib_crops.nontest": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-10-22_round5-final/calibration_summaries/uav123-nt83_int8sel_clean_nodef_t4_cal0.summary.json",
+  "value": 158
+ },
+ "cpu.calib_crops.test_cal1": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-10-22_round5-final/calibration_summaries/uav123-sub40_int8sel_clean_nodef_t4_cal1.summary.json",
+  "value": 158
+ },
+ "cpu.calib_crops.test_cal2": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-10-22_round5-final/calibration_summaries/uav123-sub40_int8sel_clean_nodef_t4_cal2.summary.json",
+  "value": 156
+ },
+ "cpu.calib_crops.test_cal3": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-10-22_round5-final/calibration_summaries/uav123-sub40_int8sel_clean_nodef_t4_cal3.summary.json",
+  "value": 159
+ },
+ "cpu.cpu_minus_gpu_test40.delta": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": 0.0057724999999999894
+ },
+ "cpu.cpu_minus_gpu_test40.hi": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": 0.01629024999999998
+ },
+ "cpu.cpu_minus_gpu_test40.lo": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": -0.0002425000000000136
+ },
+ "cpu.cpu_minus_gpu_test40.person1_s": {
+  "kind": "computed",
+  "source": "results/cpu/per_video_UAV123.csv",
+  "value": 0.18989999999999999
+ },
+ "cpu.dev20.excl_person19_2.max": {
+  "kind": "computed",
+  "source": "tracks/cpu_int8/analysis/all-rounds/per_video_success.csv",
+  "value": 0.0024263157894736966
+ },
+ "cpu.dev20.excl_person19_2.min": {
+  "kind": "computed",
+  "source": "tracks/cpu_int8/analysis/all-rounds/per_video_success.csv",
+  "value": -0.003152631578947349
+ },
+ "cpu.dev20.int8bb-s1_c20x2.mean": {
+  "kind": "computed",
+  "source": "tracks/cpu_int8/analysis/all-rounds/per_video_success.csv",
+  "value": -0.0007783333333333135
+ },
+ "cpu.dev20.int8bb-s1_c40x4s.mean": {
+  "kind": "computed",
+  "source": "tracks/cpu_int8/analysis/all-rounds/per_video_success.csv",
+  "value": 0.02504833333333335
+ },
+ "cpu.dev20.int8bb_c20x2.mean": {
+  "kind": "computed",
+  "source": "tracks/cpu_int8/analysis/all-rounds/per_video_success.csv",
+  "value": 0.006515000000000002
+ },
+ "cpu.dev20.int8bb_c40x4s.mean": {
+  "kind": "computed",
+  "source": "tracks/cpu_int8/analysis/all-rounds/per_video_success.csv",
+  "value": 0.01970833333333335
+ },
+ "cpu.dev20.selected.person19_2": {
+  "kind": "computed",
+  "source": "tracks/cpu_int8/analysis/all-rounds/per_video_success.csv",
+  "value": 0.4548666666666667
+ },
  "cpu.loss.car4_s": {
   "kind": "computed",
   "source": "results/cpu/per_video_UAV123.csv",
@@ -219,6 +294,11 @@
   "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
   "value": 90.517
  },
+ "cpu.timing.t4.head_share_pct": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
+  "value": 42.48877271253231
+ },
  "cpu.timing.t4.int8bb-s1_backbone_ms": {
   "kind": "recorded",
   "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
@@ -269,6 +349,11 @@
   "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/summary.json",
   "value": 1.7112680033888732
  },
+ "cpu.timing.t4.tracker_frames_per_session": {
+  "kind": "recorded",
+  "source": "tracks/cpu_int8/analysis/2026-11-02_retime-matched/retime_matched_t4/sessions.csv",
+  "value": 5496
+ },
  "cpu.warn.alarm_before_onset": {
   "kind": "recorded",
   "source": "tracks/cpu_int8/analysis/2026-10-22_round5-final/numbers5.json",
@@ -293,6 +378,61 @@
   "kind": "recorded",
   "source": "tracks/cpu_int8/analysis/2026-10-22_round5-final/numbers5.json",
   "value": 32
+ },
+ "cpu.wholebackbone_test40.mean4": {
+  "kind": "computed",
+  "source": "tracks/cpu_int8/analysis/all-rounds/per_video_success.csv",
+  "value": -0.01609437500000005
+ },
+ "domain.ref.TC2-P1-REF-001.batch": {
+  "kind": "recorded",
+  "source": "tracks/domain_ft/evidence/stage7/artifacts/tc2-runs/TC2-P1-REF-001/manifest.json",
+  "value": 32
+ },
+ "domain.ref.TC2-P1-REF-001.lr_first": {
+  "kind": "recorded",
+  "source": "tracks/domain_ft/evidence/stage7/artifacts/tc2-runs/TC2-P1-REF-001/manifest.json",
+  "value": 0.001
+ },
+ "domain.ref.TC2-P1-REF-001.lr_last": {
+  "kind": "recorded",
+  "source": "tracks/domain_ft/evidence/stage7/artifacts/tc2-runs/TC2-P1-REF-001/manifest.json",
+  "value": 0.0001
+ },
+ "domain.ref.TC2-P1-REF-001.updates": {
+  "kind": "recorded",
+  "source": "tracks/domain_ft/evidence/stage7/artifacts/tc2-runs/TC2-P1-REF-001/manifest.json",
+  "value": 10000
+ },
+ "domain.ref.TC2-P1-REF-S2-001.batch": {
+  "kind": "recorded",
+  "source": "tracks/domain_ft/evidence/stage7/artifacts/tc2-runs/TC2-P1-REF-S2-001/manifest.json",
+  "value": 32
+ },
+ "domain.ref.TC2-P1-REF-S2-001.lr_first": {
+  "kind": "recorded",
+  "source": "tracks/domain_ft/evidence/stage7/artifacts/tc2-runs/TC2-P1-REF-S2-001/manifest.json",
+  "value": 0.001
+ },
+ "domain.ref.TC2-P1-REF-S2-001.lr_last": {
+  "kind": "recorded",
+  "source": "tracks/domain_ft/evidence/stage7/artifacts/tc2-runs/TC2-P1-REF-S2-001/manifest.json",
+  "value": 0.0001
+ },
+ "domain.ref.TC2-P1-REF-S2-001.updates": {
+  "kind": "recorded",
+  "source": "tracks/domain_ft/evidence/stage7/artifacts/tc2-runs/TC2-P1-REF-S2-001/manifest.json",
+  "value": 10000
+ },
+ "domain.stage3_grid.settings": {
+  "kind": "recorded",
+  "source": "tracks/domain_ft/evidence/stage7/configs/stage3_track_grid.json",
+  "value": 37
+ },
+ "domain.training_arms_rejected": {
+  "kind": "recorded",
+  "source": "tracks/domain_ft/reports/STAGE7_CLOSEOUT.md",
+  "value": 8
  },
  "domain.uav123_10fps_76.B0": {
   "kind": "computed",
@@ -348,6 +488,16 @@
   "kind": "computed",
   "source": "results/domain/per_video_UAV123_10fps_76.csv",
   "value": -0.03266452130044682
+ },
+ "domain.val.B0_raw_M": {
+  "kind": "recorded",
+  "source": "tracks/domain_ft/reports/TC2_STATE.md",
+  "value": 0.544
+ },
+ "domain.val.B0_sigmoid_M": {
+  "kind": "recorded",
+  "source": "tracks/domain_ft/reports/TC2_STATE.md",
+  "value": 0.588
  },
  "domain.visdrone34.B0": {
   "kind": "computed",
@@ -408,6 +558,11 @@
   "kind": "computed",
   "source": "tracks/night/evidence/sources/E15_stretches.csv",
   "value": 864
+ },
+ "night.E15.start_in_window_pct": {
+  "kind": "computed",
+  "source": "tracks/night/evidence/sources/E15_stretches.csv",
+  "value": 95.04950495049505
  },
  "night.E15.stretches": {
   "kind": "computed",
@@ -759,10 +914,85 @@
   "source": "tracks/night/evidence/sources/output_HiFT_uavdark_leak_49103.out",
   "value": 0
  },
+ "night.leak.max_nonmatch_corr": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/sources/output_HiFT_uavdark_leak_49103.out",
+  "value": 0.914
+ },
  "night.leak.query_frames": {
   "kind": "recorded",
   "source": "tracks/night/evidence/sources/output_HiFT_uavdark_leak_49103.out",
   "value": 2578
+ },
+ "night.leak.sequences": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/sources/output_HiFT_uavdark_leak_49103.out",
+  "value": 135
+ },
+ "night.leak.total_frames": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/sources/output_HiFT_uavdark_leak_49103.out",
+  "value": 125466
+ },
+ "night.speed.gamma_anchor_p1.fps": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/E26_speed_summary.txt",
+  "value": 88.5
+ },
+ "night.speed.gamma_anchor_p1.frames": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/E26_speed_summary.txt",
+  "value": 16546
+ },
+ "night.speed.gamma_anchor_p2.fps": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/E26_speed_summary.txt",
+  "value": 88.0
+ },
+ "night.speed.gamma_anchor_p2.frames": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/E26_speed_summary.txt",
+  "value": 16557
+ },
+ "night.speed.gamma_p1.fps": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/E26_speed_summary.txt",
+  "value": 88.7
+ },
+ "night.speed.gamma_p1.frames": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/E26_speed_summary.txt",
+  "value": 16557
+ },
+ "night.speed.gamma_p2.fps": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/E26_speed_summary.txt",
+  "value": 88.6
+ },
+ "night.speed.gamma_p2.frames": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/E26_speed_summary.txt",
+  "value": 16557
+ },
+ "night.speed.original_p1.fps": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/E26_speed_summary.txt",
+  "value": 93.8
+ },
+ "night.speed.original_p1.frames": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/E26_speed_summary.txt",
+  "value": 16550
+ },
+ "night.speed.original_p2.fps": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/E26_speed_summary.txt",
+  "value": 92.1
+ },
+ "night.speed.original_p2.frames": {
+  "kind": "recorded",
+  "source": "tracks/night/evidence/E26_speed_summary.txt",
+  "value": 16541
  },
  "night.speed.speed_gamma_anchor_p1.seconds": {
   "kind": "recorded",
@@ -813,5 +1043,340 @@
   "kind": "computed",
   "source": "data/splits/night",
   "value": 16
+ },
+ "refine.baseline_check.stock_raw-B0_sigmoid.delta": {
+  "kind": "computed",
+  "source": "results/box_refinement + results/domain per_video_VisDrone34.csv",
+  "value": 0.003269397104688649
+ },
+ "refine.baseline_check.stock_raw-B0_sigmoid.hi": {
+  "kind": "computed",
+  "source": "results/box_refinement + results/domain per_video_VisDrone34.csv",
+  "value": 0.03977225203487845
+ },
+ "refine.baseline_check.stock_raw-B0_sigmoid.lo": {
+  "kind": "computed",
+  "source": "results/box_refinement + results/domain per_video_VisDrone34.csv",
+  "value": -0.049241619835402324
+ },
+ "refine.inventory.shared_sources": {
+  "kind": "recorded",
+  "source": "tracks/box_refinement/handoff/dataset_inventory.csv",
+  "value": 0
+ },
+ "refine.inventory.test.clips": {
+  "kind": "recorded",
+  "source": "tracks/box_refinement/handoff/dataset_inventory.csv",
+  "value": 35
+ },
+ "refine.inventory.test.sources": {
+  "kind": "recorded",
+  "source": "tracks/box_refinement/handoff/dataset_inventory.csv",
+  "value": 23
+ },
+ "refine.inventory.train.clips": {
+  "kind": "recorded",
+  "source": "tracks/box_refinement/handoff/dataset_inventory.csv",
+  "value": 86
+ },
+ "refine.inventory.train.sources": {
+  "kind": "recorded",
+  "source": "tracks/box_refinement/handoff/dataset_inventory.csv",
+  "value": 66
+ },
+ "refine.inventory.val.clips": {
+  "kind": "recorded",
+  "source": "tracks/box_refinement/handoff/dataset_inventory.csv",
+  "value": 11
+ },
+ "refine.inventory.val.sources": {
+  "kind": "recorded",
+  "source": "tracks/box_refinement/handoff/dataset_inventory.csv",
+  "value": 9
+ },
+ "refine.test34.corner_over_coarse_historical": {
+  "kind": "recorded",
+  "source": "tracks/box_refinement/handoff/evidence/historical_corner_test35.json (34 retained clips)",
+  "value": 0.005601006934512404
+ },
+ "refine.test34.corner_over_coarse_replay": {
+  "kind": "recorded",
+  "source": "tracks/box_refinement/handoff/evidence/replay_per_video.json",
+  "value": 0.005680590889696313
+ },
+ "refine.val.coarse": {
+  "kind": "recorded",
+  "source": "tracks/box_refinement/handoff/evidence/corner_validation.json",
+  "value": 0.47340111399649304
+ },
+ "refine.val.pipeline": {
+  "kind": "recorded",
+  "source": "tracks/box_refinement/handoff/evidence/corner_validation.json",
+  "value": 0.46785013687415494
+ },
+ "refine.visdrone34.HiFT_corner_pipeline": {
+  "kind": "computed",
+  "source": "results/box_refinement/per_video_VisDrone34.csv",
+  "value": 0.5456236923147386
+ },
+ "refine.visdrone34.HiFT_stock_raw": {
+  "kind": "computed",
+  "source": "results/box_refinement/per_video_VisDrone34.csv",
+  "value": 0.5299785968320014
+ },
+ "refine.visdrone34.better": {
+  "kind": "computed",
+  "source": "results/box_refinement/per_video_VisDrone34.csv",
+  "value": 22
+ },
+ "refine.visdrone34.clusters": {
+  "kind": "computed",
+  "source": "results/box_refinement/per_video_VisDrone34.csv",
+  "value": 22
+ },
+ "refine.visdrone34.n": {
+  "kind": "computed",
+  "source": "results/box_refinement/per_video_VisDrone34.csv",
+  "value": 34
+ },
+ "refine.visdrone34.pipeline-stock.delta": {
+  "kind": "computed",
+  "source": "results/box_refinement/per_video_VisDrone34.csv",
+  "value": 0.01564509548273732
+ },
+ "refine.visdrone34.pipeline-stock.hi": {
+  "kind": "computed",
+  "source": "results/box_refinement/per_video_VisDrone34.csv",
+  "value": 0.02797698584382355
+ },
+ "refine.visdrone34.pipeline-stock.lo": {
+  "kind": "computed",
+  "source": "results/box_refinement/per_video_VisDrone34.csv",
+  "value": 0.005268586446626861
+ },
+ "refine.visdrone34.worse": {
+  "kind": "computed",
+  "source": "results/box_refinement/per_video_VisDrone34.csv",
+  "value": 6
+ },
+ "zoom.uav123_10fps_sub.base1.2": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 0.56910508590324
+ },
+ "zoom.uav123_10fps_sub.interp_auto1.2": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 0.5711997716935849
+ },
+ "zoom.uav123_10fps_sub.interp_auto1.2-base.delta": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 0.002094685790344744
+ },
+ "zoom.uav123_10fps_sub.interp_auto1.2-base.hi": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 0.012006323042547411
+ },
+ "zoom.uav123_10fps_sub.interp_auto1.2-base.lo": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.008314987263796557
+ },
+ "zoom.uav123_10fps_sub.n": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 123
+ },
+ "zoom.uav123_10fps_sub.z0801.2": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 0.06610591387172222
+ },
+ "zoom.uav123_10fps_sub.z0801.2-base.delta": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.5029991720315179
+ },
+ "zoom.uav123_10fps_sub.z0801.2-base.hi": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.45420338540135796
+ },
+ "zoom.uav123_10fps_sub.z0801.2-base.lo": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.5505252436736222
+ },
+ "zoom.uav123_10fps_sub.z0901.2": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 0.32144271749754044
+ },
+ "zoom.uav123_10fps_sub.z0901.2-base.delta": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.24766236840569958
+ },
+ "zoom.uav123_10fps_sub.z0901.2-base.hi": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.206995489488534
+ },
+ "zoom.uav123_10fps_sub.z0901.2-base.lo": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.288248189577854
+ },
+ "zoom.uav123_10fps_sub.z1151.2": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 0.23129155578083302
+ },
+ "zoom.uav123_10fps_sub.z1151.2-base.delta": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.3378135301224072
+ },
+ "zoom.uav123_10fps_sub.z1151.2-base.hi": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.29321326872397974
+ },
+ "zoom.uav123_10fps_sub.z1151.2-base.lo": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.3818370527197708
+ },
+ "zoom.uav123_10fps_sub.z1301.2": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 0.06988125032308816
+ },
+ "zoom.uav123_10fps_sub.z1301.2-base.delta": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.499223835580152
+ },
+ "zoom.uav123_10fps_sub.z1301.2-base.hi": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.4472839297891109
+ },
+ "zoom.uav123_10fps_sub.z1301.2-base.lo": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.5489348374810786
+ },
+ "zoom.uav123_10fps_sub.z1501.2": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 0.05032144106903325
+ },
+ "zoom.uav123_10fps_sub.z1501.2-base.delta": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.5187836448342069
+ },
+ "zoom.uav123_10fps_sub.z1501.2-base.hi": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.46578382897752163
+ },
+ "zoom.uav123_10fps_sub.z1501.2-base.lo": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.5691875593899131
+ },
+ "zoom.uav20l.base1.2": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 0.5280369520426167
+ },
+ "zoom.uav20l.interp_auto1.2": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 0.5124842806798355
+ },
+ "zoom.uav20l.interp_auto1.2-base.delta": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.015552671362781201
+ },
+ "zoom.uav20l.interp_auto1.2-base.hi": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 0.028100155518692403
+ },
+ "zoom.uav20l.interp_auto1.2-base.lo": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.06601834647592053
+ },
+ "zoom.uav20l.n": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 20
+ },
+ "zoom.uav20l.z0901.2": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 0.2382630106779411
+ },
+ "zoom.uav20l.z0901.2-base.delta": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.28977394136467566
+ },
+ "zoom.uav20l.z0901.2-base.hi": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.19233429742920227
+ },
+ "zoom.uav20l.z0901.2-base.lo": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.3958709081010172
+ },
+ "zoom.uav20l.z1301.2": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 0.016122253397484167
+ },
+ "zoom.uav20l.z1301.2-base.delta": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.5119146986451326
+ },
+ "zoom.uav20l.z1301.2-base.hi": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.3953695741911569
+ },
+ "zoom.uav20l.z1301.2-base.lo": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.6246021170234131
+ },
+ "zoom.uav20l.z1501.2": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": 0.022103558400272283
+ },
+ "zoom.uav20l.z1501.2-base.delta": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.5059333936423445
+ },
+ "zoom.uav20l.z1501.2-base.hi": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.3930228513041517
+ },
+ "zoom.uav20l.z1501.2-base.lo": {
+  "kind": "computed",
+  "source": "results/crop_zoom/per_video_crop_zoom.csv",
+  "value": -0.6145914601240432
  }
 }

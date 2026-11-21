@@ -1,0 +1,17 @@
+pysot/models/backbone/newalexnet.py
+pysot/models/box_refinement.py
+pysot/models/corner_refinement.py
+pysot/models/model_builder.py
+pysot/models/utile/utile.py
+pysot/tracker/base_tracker.py
+pysot/tracker/box_selector.py
+pysot/tracker/hift_tracker.py
+pysot/tracker/sglatrack.py
+slurm/box_refiner_tc2.sbatch
+slurm/corner_refiner_tc2.sbatch
+tools/export_corner_results.py
+tools/overnight_refinement.py
+tools/prepare_visdrone.py
+tools/refine_boxes.py
+tools/select_boxes.py
+tools/train_corner_refiner.py

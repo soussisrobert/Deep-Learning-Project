@@ -23,7 +23,7 @@ pip install -r environment/requirements-verify.txt
 python scripts/verify_paper_numbers.py
 ```
 
-Expected last line: `129/129 paper numbers reproduced`. The script recomputes every mean and every
+Expected last line: `207/207 paper numbers reproduced`. The script recomputes every mean and every
 bootstrap interval from the released per-video files in [`results/`](results) using one shared
 statistics module ([`shared/stats.py`](shared/stats.py)), and checks each against
 [`paper/expected_numbers.json`](paper/expected_numbers.json) (the value as printed, plus where it appears).
@@ -43,7 +43,7 @@ scripts/
   check_evidence_checksums.py  integrity check of the domain evidence bundle
   convert/                how results/ was produced from each track's raw outputs
 results/                  per-video scores of every model on every benchmark, common format
-  night/ cpu/ domain/     benchmark,video,frames,model,seed,success_auc,precision20,toolkit
+  night/ cpu/ domain/ box_refinement/ crop_zoom/   common format: benchmark,video,frames,model,seed,success_auc,precision20,toolkit
   numbers.json            every computed number (written by verify --write)
 paper/expected_numbers.json   the numbers as printed in the paper
 data/                     how to obtain each dataset; data/splits/ = every sequence list used
@@ -74,10 +74,12 @@ short guide (what it changes, which paper section it supports, how to run it).
 | Confidence detects failure / warns early | AUROC 0.968; 10 / 32 onsets | `tracks/cpu_int8/analysis/2026-10-22_round5-final/numbers5.json` | recorded |
 | REF vs B0, VisDrone-34 (22 source clusters) | +0.0749 [+0.024, +0.124] | `results/domain/per_video_VisDrone34.csv` | level 1 |
 | REF vs B0, UAV123@10fps-76 (48 clusters) | −0.0050 [−0.034, +0.027] | `results/domain/per_video_UAV123_10fps_76.csv` | level 1 |
+| Box refinement vs stock HiFT, VisDrone-34 (exploratory) | +0.0156 [+0.0053, +0.0280] | `results/box_refinement/per_video_VisDrone34.csv` | level 1 |
+| Crop zoom k = 0.9 vs native, UAV123 10 fps subsample | −0.248 [−0.288, −0.207] | `results/crop_zoom/per_video_crop_zoom.csv` | level 1 |
 
 *Level 1* = recomputed from released files by `verify_paper_numbers.py`. *Recorded* = read from a
 released measurement file (timing logs, frame-level analysis output); recomputing it needs raw tracker
-outputs or hardware (level 2/3). The full list of 129 checked numbers is `paper/expected_numbers.json`.
+outputs or hardware (level 2/3). The full list of 207 checked numbers is `paper/expected_numbers.json`.
 
 ## What is not in git
 
@@ -85,10 +87,15 @@ Model weights and datasets. See [`checkpoints/README.md`](checkpoints/README.md)
 SHA-256 values, release assets) and [`data/README.md`](data/README.md) (official dataset sources and
 the exact sequence lists).
 
-## Authors
+## Authors and contributions
 
-Manzi Roger Emile, Bao Ning, Soussis Robert, Ayush Bhatt, Aayushi Priyam.
-Each track folder's history shows who did which part.
+| Author | Part of the paper | Folder |
+|---|---|---|
+| Ayush Bhatt | Night tracking: gamma 0.6, anchored template, NAT2021/UAVDark135 evaluation, loss-stretch and overlap analyses | `tracks/night` |
+| Manzi Roger Emile | CPU efficiency: int8 recipe, matched timing, quality analysis, confidence and attack diagnostics; repository and shared statistics | `tracks/cpu_int8`, `shared/`, `scripts/` |
+| Bao Ning | Domain fine-tuning: REF recipe, code corrections, sealed evaluation | `tracks/domain_ft` |
+| Soussis Robert | Output-only corner-head box refinement | `tracks/box_refinement` |
+| Aayushi Priyam | Crop-scale and interpolation check | `tracks/crop_zoom` |
 
 ## Licence
 

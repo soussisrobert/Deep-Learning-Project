@@ -1,0 +1,221 @@
+{
+  "date": "2026-11-21",
+  "source_commit": "62167ca7728838543f6344d3625dcc5f1f5bb9a8",
+  "source_branch": "robert-corner-refinement-handoff",
+  "upstream_commit": "992aa7c1605360d607af84cb804b93cd8ee81caf",
+  "source_snapshot_note": "Local handoff snapshot created after the original TC2 experiments. Unpublished.",
+  "team_repository": "https://github.com/soussisrobert/Deep-Learning-Project.git",
+  "team_commit": "f850462a54c731b9c7c2cb89c2cf3a36fd63f5d7",
+  "checkpoint_sha256": {
+    "corner_head": "31040438007256383bae805bd4ec84fd58d45082f030efda398e8fed11995f49",
+    "coarse_refiner": "52fdaf6e58052f48bceb0481a80bfd90e9549acf2a8fc4189914ace86dada27a",
+    "warmup_corner_head": "0bd5cf2d1b71068ed3913618a58edead097d2b88609876a9e40c47193e6f82c4",
+    "official_hift": "8c697d2b6d2d7aa36e8d035c89e6897b3b5733b94abe56509420329bc4ba3101"
+  },
+  "training": {
+    "warmup": {
+      "identity": {
+        "snapshot_sha256": "8c697d2b6d2d7aa36e8d035c89e6897b3b5733b94abe56509420329bc4ba3101",
+        "config_sha256": "41db70a6239e34780509c1da04c6daaa8f3efce014c362557514760efcefd956",
+        "manifest_sha256": "c509ef8e905ae0514bd777dd1a351417226d287e1f56b3bbc4103a1df1321e2c",
+        "stride": 6,
+        "max_per_clip": 128,
+        "version": 1
+      },
+      "seed": 0,
+      "epochs": 18,
+      "crops": 7994
+    },
+    "final": {
+      "identity": {
+        "snapshot_sha256": "8c697d2b6d2d7aa36e8d035c89e6897b3b5733b94abe56509420329bc4ba3101",
+        "config_sha256": "41db70a6239e34780509c1da04c6daaa8f3efce014c362557514760efcefd956",
+        "manifest_sha256": "c509ef8e905ae0514bd777dd1a351417226d287e1f56b3bbc4103a1df1321e2c",
+        "stride": 6,
+        "max_per_clip": 128,
+        "version": 2,
+        "first_refiner_sha256": "52fdaf6e58052f48bceb0481a80bfd90e9549acf2a8fc4189914ace86dada27a"
+      },
+      "seed": 0,
+      "epochs": 12,
+      "crops": 10830,
+      "warmstart_sha256": "0bd5cf2d1b71068ed3913618a58edead097d2b88609876a9e40c47193e6f82c4"
+    }
+  },
+  "splits": {
+    "train": {
+      "clips": 86,
+      "source_clusters": 66,
+      "frames": 69941,
+      "manifest_sha256": "c509ef8e905ae0514bd777dd1a351417226d287e1f56b3bbc4103a1df1321e2c"
+    },
+    "val": {
+      "clips": 11,
+      "source_clusters": 9,
+      "frames": 7046,
+      "manifest_sha256": "261784b3e990b3702ff80214925ab9ff2764ee66b582d62e68720539b393de7b"
+    },
+    "test": {
+      "clips": 35,
+      "source_clusters": 23,
+      "frames": 32922,
+      "manifest_sha256": "be31dd346629885422d3fa582544212bfdc521ab28d4466a18c7a0a036803455"
+    }
+  },
+  "source_overlap": {
+    "train_val": [],
+    "train_test": [],
+    "val_test": []
+  },
+  "source_audit_limit": "Source identity uses VisDrone filename prefixes. Official checkpoint pretraining membership is unknown.",
+  "historical_test35": {
+    "hift": 0.5346055176410216,
+    "gentle": 0.5506608817059719,
+    "version_one": 0.5452356505805735
+  },
+  "historical_test34": {
+    "hift": 0.5293164832582602,
+    "gentle": 0.5448844207968503,
+    "version_one": 0.5392834138623379
+  },
+  "historical_test34_paired_gain": 0.015567937538590097,
+  "historical_test34_ci95": [
+    0.005173746249970651,
+    0.027828686921743576
+  ],
+  "domain_b0_auc": 0.5267091997273126,
+  "domain_b0_differences": [
+    "Sigmoid conversion of cls2",
+    "NaN-safe candidate selection",
+    "Initialization frame included",
+    "GPU inference versus our CPU inference"
+  ],
+  "domain_b0_nonfinite_selection_count": 0,
+  "team_dataset_identity_check": {
+    "source": "tracks/domain_ft/evidence/stage7/artifacts/domain-visdrone/dataset_manifest.json",
+    "same_video_names": true,
+    "same_annotations": true,
+    "video_frame_counts": {
+      "uav0000011_00000_s": 369,
+      "uav0000021_00000_s": 581,
+      "uav0000069_00576_s": 97,
+      "uav0000074_01656_s": 457,
+      "uav0000074_04320_s": 721,
+      "uav0000074_04992_s": 625,
+      "uav0000074_05712_s": 361,
+      "uav0000074_06312_s": 649,
+      "uav0000074_11915_s": 974,
+      "uav0000079_02568_s": 1297,
+      "uav0000088_00000_s": 1920,
+      "uav0000093_00000_s": 1611,
+      "uav0000093_01817_s": 553,
+      "uav0000116_00503_s": 369,
+      "uav0000151_00000_s": 2332,
+      "uav0000155_01201_s": 671,
+      "uav0000164_00000_s": 1868,
+      "uav0000180_00050_s": 1251,
+      "uav0000184_00625_s": 1101,
+      "uav0000207_00675_s": 1626,
+      "uav0000208_00000_s": 1169,
+      "uav0000241_00001_s": 2783,
+      "uav0000242_02327_s": 2569,
+      "uav0000242_05160_s": 828,
+      "uav0000294_00000_s": 253,
+      "uav0000294_00069_s": 793,
+      "uav0000294_01449_s": 392,
+      "uav0000324_00069_s": 392,
+      "uav0000340_01356_s": 529,
+      "uav0000353_00001_s": 191,
+      "uav0000353_01127_s": 438,
+      "uav0000367_02761_s": 1322,
+      "uav0000367_04137_s": 1429,
+      "uav0000368_03312_s": 311,
+      "uav0000368_03612_s": 90
+    }
+  },
+  "test34_image_identity": "All annotation and frame hashes from the domain manifest passed its strict CLI validator.",
+  "validation": {
+    "selected": "gentle",
+    "strength": 0.35,
+    "candidates": [
+      0.35,
+      0.65,
+      1.0
+    ],
+    "videos": [
+      "uav0000024_00000_s",
+      "uav0000029_01102_s",
+      "uav0000053_00264_s",
+      "uav0000054_00000_s",
+      "uav0000086_00870_s",
+      "uav0000092_00575_s",
+      "uav0000092_01150_s",
+      "uav0000115_00606_s",
+      "uav0000245_00001_s",
+      "uav0000317_00000_s",
+      "uav0000317_02945_s"
+    ],
+    "averages": {
+      "hift": 0.45931263576525505,
+      "corners": 0.435304321719841,
+      "blend": 0.4553662774109614,
+      "gentle": 0.46785013687415494,
+      "version_one": 0.47340111399649304
+    }
+  },
+  "test_reuse": {
+    "earlier_refiner_scored_on_same_clips": true,
+    "earlier_auc_gain": 0.010619144141173417,
+    "interpretation": "Iterative development with prior test-set exposure. The final test is exploratory."
+  },
+  "replay_test34": {
+    "clips": 34,
+    "source_clusters": 22,
+    "means": {
+      "stock_hift": {
+        "success_auc": 0.5299785968320014,
+        "precision_at_20px": 0.7173004992475869
+      },
+      "corner_pipeline": {
+        "success_auc": 0.5456236923147386,
+        "precision_at_20px": 0.7184323383049243
+      },
+      "coarse_refiner": {
+        "success_auc": 0.5399431014250423,
+        "precision_at_20px": 0.7192946209487993
+      }
+    },
+    "runtime_host": {
+      "platform": "Windows-11-10.0.26200-SP0",
+      "machine": "AMD64",
+      "processor": "Intel64 Family 6 Model 204 Stepping 3, GenuineIntel",
+      "logical_cpus": 8
+    },
+    "paired_gain": 0.01564509548273732,
+    "ci95": [
+      0.005268586446626864,
+      0.02797698584382356
+    ],
+    "bootstrap_seed": 20261105,
+    "bootstrap_resamples": 10000,
+    "historical_replay_max_abs_auc_change": 0.002628571428571369,
+    "identity": {
+      "snapshot_sha256": "8c697d2b6d2d7aa36e8d035c89e6897b3b5733b94abe56509420329bc4ba3101",
+      "config_sha256": "41db70a6239e34780509c1da04c6daaa8f3efce014c362557514760efcefd956",
+      "corner_head_sha256": "31040438007256383bae805bd4ec84fd58d45082f030efda398e8fed11995f49",
+      "coarse_refiner_sha256": "52fdaf6e58052f48bceb0481a80bfd90e9549acf2a8fc4189914ace86dada27a",
+      "manifest_sha256": "e2f6c105fe72b20da178ab9dc9c19ee63fc892d5dd8088d98e312ea1fdb015c6",
+      "domain_metrics_sha256": "53216b126ae8dcc57cd9831bb24226bb80e1f21ea7c80f256026086a55c747f2",
+      "replay_source_sha256": "582b07f6bdee3e13fc156916b242a55d02652505795cfbbb9a5211b1fdf2e678",
+      "seed": 0,
+      "correction_strength": 0.35,
+      "visibility_threshold": 0.65,
+      "python": "3.14.6",
+      "torch": "2.15.0+cpu",
+      "numpy": "2.5.2",
+      "opencv": "5.0.0",
+      "device": "cpu",
+      "threads": 1
+    }
+  }
+}
