@@ -1,0 +1,15 @@
+---
+description: HiFT research correctness and baseline separation
+alwaysApply: true
+---
+
+# Research integrity
+
+Follow the repository-wide AGENTS.md instructions.
+
+- Preserve immutable upstream HiFT SHA 992aa7c1605360d607af84cb804b93cd8ee81caf.
+- Keep B0 released, B1 inference-only, B2 retrained corrections, R1 candidate separate.
+- Synthetic tests and GPU smoke are not benchmark accuracy or tracking-speed evidence.
+- Do not claim novelty or launch substantive R1 training without validated baselines and diagnostics.
+- No ground-truth boxes after initialization in deployed inference.
+- Save source/config/checkpoint/data identities and failed runs; never overwrite completed runs.

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "id": "WAVE3-DIAGNOSTIC-PREREG-001",
+  "starting_commit": "fba88e5b3452bf6e92980f14a52604d5d93eb0b7",
+  "status": "frozen_before_new_tracking_outcomes",
+  "ordinary_tracking": "B0 and B1-score frozen; no GT after initialization; no retuning",
+  "data": "existing Wave2 pilot plus separately predeclared additional official segments; shared video lineages not independent",
+  "primary_coordinates": "native annotation numeric initialization and metrics unchanged",
+  "support_coordinates": "assumed annotation origin 1, always repeat origin 0; no best-origin selection",
+  "containment": {"full_fraction_min": 0.999999999, "outside_fraction_max": 0.000000001, "source_image_containment_separate": true},
+  "failure_thresholds": {"zero_overlap": 0.0, "low_iou": 0.1, "reliable_iou": 0.5},
+  "strata": {"source_min_side_edges_px": [0, 16, 32], "nominal_resized_min_side_edges_px": [0, 32, 64], "motion_in_target_min_sides_edges": [0, 0.5, 1.0], "elongated_aspect_ratio_min": 3.0},
+  "uncertainty": "sequence-level cluster bootstrap or descriptive per-sequence rates; no frame-iid intervals or causal tests",
+  "frame_quality_proxies": ["unresized_target_intensity_variance", "unresized_target_sobel_energy", "unresized_target_laplacian_variance_min_3x3", "target_vs_surround_color_histogram_distance"],
+  "quality_limitations": "exploratory image statistics, not validated optical information, blur, occlusion or perception quality; bbox support is not true visible object area",
+  "oracle": {
+    "kind": "offline_current_GT_frozen_frame_probe_NOT_ordinary_tracking_or_deployable_score",
+    "baseline_model": "released original B0 model and checkpoint, eval mode, no updates; B1 response interpretation supplemental on same response",
+    "sample_policy": "deterministic evenly spaced valid tracking frames within each sequence and observed full/partial/outside containment group; maximum 4 per group; same selected frames for both origin assumptions",
+    "max_frames_per_sequence": 12,
+    "conditions": ["observed_center_observed_side", "GT_center_observed_side", "observed_center_enlarged_side", "GT_center_enlarged_side"],
+    "enlarged_side": "smallest bounded integer side that guarantees geometric target containment at the observed center; at most 4096 source pixels, budget failures recorded",
+    "controlled_contrasts": ["translation_only_at_same_source_side", "source_side_and_resize_change_at_fixed_center", "2x2_center_by_side_interaction"],
+    "observed_probe_reproduction": "compare raw class probabilities, BCE logits and decoded candidate boxes to immutable ordinary-run grids before accepting an intervention",
+    "measurements": ["actual_contained_source_area", "delivered_resized_bbox_area", "selected_candidate_IoU", "best_decoded_candidate_IoU", "response_ambiguity_and_GT_site_vs_competitor"],
+    "limitations": "current GT centers reveal location; response changes include context/window/scale priors and not only representation. Translation cannot guarantee containment if target exceeds source side; off-image target pixels cannot be recovered. Probe IoUs are never reported as tracking AUC."
+  },
+  "hypotheses": {"H1": "crop availability limitation within selected panel", "H2": "contained localization/discrimination limitation, separating scoring/prior from candidate availability when possible", "H3": "source information association beyond footprint and motion among comparable contained examples; causal attribution not established"},
+  "forbidden": ["real_data_SGD", "official_checkpoint_fine_tuning", "R1_architecture", "baseline_retuning", "oracle_results_as_tracking_scores", "overwriting_Wave2_evidence"]
+}
