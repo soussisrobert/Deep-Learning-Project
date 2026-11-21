@@ -1,4 +1,4 @@
-# Stress-Testing HiFT for Aerial Tracking: Low Light, CPU Inference and Domain Shift
+# Stress-Testing HiFT for Aerial Tracking: Practical Interventions and Persistent Failure Mode
 
 AI6103 Deep Learning & Applications (NTU), group project, Route 2: we improve the official
 [HiFT](https://github.com/vision4robotics/HiFT) tracker (Cao et al., ICCV 2021) along three separately
