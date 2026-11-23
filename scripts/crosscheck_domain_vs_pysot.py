@@ -5,7 +5,8 @@ pysot's own `success_overlap` (copied verbatim below from tracks/night/toolkit/u
 compares each sequence with the success AUC stored in the matching *.evaluation.json.
 
 Needs only the ground-truth annotation files (no images):
-  UAV123@10fps official release:   <root>/anno/UAV123_10fps/<seq>.txt   (or any folder of <seq>.txt)
+  UAV123@10fps: the prepared annotation copy used by stage 7 (hash-matched to its dataset_manifest.json),
+                not the official anno/UAV123_10fps folder
   VisDrone2019-SOT-test-dev:       <root>/annotations/<seq>.txt
 
     python scripts/crosscheck_domain_vs_pysot.py --dataset UAV123 --anno-dir PATH [--n 10]

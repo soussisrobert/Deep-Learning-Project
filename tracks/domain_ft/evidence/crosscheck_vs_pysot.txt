@@ -1,0 +1,16 @@
+Domain evaluator vs official pysot success computation (scripts/crosscheck_domain_vs_pysot.py)
+Run by Bao Ning, 2026-11-21, on the sealed stage-2 predictions in evidence/stage7/artifacts/b2-eval/.
+
+Ground truth used: the same annotation copies the stage-7 evaluation read (hash-matched to the
+dataset manifests). For UAV123@10fps this is the prepared copy (prepared/anno), not the official
+anno/UAV123_10fps folder; point --anno-dir at the prepared copy to reproduce.
+
+Arm B0 (default run):
+UAV123:   76/76 sequences compared, max |diff| = 0.00e+00  ->  EQUIVALENT
+VISDRONE: 35/35 sequences compared, max |diff| = 0.00e+00  ->  EQUIVALENT
+
+Arms TC2-P1-REF-001 and TC2-P1-REF-S2-001 (--arm), both datasets:
+all four runs EQUIVALENT, max |diff| = 0.
+
+Conclusion: every per-sequence success AUC in the B0-vs-REF comparison equals pysot's success_overlap
+on the same predictions and ground truth.

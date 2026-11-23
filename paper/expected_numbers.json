@@ -1058,10 +1058,10 @@
   "where": "Domain fine-tuning (output-only box refinement) / Abstract"
  },
  {
-  "key": "refine.test34.corner_over_coarse_historical",
-  "paper": "0.0056",
+  "key": "refine.test34.corner_over_coarse_replay",
+  "paper": "0.0057",
   "dp": 4,
-  "where": "Domain fine-tuning (output-only box refinement) / Abstract (historical TC2 run)"
+  "where": "Domain fine-tuning (output-only box refinement; replay)"
  },
  {
   "key": "refine.val.pipeline",

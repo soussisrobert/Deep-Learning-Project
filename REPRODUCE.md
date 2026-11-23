@@ -142,3 +142,8 @@ See `tracks/crop_zoom/TRACK.md`: the patches are applied in `notebooks/nb2.ipynb
 
 `python scripts/crosscheck_domain_vs_pysot.py --dataset {UAV123,VISDRONE} --anno-dir <annotation folder>`
 scores the sealed predictions with pysot's `success_overlap` and compares them with the domain evaluator.
+Result (run by Ning, 2026-11-21): EQUIVALENT, max |diff| = 0, for B0 and both REF seeds on UAV123@10fps (76/76)
+and VisDrone test-dev (35/35); output in `tracks/domain_ft/evidence/crosscheck_vs_pysot.txt`. For UAV123@10fps,
+pass the prepared annotation copy the stage-7 evaluation used (its hashes are in
+`tracks/domain_ft/evidence/stage7/artifacts/domain-uav123/ACQUISITION-002/dataset_manifest.json`), not the
+official `anno/UAV123_10fps` folder. Use `--arm TC2-P1-REF-001` / `--arm TC2-P1-REF-S2-001` for the REF seeds.

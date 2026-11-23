@@ -1,4 +1,4 @@
-# Stress-Testing HiFT for Aerial Tracking: Practical Interventions and Persistent Failure Mode
+# Stress-Testing HiFT for Aerial Tracking: Practical Interventions and Persistent Failure Modes
 
 AI6103 Deep Learning & Applications (NTU), group project, Route 2: we improve the official
 [HiFT](https://github.com/vision4robotics/HiFT) tracker (Cao et al., ICCV 2021) along three separately
@@ -27,7 +27,7 @@ Expected last line: `207/207 paper numbers reproduced`. The script recomputes ev
 bootstrap interval from the released per-video files in [`results/`](results) using one shared
 statistics module ([`shared/stats.py`](shared/stats.py)), and checks each against
 [`paper/expected_numbers.json`](paper/expected_numbers.json) (the value as printed, plus where it appears).
-The same check runs on every push ([`.github/workflows/verify.yml`](.github/workflows/verify.yml)).
+A GitHub Actions workflow that runs the same check is provided in [`environment/github-workflow-verify.yml`](environment/github-workflow-verify.yml) (copy it to `.github/workflows/` to run it on every push).
 
 Deeper levels (re-scoring saved boxes, re-running tracking, retraining) are in [REPRODUCE.md](REPRODUCE.md).
 
